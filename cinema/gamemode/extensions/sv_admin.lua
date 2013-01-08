@@ -30,7 +30,8 @@ end )
 
 concommand.Add( "cinema_runlua", function( ply, cmd, args )
 
-	if !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
+	if ASS_VERSION and !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
+	if !ply:IsSuperAdmin() then return end
 
 	local lua = table.concat( args, " " )
 
@@ -47,7 +48,8 @@ end )
 
 concommand.Add( "cinema_rcon", function( ply, cmd, args )
 
-	if !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
+	if ASS_VERSION and !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
+	if !ply:IsSuperAdmin() then return end
 	
 	if #args == 0 then
 		ply:PrintMessage( HUD_PRINTCONSOLE, "No commands specified.\n" )
