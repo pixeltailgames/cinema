@@ -1,0 +1,15 @@
+"UnlitGeneric"
+{
+	"$basetexture" "theater/STATIC"
+	"$surfaceprop" "glass"
+	"%keywords" "theater"
+	"Proxies"
+		{
+		"AnimatedTexture"
+		{
+		"animatedTextureVar" "$basetexture"
+		"animatedTextureFrameNumVar" "$frame"
+		"animatedTextureFrameRate" "16"
+		}
+	}
+}
