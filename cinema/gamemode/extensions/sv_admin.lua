@@ -13,20 +13,24 @@ local Admins = {
 }
 
 hook.Add( "PlayerInitialSpawn", "AuthAdmin", function( ply )
-
-	if table.HasValue( SuperAdmins, ply:SteamID() ) then
-		ply:SetUserGroup( "superadmin" )
-	end
-
-	if table.HasValue( Admins, ply:SteamID() ) then
-		ply:SetUserGroup( "admin" )
+	
+	if not ASS_VERSION then // ASSMod is not installed
+		
+		if table.HasValue( SuperAdmins, ply:SteamID() ) then
+			ply:SetUserGroup( "superadmin" )
+		end
+	
+		if table.HasValue( Admins, ply:SteamID() ) then
+			ply:SetUserGroup( "admin" )
+		end
+		
 	end
 	
 end )
 
 concommand.Add( "cinema_runlua", function( ply, cmd, args )
 
-	if !ply:IsSuperAdmin() then return end
+	if !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
 
 	local lua = table.concat( args, " " )
 
@@ -43,7 +47,7 @@ end )
 
 concommand.Add( "cinema_rcon", function( ply, cmd, args )
 
-	if !ply:IsSuperAdmin() then return end
+	if !ply:HasLevel(ASS_LVL_SERVER_OWNER) then return end
 	
 	if #args == 0 then
 		ply:PrintMessage( HUD_PRINTCONSOLE, "No commands specified.\n" )
