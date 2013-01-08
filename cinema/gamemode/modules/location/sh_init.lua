@@ -30,7 +30,7 @@ end
 function GetLocations( strMap )
 
 	if ( !strMap ) then
-		strMap = game.GetMap()
+		strMap = string.lower(game.GetMap())
 	end
 	
 	for _, v in pairs( Maps ) do
