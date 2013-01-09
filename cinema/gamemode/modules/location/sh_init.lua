@@ -33,8 +33,8 @@ function GetLocations( strMap )
 		strMap = game.GetMap()
 	end
 	
-	strMap = string.lower(strMap)
-	
+	strMap = string.lower( strMap )
+
 	for _, v in pairs( Maps ) do
 		if ( v.Name == strMap ) then return v.Locations end
 	end

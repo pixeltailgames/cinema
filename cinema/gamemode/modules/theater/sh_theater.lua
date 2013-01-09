@@ -584,7 +584,7 @@ if SERVER then
 	function THEATER:VoteSkip( ply )
 
 		-- Can't vote skip if the queue is locked
-		if !self:IsQueueLocked() then return end
+		if self:IsQueueLocked() then return end
 
 		-- Can't vote skip if a video isn't playing
 		if !self:IsPlaying() then return end
@@ -613,7 +613,7 @@ if SERVER then
 	function THEATER:CheckVoteSkip()
 
 		-- Can't skip if the queue is locked
-		if !self:IsQueueLocked() then return end
+		if self:IsQueueLocked() then return end
 
 		-- Skip the current video if the voteskip requirement is met
 		if self:NumVoteSkips() >= self:NumRequiredVoteSkips() then
