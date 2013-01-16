@@ -1,385 +1,170 @@
--- Increment Volume
-control.Add( KEY_EQUAL, function( enabled )
 
-	if enabled then
+include( 'shared.lua' )
+
+/*
+	Unsupported map notification
+*/
+if Location and !Location.GetLocations() then
+
+	hook.Add( "HUDPaint", "DrawMapMessage", function()
+		GAMEMODE:DrawUnsupportedMapNotice()
+	end )
+
+	control.Add( KEY_F1, function( enabled, held )
+		if enabled and !held then
+			steamworks.ViewFile( 119060917 )
+		end
+	end )
+
+end
+
+local MapMessage = "The current map is unsupported by the Cinema gamemode"
+local MapMessage2 = "Press F1 to open the official map on workshop"
+local MapFont = "MapFont"
+local p = 10
+local w, h
+
+surface.CreateFont( MapFont, { font = "Open Sans Condensed Light", size = 28, weight = 200 } )
+
+function GM:DrawUnsupportedMapNotice()
+
+	surface.SetFont( MapFont )
+
+	w, h = surface.GetTextSize( MapMessage )
+	draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p, w + p*2, h + p*2, Color(0,0,0,200) )
+	draw.SimpleText( MapMessage, MapFont, ScrW() / 2, h, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	
+	w, h = surface.GetTextSize( MapMessage2 )
+	draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p + h*2, w + p*2, h + p*2, Color(0,0,0,200) )
+	draw.SimpleText( MapMessage2, MapFont, ScrW() / 2, h*3, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+
+end
+
+/*
+	HUD Elements to hide
+*/
+GM.HUDToHide = {
+	"CHudHealth",
+	"CHudSuitPower",
+	"CHudBattery",
+	"CHudCrosshair",
+	"CHudAmmo",
+	"CHudSecondaryAmmo",
+	"CHudZoom"
+}
+
+--[[---------------------------------------------------------
+   Name: gamemode:HUDShouldDraw( name )
+   Desc: return true if we should draw the named element
+-----------------------------------------------------------]]
+function GM:HUDShouldDraw( name )
+
+	-- Allow the weapon to override this
+	local ply = LocalPlayer()
+	if ( IsValid( ply ) ) then
+	
+		local wep = ply:GetActiveWeapon()
 		
-		local increment = 5
-		local volume = math.Round( theater.GetVolume() / increment ) * increment
-
-		RunConsoleCommand( "cinema_volume", volume + increment )
-
-	end
-
-end )
-
--- Decrement Volume
-control.Add( KEY_MINUS, function( enabled )
-
-	if enabled then
+		if (wep && wep:IsValid() && wep.HUDShouldDraw != nil) then
 		
-		local increment = 5
-		local volume = math.Round( theater.GetVolume() / increment ) * increment
-
-		RunConsoleCommand( "cinema_volume", volume - increment )
-
-	end
-
-end )
-
-module( "theater", package.seeall )
-
-LastVideo = nil -- Most recent video loaded
-Fullscreen = false
-
-NumVoteSkips = 0
-ReqVoteSkips = 0
-
-Panels = {}
-Queue = {}
-
-function RegisterPanel( Theater )
-
-	Fullscreen = false
-
-	-- There should only be one panel playing
-	RemovePanels()
-
-	local tw, th = Theater:GetSize()
-	local scale = tw / th
-
-	local h = GetConVar("cinema_resolution") and GetConVar("cinema_resolution"):GetInt() or 720
-
-
-	local panel = vgui.Create( "TheaterHTML", vgui.GetWorldPanel(), "TheaterScreen" )
-	panel:SetSize( h * scale, h )
-
-	timer.Simple(0.5, function()
-		if ValidPanel(panel) then
-			local js = string.format( "theater.setVolume(%s);", GetVolume() )
-			panel:QueueJavascript(js)
-
-			if GetConVar("cinema_hd"):GetBool() then
-				panel:QueueJavascript( "theater.enableHD();" )
-			end
-		end
-	end)
-
-	Panels[ Theater:GetLocation() ] = panel
-
-	RefreshPanel()
-
-	return panel
-
-end
-
-function ActivePanel()
-	if !LocalPlayer().GetLocation then return end
-	return Panels[ LocalPlayer():GetLocation() ]
-end
-
-function RefreshPanel( reload )
-
-	local panel = ActivePanel()
-
-	if ValidPanel(panel) then
-		panel:SetPaintedManually(true)
-		panel:SetScrollbars(false)
-		panel:SetAllowLua(true)
-		panel:SetKeyBoardInputEnabled(false)
-		panel:SetMouseInputEnabled(false)
-	end
-
-	if reload then
-
-		RemovePanels()
-		LoadVideo( LastVideo )
-
-	end
-	
-	ResizePanel()
-
-end
-
-function ResizePanel()
-	
-	local panel = ActivePanel()
-	if !ValidPanel(panel) then return end
-	
-	local w, h = panel:GetSize()
-	local scale = w/h
-
-	local h2 = GetConVar("cinema_resolution"):GetInt()
-	h2 = h2 and h2 or 720
-
-	-- Adjust width based on new and old heights
-	w = w * (h2/h)
-	h = h2
-
-	panel:SetSize(w, h)
-
-end
-
-function RemovePanels()
-
-	-- Remove active panel
-	local panel = ActivePanel()
-	if ValidPanel(panel) then
-		panel:Remove()
-	end
-
-	-- Remove any remaining panels that might exist
-	for _, p in pairs( vgui.GetWorldPanel():GetChildren() ) do
-		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
-			p:Remove()
-		end
-	end
-
-	-- Remove any remaining panels that might exist
-	for _, p in pairs( GetHUDPanel():GetChildren() ) do
-		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
-			p:Remove()
-		end
-	end
-
-	-- Remove admin panel between theater transitions
-	if ValidPanel( GuiAdmin ) then
-		GuiAdmin:Remove()
-	end
-
-	-- Remove theater drawing info
-	LastTheater = nil
-
-end
-net.Receive( "PlayerLeaveTheater", RemovePanels )
-hook.Add( "PreGamemodeLoaded", "RemoveAllPanels", theater.RemovePanels )
-
-function CurrentVideo()
-	return LastVideo
-end
-
-function ToggleFullscreen()
-	
-	local panel = ActivePanel()
-	if !ValidPanel(panel) then return end
-
-	-- Toggle fullscreen
-	if Fullscreen then
-		RefreshPanel()
-	else
-		panel:SetSize(ScrW(), ScrH())
-		panel:ParentToHUD() -- Render before the HUD
-	end
-
-	Fullscreen = !Fullscreen
-	LocalPlayer():Freeze(Fullscreen)
-
-end
-
-function GetQueue()
-	if LocalPlayer():InTheater() then
-		return Queue
-	else
-		return {}
-	end
-end
-
-function GetVolume()
-	return GetConVar("cinema_volume"):GetInt()
-end
-
-function SetVolume( fVolume )
-
-	fVolume = tonumber(fVolume)
-	if !fVolume then return end
-
-	for _, p in pairs(Panels) do
-		if ValidPanel(p) then
-			p:QueueJavascript(string.format('theater.setVolume(%s)', GetVolume()))
-		end
-	end
-
-	LastInfoDraw = CurTime()
-
-end
-
-function PollServer()
-
-	-- Prevent spamming requests
-	if LocalPlayer().LastTheaterRequest and LocalPlayer().LastTheaterRequest + 1 > CurTime() then
-		return
-	end
-
-	net.Start("TheaterInfo")
-	net.SendToServer()
-
-	LocalPlayer().LastTheaterRequest = CurTime()
-
-end
-
-function ReceiveVideo()
-
-	LastTheater = nil -- see cl_draw.lua
-
-	local info = {}
-	info.Type = net.ReadString()
-	info.Data = net.ReadString()
-	info.Title = net.ReadString()
-
-	if IsVideoTimed(info.Type) then
-		info.StartTime = net.ReadFloat()
-		info.Duration = net.ReadInt(32)
-	end
-
-	local Video = VIDEO:Init(info)
-	LoadVideo( Video )
-
-	-- Private theater owner
-	local Theater = LocalPlayer():GetTheater()
-	if Theater then
-
-		Theater:SetVideo( Video )
-
-		if Theater:IsPrivate() then
-			local owner = net.ReadEntity()
-			if IsValid( owner ) then
-				Theater._Owner = owner
-			end
+			return wep.HUDShouldDraw( wep, name )
+			
 		end
 		
 	end
+
+	return !table.HasValue(self.HUDToHide, name)
+
+end
+
+--[[---------------------------------------------------------
+   Name: gamemode:HUDPaint( )
+   Desc: Use this section to paint your HUD
+-----------------------------------------------------------]]
+function GM:HUDPaint()
+
+	hook.Run( "HUDDrawTargetID" )
+	-- hook.Run( "HUDDrawPickupHistory" )
+	hook.Run( "DrawDeathNotice", 0.85, 0.04 )
+
+end
+
+--[[---------------------------------------------------------
+   Name: gamemode:HUDPaint( )
+   Desc: Use this section to paint your HUD
+-----------------------------------------------------------]]
+function GM:HUDDrawTargetID()
+	return false
+end
+
+--[[---------------------------------------------------------
+   Name: CalcView
+   Allows override of the default view
+-----------------------------------------------------------]]
+function GM:CalcView( ply, origin, angles, fov, znear, zfar )
 	
-	NumVoteSkips = 0
-	LastInfoDraw = CurTime()
+	local Vehicle	= ply:GetVehicle()
+	local Weapon	= ply:GetActiveWeapon()
+	
+	local view = {}
+	view.origin 		= origin
+	view.angles			= angles
+	view.fov 			= fov
+	view.znear			= znear
+	view.zfar			= zfar
+	view.drawviewer		= false
 
-end
-net.Receive( "TheaterVideo", ReceiveVideo )
+	--
+	-- Let the vehicle override the view
+	--
+	if ( IsValid( Vehicle ) ) then return GAMEMODE:CalcVehicleView( Vehicle, ply, view ) end
 
-function ReceiveSeek()
+	--
+	-- Let drive possibly alter the view
+	--
+	if ( drive.CalcView( ply, view ) ) then return view end
+	
+	--
+	-- Give the player manager a turn at altering the view
+	--
+	player_manager.RunClass( ply, "CalcView", view )
 
-	local seconds = net.ReadFloat()
-
-	local panel = ActivePanel()
-	local Video = CurrentVideo()
-	local Theater = LocalPlayer():GetTheater()
-
-	if !ValidPanel(panel) or !Video or !Theater then return end
-
-	Video._VideoStart = seconds
-	Theater._VideoStart = seconds
-	panel:QueueJavascript( string.format( 'theater.seek(%s)', CurTime() - seconds ) )
-
-end
-
-net.Receive( "TheaterSeek", ReceiveSeek )
-
-function ReceiveTheaters()
-
-	table.Empty( Theaters )
-
-	local tbl = net.ReadTable()
-
-	local Theater = nil
-	for _, v in pairs( tbl ) do
-
-		-- Merge shared theater data
-		local loc = Location.GetLocationByIndex( v.Location )
-		if loc and loc.Theater then
-			v = table.Merge( loc.Theater, v )
+	-- Give the active weapon a go at changing the viewmodel position
+	
+	if ( IsValid( Weapon ) ) then
+	
+		local func = Weapon.GetViewModelPosition
+		if ( func ) then
+			view.vm_origin,  view.vm_angles = func( Weapon, origin*1, angles*1 ) -- Note: *1 to copy the object so the child function can't edit it.
 		end
-
-		Theater = THEATER:Init(v.Location, v)
-
-		if Theater:IsPrivate() and v.Owner then
-			Theater._Owner = v.Owner
-		end
-
-		Theaters[v.Location] = Theater
-
-	end
-
-	if ValidPanel( Gui ) and ValidPanel( Gui.TheaterList ) then
-		Gui.TheaterList:UpdateList()
-	end
-
-end
-net.Receive( "TheaterInfo", ReceiveTheaters )
-
-function ReceiveQueue()
-
-	table.Empty( Queue )
-
-	local queue = net.ReadTable()
-	for _, v in pairs(queue) do
-		table.insert(Queue, v)
-	end
-
-	if ValidPanel( GuiQueue ) then
-		GuiQueue:UpdateList()
-	end
-
-end
-net.Receive( "TheaterQueue", ReceiveQueue )
-
-function ReceiveVoteSkips()
-
-	local name = net.ReadString()
-	local skips = net.ReadInt(7)
-	local required = net.ReadInt(7)
-
-	local str = string.format( "%s has voted to skip (%s/%s)", name, skips, required )
-	AddAnnouncement( str )
-
-	NumVoteSkips = skips
-	ReqVoteSkips = required
-
-end
-net.Receive( "TheaterVoteSkips", ReceiveVoteSkips )
-
-function LoadVideo( Video )
-
-	if !Video then return end
-
-	local theaterUrl = GetConVarString( "cinema_url" )
-
-	local panel = ActivePanel()
-	if !ValidPanel( panel ) then
-
-		-- Initialize HTML panel
-		local Theater = LocalPlayer():GetTheater()
-		if !Theater then return end
 		
-		-- Initialize panel and load the webpage
-		panel = RegisterPanel( Theater )
-
-		if Video:Type() != "url" then
-			panel:OpenURL( theaterUrl )
+		local func = Weapon.CalcView
+		if ( func ) then
+			view.origin, view.angles, view.fov = func( Weapon, ply, origin*1, angles*1, fov ) -- Note: *1 to copy the object so the child function can't edit it.
 		end
-
+	
 	end
+	
+	return view
+	
+end
 
-	if Video:Type() == "url" then
-		panel:OpenURL( Video:Data() )
-	elseif panel.URL != theaterUrl then
-		panel:OpenURL( theaterUrl )
-	end
+--
+-- If return true: 		Will draw the local player
+-- If return false: 	Won't draw the local player
+-- If return nil:	 	Will carry out default action
+--
+function GM:ShouldDrawLocalPlayer( ply )
 
-	local startTime = CurTime() - Video:StartTime()
+	return player_manager.RunClass( ply, "ShouldDrawLocal" )
 
-	-- Set the volume before playing anything
-	local str = string.format( "theater.setVolume(%s)", GetVolume() )
-	panel:QueueJavascript( str )
+end
 
-	-- Let the webpage handle loading a video
-	str = string.format( "theater.loadVideo( '%s', '%s', %s );", Video:Type(), Video:Data(), startTime )
-	panel:QueueJavascript( str )
-
-	-- Keep previous video for refreshing the theater
-	LastVideo = Video
-
-	/*Msg("Loaded Video\n")
-	Msg("\tType:\t"..tostring(Video:Type()).."\n")
-	Msg("\tData:\t"..tostring(Video:Data()).."\n")
-	Msg("\tTime:\t"..tostring(startTime).."\n")
-	Msg("\tDur:\t"..tostring(Video:Duration()).."\n")*/
-
+--[[---------------------------------------------------------
+   Name: gamemode:CreateMove( command )
+   Desc: Allows the client to change the move commands 
+			before it's send to the server
+-----------------------------------------------------------]]
+function GM:CreateMove( cmd )
+	if ( player_manager.RunClass( LocalPlayer(), "CreateMove", cmd ) ) then return true end
 end
