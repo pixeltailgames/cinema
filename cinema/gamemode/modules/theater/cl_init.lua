@@ -376,10 +376,10 @@ function LoadVideo( Video )
 	-- Keep previous video for refreshing the theater
 	LastVideo = Video
 
-	Msg("Loaded Video\n")
+	/*Msg("Loaded Video\n")
 	Msg("\tType:\t"..tostring(Video:Type()).."\n")
 	Msg("\tData:\t"..tostring(Video:Data()).."\n")
 	Msg("\tTime:\t"..tostring(startTime).."\n")
-	Msg("\tDur:\t"..tostring(Video:Duration()).."\n")
+	Msg("\tDur:\t"..tostring(Video:Duration()).."\n")*/
 
 end
