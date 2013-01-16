@@ -122,6 +122,8 @@ end )
 
 function GM:MenuShow()
 
+	if !IsValid(LocalPlayer()) or !LocalPlayer().GetTheater then return end
+
 	local Theater = LocalPlayer():GetTheater()
 	if !Theater then return end
 
@@ -174,9 +176,9 @@ hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 	if !ValidPanel(Gui) then return end
 
 	if bind == "invnext" then
-		Gui.PlayerList.PlayerList.VBar:AddScroll(1)
+		Gui.PlayerList.PlayerList.VBar:AddScroll(2)
 	elseif bind == "invprev" then
-		Gui.PlayerList.PlayerList.VBar:AddScroll(-1)
+		Gui.PlayerList.PlayerList.VBar:AddScroll(-2)
 	end
 
 end )

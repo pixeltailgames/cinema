@@ -83,7 +83,7 @@ hook.Add( "InputMouseApply", "TheaterViewRagdoll", function( cmd, x, y, ang )
 
 	local ply = LocalPlayer()
 
-	if ply:GetDTBool( 3) then
+	if IsValid(ply) and ply:GetDTBool( 3) then
 
 		local ang = ply.ViewSelfAng or ang
 		local yaw = ( x * -GetConVar( "m_yaw" ):GetFloat() )
@@ -123,7 +123,7 @@ hook.Add("CalcView", "TheaterSpectateRagdoll", function(ply, pos, ang, fov)
 end )
 
 hook.Add("RenderScreenspaceEffects", "TheaterRagdollDisableLegs", function()
-	if LocalPlayer():GetDTBool( 3) then
+	if IsValid(LocalPlayer()) and LocalPlayer():GetDTBool(3) then
 		LocalPlayer().ShouldDisableLegs = true
 	end
 end )

@@ -57,7 +57,7 @@ end
 function GM:PlayerNoClip( pl, on )
 	
 	-- For development purposes
-	if pl:IsPixelTail() then return true end
+	if ply.IsPixelTail and pl:IsPixelTail() then return true end
 
 	-- Allow noclip if we're in single player
 	if ( game.SinglePlayer() ) then return true end

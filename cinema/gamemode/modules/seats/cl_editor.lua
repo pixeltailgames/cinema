@@ -12,6 +12,12 @@
 
 	Run 'cinema_chaireditor' to open
 
+	If you do end up using this for finding offsets, or for 
+	fixing it, consider submitting a pull request to the Cinema
+	gamemode with the additions.
+
+	https://github.com/pixeltailgames/cinema
+
 */
 
 ChairModels = {
@@ -144,7 +150,7 @@ function Open()
 	Copy:SetSize( 100, 50 )
 	Copy:SetPos( 200, 600 - 60 )
 	Copy.DoClick = function()
-		CopyData = table.Copy( GetTranslation() )
+		-- CopyData = table.Copy( GetTranslation() )
 	end
 	
 	local Paste = vgui.Create("DButton", MainPanel )

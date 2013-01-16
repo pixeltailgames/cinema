@@ -1,5 +1,13 @@
+/*
+
+	The Cinema location system is built from old
+	GMod Tower code. Credit goes to Voided for
+	the beautiful debugging system.
+
+*/
+
 -- DON'T CHANGE THIS UNLESS YOU'RE A DEVELOPER!
-if false then return end
+if true then return end
 
 module( "Location", package.seeall )
 

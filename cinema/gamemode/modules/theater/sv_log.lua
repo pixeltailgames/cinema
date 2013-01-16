@@ -97,4 +97,4 @@ function LogVideo( Video, Theater )
 	return Query(str)
 
 end
-hook.Add( "OnVideoQueued", "LogQueuedVideo", theater.LogVideo )
+hook.Add( "PostVideoQueued", "LogQueuedVideo", theater.LogVideo )

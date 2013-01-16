@@ -43,7 +43,7 @@ function DrawActiveTheater()
 
 	if !LastTheater then
 
-		local Theater = LocalPlayer():GetTheater()
+		local Theater = LocalPlayer().GetTheater and LocalPlayer():GetTheater() or nil
 		if !Theater then
 			LastTheater = nil
 			return

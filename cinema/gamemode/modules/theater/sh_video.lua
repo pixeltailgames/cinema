@@ -10,8 +10,8 @@ function VIDEO:Init( info, ply )
 	self.__index = self
 	
 	if SERVER then
-		o.id = -1 -- set by theater
-		o.theaterId = -1 -- set by theater
+		o.id = -1 			-- set by theater
+		o.theaterId = -1 	-- set by theater
 
 		o._QueueTime = CurTime()
 		o._Owner = ply

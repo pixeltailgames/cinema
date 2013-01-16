@@ -407,6 +407,9 @@ if SERVER then
 				return
 			end
 
+			-- Developers can decide whether or not the video should be queued
+			if !hook.Run( "PreVideoQueued", vid, self ) then return end
+
 			-- Successful request, queue video
 			self:QueueVideo( vid )
 
@@ -424,7 +427,7 @@ if SERVER then
 			self._Finished = false
 
 			-- Used for logging video requests
-			hook.Run( "OnVideoQueued", vid, self )
+			hook.Run( "PostVideoQueued", vid, self )
 
 		end )
 
@@ -561,8 +564,18 @@ if SERVER then
 	end
 
 	function THEATER:NumRequiredVoteSkips()
-		local ratio = math.Clamp( tonumber(GetConVar("cinema_skip_ratio"):GetFloat()) or 2/3, 0, 1 )
-		return math.Round( self:NumPlayers() * ratio )
+
+		local ratio = math.Clamp( GetConVar("cinema_skip_ratio"):GetFloat() or 2/3, 0, 1 )
+
+		local numply = self:NumPlayers()
+		if numply == 1 then
+			return 1
+		elseif numply > 0 and numply < 3 then
+			return 2 -- prevent players from walking in private theaters and skipping
+		else
+			return math.Round( self:NumPlayers() * ratio )
+		end
+
 	end
 
 	function THEATER:ClearSkipVotes()

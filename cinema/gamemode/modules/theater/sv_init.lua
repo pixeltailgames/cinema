@@ -8,29 +8,6 @@ util.AddNetworkString( "TheaterSeek" )
 util.AddNetworkString( "TheaterVoteSkips" )
 util.AddNetworkString( "TheaterAnnouncement" )
 
-hook.Add( "PlayerChangeLocation", "TheaterInit", function ( ply, loc, old )
-
-	-- Player entered theater
-	local Theater = theater.GetByLocation( loc )
-	if Theater then
-		theater.PlayerJoin( ply, loc )
-		ply:SetInTheater(true)
-	end
-	
-	-- Player left theater
-	local OldTheater = theater.GetByLocation( old )
-	if OldTheater then
-
-		theater.PlayerLeave( ply, old )
-
-		if !Theater then
-			ply:SetInTheater(false)
-		end
-
-	end
-
-end)
-
 module( "theater", package.seeall )
 
 function Initialize()
