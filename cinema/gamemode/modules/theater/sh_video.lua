@@ -16,6 +16,7 @@ function VIDEO:Init( info, ply )
 		o._QueueTime = CurTime()
 		o._Owner = ply
 		o._OwnerName = IsValid(ply) and ply:Nick() or "" -- in case they disconnect
+		o._OwnerSteamID = IsValid(ply) and ply:SteamID() or ""
 
 		o._Votes = {}
 
@@ -75,6 +76,15 @@ if SERVER then
 			return self._OwnerName
 		end
 	end
+	
+	function VIDEO:GetOwnerSteamID()
+		if IsValid(self:GetOwner()) then
+			return self:GetOwner():SteamID()
+		else
+			return self._OwnerSteamID
+		end
+	end
+	
 
 	/*
 		Votes

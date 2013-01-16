@@ -323,6 +323,7 @@ if SERVER then
 					"Current video requested by ",
 					ColHighlight,
 					Video:GetOwnerName(),
+					" (" .. Video:GetOwnerSteamID() .. ")",
 					ColDefault,
 					"."
 				} )
