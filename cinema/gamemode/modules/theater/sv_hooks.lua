@@ -15,7 +15,7 @@ function GM:PreVideoQueued( Video, Theater )
 	if ply:IsAdmin() then return true end
 
 	-- Public theaters should be slightly more managed
-	if Theater:IsPublic() then
+	if Theater:IsReplicated() then
 		
 		-- Limit videos to a specified maximum duration
 		local MaxDuration = GetConVarNumber("cinema_video_duration_max")
@@ -28,6 +28,8 @@ function GM:PreVideoQueued( Video, Theater )
 
 		end
 
+	else
+		print("Theater not public!")
 	end
 
 
