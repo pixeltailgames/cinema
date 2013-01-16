@@ -28,8 +28,6 @@ function GM:PreVideoQueued( Video, Theater )
 
 		end
 
-	else
-		print("Theater not public!")
 	end
 
 
