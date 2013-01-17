@@ -194,7 +194,7 @@ if SERVER then
 
 				-- Query info from API
 				local status, err = pcall( GetVideoInfo, self:Data(), self:Type(), function(info)
-					self._VideoTitle = info.title or "(Unknown)"
+					self._VideoTitle = url.htmlentities_decode(info.title) or "(Unknown)"
 					self._VideoDuration = tonumber(info.duration) or -1
 					self._VideoThumbnail = info.thumbnail or ""
 

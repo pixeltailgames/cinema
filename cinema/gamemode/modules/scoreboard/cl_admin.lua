@@ -111,10 +111,10 @@ end
 
 function ADMIN:Think()
 
-	if CurTime() > self.NextUpdate then
+	if RealTime() > self.NextUpdate then
 		self:Update()
 		self:InvalidateLayout()
-		self.NextUpdate = CurTime() + 3.0
+		self.NextUpdate = RealTime() + 3.0
 	end
 
 end

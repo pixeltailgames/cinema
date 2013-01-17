@@ -119,10 +119,10 @@ end
 
 function QUEUE:Think()
 
-	if CurTime() > self.NextUpdate then
+	if RealTime() > self.NextUpdate then
 		self:Update()
 		self:InvalidateLayout()
-		self.NextUpdate = CurTime() + 3.0
+		self.NextUpdate = RealTime() + 3.0
 	end
 
 end
@@ -274,7 +274,7 @@ function VIDEOVOTE:Init()
 		self:Update()
 
 		local queue = self:GetParent():GetParent()
-		queue.NextUpdate = (queue.NextUpdate or CurTime()) + 2 -- avoid race conditions with networking
+		queue.NextUpdate = (queue.NextUpdate or RealTime()) + 2 -- avoid race conditions with networking
 	
 	end
 	self.VoteUp.Think = function()
@@ -312,7 +312,7 @@ function VIDEOVOTE:Init()
 		self:Update()
 
 		local queue = self:GetParent():GetParent()
-		queue.NextUpdate = (queue.NextUpdate or CurTime()) + 2 -- avoid race conditions with networking
+		queue.NextUpdate = (queue.NextUpdate or RealTime()) + 2 -- avoid race conditions with networking
 	end
 	self.VoteDown.Think = function()
 		if IsMouseOver( self.VoteDown ) or self.VoteDown.Voted then

@@ -68,9 +68,9 @@ end
 
 function PLAYERLIST:Think()
 
-	if CurTime() > self.NextUpdate then
+	if RealTime() > self.NextUpdate then
 		self:InvalidateLayout()
-		self.NextUpdate = CurTime() + 3.0
+		self.NextUpdate = RealTime() + 3.0
 		self.ServerName:Update()
 	end
 
