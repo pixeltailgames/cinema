@@ -7,13 +7,13 @@ include( 'shared.lua' )
 local MapFont = "MapFont"
 local p = 10
 local w, h
-local MapMessage
+local MapMessage, MapMessage2
 surface.CreateFont( MapFont, { font = "Open Sans Condensed Light", size = 28, weight = 200 } )
 
 if Location and !Location.GetLocations() then
 
 	MapMessage = "The current map is unsupported by the Cinema gamemode"
-	local MapMessage2 = "Press F1 to open the official map on workshop"
+	MapMessage2 = "Press F1 to open the official map on workshop"
 
 	hook.Add( "HUDPaint", "DrawMapMessage", function()
 		
@@ -37,7 +37,8 @@ if Location and !Location.GetLocations() then
 
 elseif system.IsOSX() then
 
-	MapMessage = "Cinema is currently unsupported on Mac OS X, sorry :("
+	MapMessage = "Mac OS X users may experience blank screens in Cinema"
+	MapMessage2 = "Press F1 to view troubleshooting tips and to remove this message"
 
 	hook.Add( "HUDPaint", "DrawMapMessage", function()
 		
@@ -46,7 +47,18 @@ elseif system.IsOSX() then
 		w, h = surface.GetTextSize( MapMessage )
 		draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p, w + p*2, h + p*2, Color(0,0,0,200) )
 		draw.SimpleText( MapMessage, MapFont, ScrW() / 2, h, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		
+		w, h = surface.GetTextSize( MapMessage2 )
+		draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p + h*2, w + p*2, h + p*2, Color(0,0,0,200) )
+		draw.SimpleText( MapMessage2, MapFont, ScrW() / 2, h*3, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 
+	end )
+
+	control.Add( KEY_F1, function( enabled, held )
+		if enabled and !held then
+			gui.OpenURL( "http://pixeltailgames.com/cinema/help.php" )
+			hook.Remove( "HUDPaint", "DrawMapMessage" )
+		end
 	end )
 
 else

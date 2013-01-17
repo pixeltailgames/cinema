@@ -50,7 +50,6 @@ function RegisterPanel( Theater )
 
 	local h = GetConVar("cinema_resolution") and GetConVar("cinema_resolution"):GetInt() or 720
 
-
 	local panel = vgui.Create( "TheaterHTML", vgui.GetWorldPanel(), "TheaterScreen" )
 	panel:SetSize( h * scale, h )
 
