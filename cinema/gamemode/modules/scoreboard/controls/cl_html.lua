@@ -54,7 +54,7 @@ function PANEL:Init()
 
 		if !detected then
 
-			warning.Add( "Adobe Flash was undetected, press F2 for help" )
+			warning.Add( "Adobe Flash was not detected, press F2 for help" )
 
 			control.Add( KEY_F2, function( enabled, held )
 				if enabled and !held then

@@ -161,5 +161,6 @@ end
 			before it's send to the server
 -----------------------------------------------------------]]
 function GM:CreateMove( cmd )
+	if IsValid(LocalPlayer()) then return end
 	if ( player_manager.RunClass( LocalPlayer(), "CreateMove", cmd ) ) then return true end
 end

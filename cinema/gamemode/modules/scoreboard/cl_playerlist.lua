@@ -69,26 +69,29 @@ end
 function PLAYERLIST:Think()
 
 	if RealTime() > self.NextUpdate then
-		self:InvalidateLayout()
-		self.NextUpdate = RealTime() + 3.0
+
+		for ply in pairs( self.Players ) do 
+			if !IsValid( ply ) then
+				self:RemovePlayer( ply )
+			end
+		end
+		
+		for _, ply in pairs( player.GetAll() ) do 
+			if self.Players[ ply ] == nil then
+				self:AddPlayer( ply )
+			end
+		end
+
 		self.ServerName:Update()
+		self:InvalidateLayout()
+
+		self.NextUpdate = RealTime() + 3.0
+
 	end
 
 end
 
 function PLAYERLIST:PerformLayout()
-	
-	for ply in pairs( self.Players ) do 
-		if !IsValid( ply ) then
-			self:RemovePlayer( ply )
-		end
-	end
-	
-	for _, ply in pairs( player.GetAll() ) do 
-		if self.Players[ ply ] == nil then
-			self:AddPlayer( ply )
-		end
-	end
 
 	table.sort( self.PlayerList.Items, function( a, b ) 
 
@@ -105,7 +108,7 @@ function PLAYERLIST:PerformLayout()
 
 		panel:InvalidateLayout( true )
 		panel:UpdatePlayer()
-		panel:SetWide( self:GetWide())
+		panel:SetWide( self:GetWide() )
 
 		curY = curY + self.PlyHeight + 2
 

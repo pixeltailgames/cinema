@@ -123,6 +123,9 @@ if SERVER then
 			return false
 		end
 
+		-- Always admit admins
+		if ply:IsAdmin() then return true end
+
 		-- Only private theater owners can switch the lights
 		local Theater = ply:GetTheater()
 		if Theater and Theater:IsPrivate() and ent:GetClass() == "func_button" then
