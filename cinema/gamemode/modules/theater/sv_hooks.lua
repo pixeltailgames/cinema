@@ -103,20 +103,9 @@ local function PlayerChangeTheater( ply, loc, old )
 	local OldTheater = theater.GetByLocation( old )
 	local AllowedInTheater
 
-	-- Player entered theater
+	-- Do this first to preserve leaving/entering order
 	if Theater then
-
 		AllowedInTheater = hook.Run( "PrePlayerEnterTheater", ply, Theater )
-
-		if AllowedInTheater then
-
-			theater.PlayerJoin( ply, loc )
-			ply:SetInTheater(true)
-
-			hook.Run( "PostPlayerEnterTheater", ply, Theater )
-
-		end
-
 	end
 
 	-- Player left theater
@@ -126,11 +115,25 @@ local function PlayerChangeTheater( ply, loc, old )
 
 		theater.PlayerLeave( ply, old )
 
-		if !Theater then
+		if !Theater or !AllowedInTheater then
 			ply:SetInTheater(false)
 		end
 		
 		hook.Run( "PostPlayerExitTheater", ply, Theater )
+
+	end
+
+	-- Player entered theater
+	if Theater then 
+
+		if AllowedInTheater then
+
+			theater.PlayerJoin( ply, loc )
+			ply:SetInTheater(true)
+
+			hook.Run( "PostPlayerEnterTheater", ply, Theater )
+
+		end
 
 	end
 

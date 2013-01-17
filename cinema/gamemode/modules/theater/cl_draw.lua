@@ -85,6 +85,7 @@ end
 hook.Add( "PostDrawOpaqueRenderables", "DrawTheaterScreen", DrawActiveTheater )
 
 local LastTitle = ""
+local WasFullscreen = false
 local Title = ""
 function DrawVideoInfo( w, h, scale )
 
@@ -111,8 +112,9 @@ function DrawVideoInfo( w, h, scale )
 	surface.DrawRect(0, -2, w, 4)
 
 	-- Title
-	if LastTitle != Video:Title() then
+	if LastTitle != Video:Title() or WasFullscreen != theater.Fullscreen then
 		LastTitle = Video:Title()
+		WasFullscreen = theater.Fullscreen
 		Title = string.reduce( LastTitle, "VideoInfoMedium", w )
 	end
 	draw.TheaterText( Title, "VideoInfoMedium", 10, 10, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
