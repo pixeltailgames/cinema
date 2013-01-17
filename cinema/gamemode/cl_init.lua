@@ -11,7 +11,7 @@ if Location and !Location.GetLocations() then
 		"Press F1 to open the official map on workshop"
 	)
 
-	control.Set( KEY_F1, function( enabled, held )
+	control.Add( KEY_F1, function( enabled, held )
 		if enabled and !held then
 			steamworks.ViewFile( 119060917 )
 		end
