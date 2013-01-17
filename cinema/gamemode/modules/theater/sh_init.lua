@@ -94,6 +94,24 @@ function IsVideoTimed(type)
 	return Services[type] and Services[type].IsTimed or false
 end
 
+local function ServiceMatch( Theater, service, data )
+
+	-- Make sure this service can be used in the theater
+	if service.TheaterType and
+		(!Theater or Theater:GetFlags() != service.TheaterType) then
+		return
+	end
+
+	-- Check if url matches
+	if service:Match( data ) then
+
+		-- Get url info
+		return service:GetURLInfo( data )
+
+	end
+
+end
+
 local function GetURLInfo( url, Theater )
 
 	-- Parse url
@@ -111,28 +129,29 @@ local function GetURLInfo( url, Theater )
 	-- Iterate through each service to check if the url is a valid request
 	for _, service in pairs( Services ) do
 
-		-- Make sure this service can be used in the theater
-		if service.TheaterType and
-			(!Theater or Theater:GetFlags() != service.TheaterType) then
+		-- Skip this for now
+		if service:GetClass() == "url" then
 			continue
 		end
 
-		-- Check if url matches
-		if service:Match( data ) then
-
-			-- Get url info
-			info = service:GetURLInfo( data )
-
-			-- Check if url info is valid
-			if info then
-				info.Type = service:GetClass()
-				return info
-			end
-
+		info = ServiceMatch( Theater, service, data )
+		if istable(info) then
+			info.Type = service:GetClass()
+			return info
 		end
 
 	end
 	
+	-- Check for valid URL request
+	local URLService = Services["url"]
+	if URLService then
+		info = ServiceMatch( Theater, URLService, data )
+		if istable(info) then
+			info.Type = service:GetClass()
+			return info
+		end
+	end
+
 	return false
 
 end

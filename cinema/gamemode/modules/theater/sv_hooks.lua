@@ -36,6 +36,61 @@ function GM:PreVideoQueued( Video, Theater )
 end
 
 
+/*---------------------------------------------------------------------------
+	Name: PrePlayerEnterTheater
+	Desc: Called right before the player has joined the theater. Returning
+		false here will prevent the player from being added to the theater.
+		If you're going to be implementing VIP, use this hook and move the
+		player elsewhere.
+---------------------------------------------------------------------------*/
+function GM:PrePlayerEnterTheater( ply, Theater )
+
+/*
+	Example VIP Implementation:
+
+	if Theater:IsPrivileged() and !ply:IsVIP() then
+
+		-- Respawn the player
+		ply:Spawn()
+
+		-- Prevent the player from being added to the theater
+		-- and being sent videos, etc.
+		return false
+
+	end
+*/
+
+	return true
+
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PostPlayerEnterTheater
+	Desc: Called after the playing has entered a theater.
+---------------------------------------------------------------------------*/
+function GM:PostPlayerEnterTheater( ply, Theater )
+	
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PrePlayerExitTheater
+	Desc: Called before the player leaves a theater.
+---------------------------------------------------------------------------*/
+function GM:PrePlayerExitTheater( ply, Theater )
+
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PostPlayerExitTheater
+	Desc: Called after the player leaves a theater.
+---------------------------------------------------------------------------*/
+function GM:PostPlayerExitTheater( ply, Theater )
+
+end
+
 
 /*---------------------------------------------------------------------------
 	Name: PlayerChangeTheater
@@ -46,9 +101,28 @@ local function PlayerChangeTheater( ply, loc, old )
 
 	local Theater = theater.GetByLocation( loc )
 	local OldTheater = theater.GetByLocation( old )
-	
+	local AllowedInTheater
+
+	-- Player entered theater
+	if Theater then
+
+		AllowedInTheater = hook.Run( "PrePlayerEnterTheater", ply, Theater )
+
+		if AllowedInTheater then
+
+			theater.PlayerJoin( ply, loc )
+			ply:SetInTheater(true)
+
+			hook.Run( "PostPlayerEnterTheater", ply, Theater )
+
+		end
+
+	end
+
 	-- Player left theater
 	if OldTheater then
+
+		hook.Run( "PrePlayerExitTheater", ply, Theater )
 
 		theater.PlayerLeave( ply, old )
 
@@ -56,17 +130,7 @@ local function PlayerChangeTheater( ply, loc, old )
 			ply:SetInTheater(false)
 		end
 		
-		hook.Run( "OnPlayerExitTheater", ply, Theater )
-
-	end
-
-	-- Player entered theater
-	if Theater then
-
-		theater.PlayerJoin( ply, loc )
-		ply:SetInTheater(true)
-
-		hook.Run( "OnPlayerEnterTheater", ply, Theater )
+		hook.Run( "PostPlayerExitTheater", ply, Theater )
 
 	end
 

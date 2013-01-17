@@ -2,42 +2,56 @@
 include( 'shared.lua' )
 
 /*
-	Unsupported map notification
+	Unsupported Notifications
 */
+local MapFont = "MapFont"
+local p = 10
+local w, h
+local MapMessage
+surface.CreateFont( MapFont, { font = "Open Sans Condensed Light", size = 28, weight = 200 } )
+
 if Location and !Location.GetLocations() then
 
+	MapMessage = "The current map is unsupported by the Cinema gamemode"
+	local MapMessage2 = "Press F1 to open the official map on workshop"
+
 	hook.Add( "HUDPaint", "DrawMapMessage", function()
-		GAMEMODE:DrawUnsupportedMapNotice()
+		
+		surface.SetFont( MapFont )
+
+		w, h = surface.GetTextSize( MapMessage )
+		draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p, w + p*2, h + p*2, Color(0,0,0,200) )
+		draw.SimpleText( MapMessage, MapFont, ScrW() / 2, h, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		
+		w, h = surface.GetTextSize( MapMessage2 )
+		draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p + h*2, w + p*2, h + p*2, Color(0,0,0,200) )
+		draw.SimpleText( MapMessage2, MapFont, ScrW() / 2, h*3, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+
 	end )
 
 	control.Add( KEY_F1, function( enabled, held )
 		if enabled and !held then
-			steamworks.ViewFile( 118212331 )
+			steamworks.ViewFile( 119060917 )
 		end
 	end )
 
-end
+elseif system.IsOSX() then
 
-local MapMessage = "The current map is unsupported by the Cinema gamemode"
-local MapMessage2 = "Press F1 to open the official map on workshop"
-local MapFont = "MapFont"
-local p = 10
-local w, h
+	MapMessage = "Cinema is currently unsupported on Mac OS X, sorry :("
 
-surface.CreateFont( MapFont, { font = "Open Sans Condensed Light", size = 28, weight = 200 } )
+	hook.Add( "HUDPaint", "DrawMapMessage", function()
+		
+		surface.SetFont( MapFont )
 
-function GM:DrawUnsupportedMapNotice()
+		w, h = surface.GetTextSize( MapMessage )
+		draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p, w + p*2, h + p*2, Color(0,0,0,200) )
+		draw.SimpleText( MapMessage, MapFont, ScrW() / 2, h, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 
-	surface.SetFont( MapFont )
+	end )
 
-	w, h = surface.GetTextSize( MapMessage )
-	draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p, w + p*2, h + p*2, Color(0,0,0,200) )
-	draw.SimpleText( MapMessage, MapFont, ScrW() / 2, h, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-	
-	w, h = surface.GetTextSize( MapMessage2 )
-	draw.RoundedBox( 4, (ScrW()/2) - w/2 - p, h - p + h*2, w + p*2, h + p*2, Color(0,0,0,200) )
-	draw.SimpleText( MapMessage2, MapFont, ScrW() / 2, h*3, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-
+else
+	-- lua refresh fix
+	hook.Remove( "HUDPaint", "DrawMapMessage" )
 end
 
 /*

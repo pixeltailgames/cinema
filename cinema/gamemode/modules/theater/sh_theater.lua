@@ -369,6 +369,7 @@ if SERVER then
 
 		-- Check for duplicate requests
 		for _, vid in pairs(self:GetQueue()) do
+
 			if vid:Type() == info.Type and
 				vid:Data() == info.Data then
 
@@ -379,6 +380,7 @@ if SERVER then
 
 				return
 			end
+
 		end
 
 		local service = GetServiceByClass( info.Type )

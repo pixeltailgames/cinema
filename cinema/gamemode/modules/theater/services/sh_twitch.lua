@@ -104,7 +104,7 @@ function SERVICE:GetURLInfo( url )
 	local info = {}
 	info.Data = string.match( url.path, "/([%w_]+)$" )
 
-	if string.len(info.Data) < 1 then
+	if !info.Data or string.len(info.Data) < 1 then
 		return false
 	end
 
