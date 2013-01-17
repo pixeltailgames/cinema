@@ -6,9 +6,9 @@ if CLIENT then
 	CreateClientConVar( "cinema_volume", 25, true, false )
 	CreateClientConVar( "cinema_hd", 0, true, false )
 	CreateClientConVar( "cinema_resolution", 720, true, false )
-	CreateClientConVar( "cinema_scrollamount", 60, true, false )
-	CreateClientConVar( "cinema_hideplayers", 0, true, false )
-	CreateClientConVar( "cinema_hide_amount", 0.04, true, false )
+	local ScrollAmount = CreateClientConVar( "cinema_scrollamount", 60, true, false )
+	local HidePlayers = CreateClientConVar( "cinema_hideplayers", 0, true, false )
+	local HideAmount = CreateClientConVar( "cinema_hide_amount", 0.04, true, false )
 
 	cvars.AddChangeCallback( "cinema_resolution", function(cmd, old, new)
 		new = tonumber(new)
@@ -50,7 +50,7 @@ if CLIENT then
 		local panel = theater.ActivePanel()
 		if !ValidPanel(panel) then return end
 
-		local amount = GetConVar("cinema_scrollamount"):GetInt()
+		local amount = ScrollAmount:GetInt()
 		if bind == "invnext" then
 			panel:QueueJavascript("window.scrollBy(0,"..amount..")")
 		elseif bind == "invprev" then
@@ -64,9 +64,9 @@ if CLIENT then
 	hook.Add( "PrePlayerDraw", "TheaterHidePlayers", function( ply )
 
 		-- Local player in a theater and hide players enabled
-		if LocalPlayer():InTheater() and GetConVar("cinema_hideplayers"):GetBool() then
+		if HidePlayers:GetBool() and LocalPlayer():InTheater() then
 
-			amount = GetConVar("cinema_hide_amount"):GetFloat()
+			amount = HideAmount:GetFloat()
 
 			-- Hide model
 			render.SetBlend( amount )
@@ -75,13 +75,15 @@ if CLIENT then
 			if ply:GetRenderMode() != RENDERGROUP_TRANSLUCENT then
 				ply:SetRenderMode( RENDERGROUP_TRANSLUCENT )
 				ply:SetColor( Color(255,255,255, 255 * amount ) )
+				ply.Hidden = true
 			end
 			
 		else
 
 			-- Reset rendergroup
-			if ply:GetRenderMode() != 0 then
-				ply:SetRenderMode(0)
+			if ply.Hidden and ply:GetRenderMode() != RENDERMODE_NORMAL then
+				ply:SetRenderMode(RENDERMODE_NORMAL)
+				ply.Hidden = false
 			end
 
 		end
@@ -89,7 +91,10 @@ if CLIENT then
 	end )
 
 	hook.Add( "PostPlayerDraw", "TheaterHidePlayers", function( ply )
-		render.SetBlend(1.0) -- always show model
+		if ply.Hidden == false then
+			render.SetBlend(1.0) -- always show model
+			ply.Hidden = nil
+		end
 	end )
 
 else

@@ -124,16 +124,12 @@ local function PlayerChangeTheater( ply, loc, old )
 	end
 
 	-- Player entered theater
-	if Theater then 
+	if Theater and AllowedInTheater then
 
-		if AllowedInTheater then
+		theater.PlayerJoin( ply, loc )
+		ply:SetInTheater(true)
 
-			theater.PlayerJoin( ply, loc )
-			ply:SetInTheater(true)
-
-			hook.Run( "PostPlayerEnterTheater", ply, Theater )
-
-		end
+		hook.Run( "PostPlayerEnterTheater", ply, Theater )
 
 	end
 

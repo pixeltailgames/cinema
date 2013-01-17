@@ -28,6 +28,7 @@ end )
 
 module( "theater", package.seeall )
 
+LastPanel = nil
 LastVideo = nil -- Most recent video loaded
 Fullscreen = false
 
@@ -65,6 +66,7 @@ function RegisterPanel( Theater )
 	end)
 
 	Panels[ Theater:GetLocation() ] = panel
+	LastPanel = panel
 
 	RefreshPanel()
 
@@ -73,8 +75,7 @@ function RegisterPanel( Theater )
 end
 
 function ActivePanel()
-	if !LocalPlayer().GetLocation then return end
-	return Panels[ LocalPlayer():GetLocation() ]
+	return LastPanel
 end
 
 function RefreshPanel( reload )
@@ -90,10 +91,8 @@ function RefreshPanel( reload )
 	end
 
 	if reload then
-
 		RemovePanels()
 		LoadVideo( LastVideo )
-
 	end
 	
 	ResizePanel()
@@ -121,10 +120,17 @@ end
 
 function RemovePanels()
 
-	-- Remove active panel
 	local panel = ActivePanel()
 	if ValidPanel(panel) then
 		panel:Remove()
+	end
+
+	-- Remove panels from table
+	for loc, p in pairs(Panels) do
+		if ValidPanel(p) and loc != LocalPlayer():GetLocation() then
+			p:Remove()
+			Panels[loc] = nil
+		end	
 	end
 
 	-- Remove any remaining panels that might exist
@@ -135,6 +141,7 @@ function RemovePanels()
 	end
 
 	-- Remove any remaining panels that might exist
+	-- This doesn't always seem to work
 	for _, p in pairs( GetHUDPanel():GetChildren() ) do
 		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
 			p:Remove()
@@ -150,8 +157,9 @@ function RemovePanels()
 	LastTheater = nil
 
 end
-net.Receive( "PlayerLeaveTheater", RemovePanels )
-hook.Add( "PreGamemodeLoaded", "RemoveAllPanels", theater.RemovePanels )
+net.Receive( "PlayerLeaveTheater", theater.RemovePanels )
+hook.Add( "OnReloaded", "RemoveAllPanels", theater.RemovePanels )
+hook.Add( "OnGamemodeLoaded", "RemoveAllPanels2", theater.RemovePanels )
 
 function CurrentVideo()
 	return LastVideo
@@ -164,10 +172,14 @@ function ToggleFullscreen()
 
 	-- Toggle fullscreen
 	if Fullscreen then
+		-- Reparent due to hud parented panels sometimes
+		-- being inaccessible from Lua
+		panel:SetParent(vgui.GetWorldPanel())
 		RefreshPanel()
 	else
 		panel:SetSize(ScrW(), ScrH())
 		panel:ParentToHUD() -- Render before the HUD
+		-- panel:SetParent(GetHUDPanel())
 	end
 
 	Fullscreen = !Fullscreen
