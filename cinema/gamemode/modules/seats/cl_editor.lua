@@ -20,6 +20,9 @@
 
 */
 
+-- Only change this if you're a developer!
+if true then return end
+
 ChairModels = {
 	["Couch 01a"] = "models/props_interiors/furniture_couch01a.mdl",
 	["Couch 02a"] = "models/props_interiors/furniture_couch02a.mdl",

@@ -49,6 +49,23 @@ function PANEL:Init()
 			self:OpeningURL( href )
 		end
 	end )
+
+	self:AddFunction( "gmod", "detectFlash", function( detected )
+
+		if !detected then
+
+			warning.Add( "Adobe Flash was undetected, press F2 for help" )
+
+			control.Add( KEY_F2, function( enabled, held )
+				if enabled and !held then
+					SetClipboardText( "http://get.adobe.com/flashplayer/otherversions/" )
+					gui.OpenURL( "http://pixeltailgames.com/cinema/flash.php" )
+				end
+			end )
+
+		end
+
+	end )
 	
 	local oldFunc = self.OpenURL
 	self.OpenURL = function( panel, url, history )

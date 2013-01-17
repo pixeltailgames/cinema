@@ -32,8 +32,10 @@ function QUEUE:Init()
 	RequestButton:SetText( "Request Video" )
 	RequestButton.DoClick = function(self)
 		local RequestFrame = vgui.Create( "VideoRequestFrame" )
-		RequestFrame:Center()
-		RequestFrame:MakePopup()
+		if IsValid(RequestFrame) then
+			RequestFrame:Center()
+			RequestFrame:MakePopup()
+		end
 	end
 	self.Options:AddItem(RequestButton)
 
