@@ -20,8 +20,10 @@ Cinema is a gamemode for Garry's Mod 13 which features synchronized video playba
 * `cinema_allow_reset` `0/1` reset the theater after all players have left
 * `cinema_allow_voice` `0/1` allow theater viewers to talk amongst themselves
 * `cinema_allow_3dvoice` `0/1` use 3D voice chat
+* `cinema_video_duration_max` `sec` maximum video seconds duration for requests in public theaters
 
 
 #### Links ####
 * [Facepunch Thread](http://www.facepunch.com/showthread.php?t=1237719)
 * [Steam Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=118824086)
+* [Official Website] (http://www.pixeltailgames.com/cinema)
