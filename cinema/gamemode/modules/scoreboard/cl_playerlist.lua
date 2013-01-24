@@ -164,12 +164,7 @@ end
 function PLAYER:UpdatePlayer()
 
 	self.Name:SetText( self.Player:Name() )
-
-	if self.Player:IsAdmin() then
-		self.Name:SetColor( Color(173, 41, 35, 255) )
-	end
-
-	self.Location:SetText( string.upper( self.Player:GetLocationName() or "Location" ) )
+	self.Location:SetText( string.upper( self.Player:GetLocationName() or "Unknown" ) )
 	self.Ping:Update()
 
 end
@@ -209,17 +204,26 @@ function PLAYER:PerformLayout()
 	
 end
 
-local Icon = Material( "theater/pixeltailicon.png" )
+local PixeltailIcon = Material( "theater/pixeltailicon.png" )
+local AdminIcon = Material( "theater/adminicon.png" )
 
 function PLAYER:Paint( w, h )
 
 	surface.SetDrawColor( 38, 41, 49, 255 )
 	surface.DrawRect( 0, 0, self:GetSize() )
 
+	surface.SetDrawColor( 255, 255, 255, 255 )
+
 	if self.Player.IsPixelTail && self.Player:IsPixelTail() then
-		surface.SetDrawColor( 255, 255, 255, 255 )
-		surface.SetMaterial( Icon )
+
+		surface.SetMaterial( PixeltailIcon )
 		surface.DrawTexturedRect( self.Name.x + self.Name:GetWide() + 5, self.Name.y + 3, 40, 16 )
+	
+	elseif self.Player:IsAdmin() then
+		
+		surface.SetMaterial( AdminIcon )
+		surface.DrawTexturedRect( self.Name.x + self.Name:GetWide() + 5, self.Name.y + 3, 40, 16 )
+
 	end
 	
 end
