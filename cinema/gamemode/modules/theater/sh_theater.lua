@@ -633,12 +633,6 @@ if SERVER then
 
 		-- Skip the current video if the voteskip requirement is met
 		if self:NumVoteSkips() >= self:NumRequiredVoteSkips() then
-			local msg = {
-				theater.ColDefault,
-				"The current video has been voteskipped."
-			}
-			self:AnnounceToPlayers( msg )
-			
 			self:SkipVideo()
 		end
 

@@ -6,8 +6,8 @@ hook.Add( "OnPlayerChat", "TheaterChatFilter", function( ply, text, teamOnly, is
 	local PlayerInTheater = ply:InTheater()
 
 	-- One player in theater
-	if (LocalInTheater and !PlayerInTheater) or
-		(!LocalInTheater and PlayerInTheater) and
+	if ( (LocalInTheater and !PlayerInTheater) or
+		(!LocalInTheater and PlayerInTheater) ) and
 		LocalPlayer():GetLocation() != ply:GetLocation() then
 
 		local msg = string.format("%s: %s", ply:Nick(), text)

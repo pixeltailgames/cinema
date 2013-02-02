@@ -95,8 +95,7 @@ SERVICE.IsTimed 		= false
 SERVICE.TheaterType 	= THEATER_PRIVATE
 
 function SERVICE:Match( url )
-	return string.match( url.host, "justin.tv" ) or
-			string.match( url.host, "twitch.tv" )
+	return string.match( url.host, "twitch.tv" )
 end
 
 function SERVICE:GetURLInfo( url )
