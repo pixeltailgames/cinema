@@ -128,7 +128,21 @@ local function PlayerChangeTheater( ply, loc, old )
 
 		theater.PlayerJoin( ply, loc )
 		ply:SetInTheater(true)
-
+		
+		local Video = Theater._Video
+		
+		if Video and Video:GetOwnerName() != "" then
+			Theater:AnnounceToPlayer(ply, {
+				ColDefault,
+				"Current video requested by ",
+				ColHighlight,
+				Video:GetOwnerName(),
+				" (" .. Video:GetOwnerSteamID() .. ")",
+				ColDefault,
+				"."
+			})
+		end
+		
 		hook.Run( "PostPlayerEnterTheater", ply, Theater )
 
 	end
