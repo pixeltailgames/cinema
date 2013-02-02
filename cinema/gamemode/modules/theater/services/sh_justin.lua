@@ -5,13 +5,10 @@ SERVICE.IsTimed 		= false
 SERVICE.TheaterType 	= THEATER_PRIVATE
 
 function SERVICE:Match( url )
-	print(url)
 	return string.match( url.host, "justin.tv" )
 end
 
 function SERVICE:GetURLInfo( url )
-
-	print(url)
 
 	local info = {}
 	info.Data = string.match( url.path, "/([%w_]+)$" )
