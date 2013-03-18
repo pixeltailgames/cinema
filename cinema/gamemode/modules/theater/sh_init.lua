@@ -141,13 +141,13 @@ local function GetURLInfo( url, Theater )
 		end
 
 	end
-	
+
 	-- Check for valid URL request
 	local URLService = Services["url"]
 	if URLService then
 		info = ServiceMatch( Theater, URLService, data )
 		if istable(info) then
-			info.Type = service:GetClass()
+			info.Type = URLService:GetClass()
 			return info
 		end
 	end
