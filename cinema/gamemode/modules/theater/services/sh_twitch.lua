@@ -130,7 +130,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 		response = response.stream
 
 		local info = {}
-		info.thumbnail = response.preview
+		info.thumbnail = response.preview.medium
 
 		-- Setup title according to the available data
 		if response.channel and response.channel.status then
