@@ -12,7 +12,7 @@ end
 function SERVICE:GetURLInfo( url )
 
 	local info = {}
-	info.Data = string.match( url.path, "[a-zA-Z0-9_]+$" )
+	info.Data = string.match( url.path, "^/(%w+)$" )
 	
 	if !info.Data or string.len(info.Data) < 1 then
 		return false
