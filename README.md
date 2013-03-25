@@ -5,7 +5,7 @@ Cinema is a gamemode for Garry's Mod 13 which features synchronized video playba
 
 #### Features ####
 * Synchronized video playback
-* Support for YouTube, Vimeo, Justin.TV, Twitch.TV, and Blip
+* Support for YouTube, Vimeo, Justin.TV, Twitch.TV, Livestream, and Blip
 * Intuitive video request system
 * Persistant video history
 * Private theater owner controls

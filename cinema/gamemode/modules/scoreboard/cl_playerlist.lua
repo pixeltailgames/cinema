@@ -163,6 +163,17 @@ end
 
 function PLAYER:UpdatePlayer()
 
+	if !IsValid(self.Player) then
+
+		local parent = self:GetParent()
+		if ValidPanel(parent) and parent.RemovePlayer then
+			parent:RemovePlayer(self.Player)
+		end
+
+		return
+
+	end
+
 	self.Name:SetText( self.Player:Name() )
 	self.Location:SetText( string.upper( self.Player:GetLocationName() or "Unknown" ) )
 	self.Ping:Update()
