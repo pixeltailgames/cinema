@@ -29,12 +29,10 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		local response = util.JSONToTable(body)
 		
 		if length == 0 then
-			--print("HTTP request failed (length = 0)")
             return onFailure("HTTP request failed (length = 0)")
         end
 		
 		if response.isLive == false then
-			--print("Stream request failed (isLive = false)")
 			return onFailure("Stream request failed (isLive = false)")
 		end
 		
@@ -55,10 +53,6 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		end
 		
     end
-	
-	local onFailure = function()
-		--print("Livestream Fetching Failed!")
-	end
 	
 	local url = string.format( "http://x%sx.channel-api.livestream-api.com/2.0/info.json", data:gsub("_", "-") )
 	self:Fetch( url, onReceive, onFailure )
