@@ -96,8 +96,8 @@ function meta:SetProperties( ent )
 	if !IsValid( ent ) then return end
 
 	ent.GetPlayerColor = function() return self:GetPlayerColor() end
-	ent:SetBodygroup( self:GetBodygroup() )
 	ent:SetMaterial( self:GetMaterial() )
 	ent:SetSkin( self:GetSkin() )
+	ent:SetBodygroup( 1, self:GetBodygroup(1) )
 
 end
