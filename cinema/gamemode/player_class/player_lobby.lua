@@ -33,21 +33,17 @@ PLAYER.AvoidPlayers			= false		-- Automatically swerves around other players
 -- Set up the network table accessors
 --
 function PLAYER:SetupDataTables()
-	self.Player:DTVar("Int", 0, "Location")
-	self.Player:DTVar("Bool", 0, "InTheater")
-end
-
---
--- Called when the class object is created (shared)
---
-function PLAYER:Init()
-
+	BaseClass.SetupDataTables( self )
+	self.Player:NetworkVar( "Int", 0, "Location" )
+	self.Player:NetworkVar( "Bool", 0, "InTheater" )
 end
 
 --
 -- Called serverside only when the player spawns
 --
 function PLAYER:Spawn()
+
+	BaseClass.Spawn( self )
 
 	local col = self.Player:GetInfo( "cl_playercolor" )
 	self.Player:SetPlayerColor( Vector( col ) )
@@ -63,11 +59,6 @@ end
 function PLAYER:Loadout()
 
 	self.Player:RemoveAllAmmo()
-
-	if game.SinglePlayer() then
-		-- self.Player:Give( "weapon_physgun" )
-	end
-
 	self.Player:SwitchToDefaultWeapon()
 
 end
@@ -101,10 +92,5 @@ function PLAYER:CalcView( view )
 
 end
 
--- Shared
-function PLAYER:StartMove( cmd, mv ) end	-- Copies from the user command to the move
-function PLAYER:Move( mv ) end				-- Runs the move (can run multiple times for the same client)
-function PLAYER:FinishMove( mv ) end		-- Copy the results of the move back to the Player
 
-
-player_manager.RegisterClass( "player_lobby", PLAYER, nil )
+player_manager.RegisterClass( "player_lobby", PLAYER, "player_default" )

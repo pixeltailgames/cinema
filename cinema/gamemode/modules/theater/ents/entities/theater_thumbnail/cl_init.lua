@@ -99,11 +99,11 @@ local name, title = nil
 function ENT:DrawText()
 
 	-- Draw name
-	name = (self:TheaterName() == "") and "[INVALID]" or self:TheaterName()
+	name = (self:GetTheaterName() == "") and "[INVALID]" or self:GetTheaterName()
 	self:DrawSubtitle( name, 0 )
 
 	-- Draw title
-	title = (self:Title() == "") and "No video playing" or self:Title()
+	title = (self:GetTitle() == "") and "No video playing" or self:GetTitle()
 	self:DrawSubtitle( title, 303 )
 
 end
@@ -113,7 +113,7 @@ local DefaultThumbnail = Material( "theater/static.vmt" )
 function ENT:DrawThumbnail()
 
 	-- Thumbnail isn't set yet
-	if self:ThumbnailURL() == "" then
+	if self:GetThumbnail() == "" then
 		
 		surface.SetDrawColor( 80, 80, 80 )
 		surface.SetMaterial( DefaultThumbnail )
@@ -124,13 +124,13 @@ function ENT:DrawThumbnail()
 	else -- Thumbnail is valid
 		
 		-- URL has changed
-		if (!self.LastURL or self.LastURL != self:ThumbnailURL()) then
+		if (!self.LastURL or self.LastURL != self:GetThumbnail()) then
 
 			if ValidPanel( self.HTML ) then
 				self.HTML:Remove()
 			end
 
-			self.LastURL = self:ThumbnailURL()
+			self.LastURL = self:GetThumbnail()
 			self.ThumbMat = nil
 
 		elseif self.LastURL and !self.ThumbMat then
@@ -144,7 +144,7 @@ function ENT:DrawThumbnail()
 				self.HTML:SetScrollbars(false)
 				self.HTML:SetKeyBoardInputEnabled(false)
 				self.HTML:SetMouseInputEnabled(false)
-				self.HTML:OpenURL( self:ThumbnailURL() )
+				self.HTML:OpenURL( self:GetThumbnail() )
 			
 			elseif !self.HTML:IsLoading() and !self.JSDelay then
 

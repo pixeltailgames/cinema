@@ -21,15 +21,3 @@ function ENT:Initialize()
 	self:DrawShadow( false )
 
 end
-
-function ENT:SetTheaterName( str )
-	self:SetDTString(0, str)
-end
-
-function ENT:SetTitle( str )
-	self:SetDTString(1, str)
-end
-
-function ENT:SetThumbnail( url )
-	self:SetDTString(2, url)
-end

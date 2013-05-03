@@ -1,4 +1,4 @@
-CreateConVar( "cinema_url", "http://pixeltailgames.github.com/cinema/", FCVAR_REPLICATED, "Cinema url to load on theater screens." )
+CreateConVar( "cinema_url", "http://pixeltailgames.github.io/cinema/", FCVAR_REPLICATED, "Cinema url to load on theater screens." )
 
 if CLIENT then
 
