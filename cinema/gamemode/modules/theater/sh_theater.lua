@@ -5,10 +5,10 @@ THEATER = {}
 function THEATER:Init( locId, info )
 
 	local o = {}
-	
+
 	setmetatable( o, self )
 	self.__index = self
-	
+
 	o.Id = locId -- Location ID
 	o._Name = info.Name or "Theater"
 	o._Flags = info.Flags or THEATER_NONE
@@ -245,7 +245,7 @@ if SERVER then
 		Thumbnail Entity
 	*/
 	function THEATER:SetupThumbnailEntity( ent )
-		
+
 		if !IsValid( self._ThumbEnt ) then
 
 			if IsValid( ent ) then
@@ -300,7 +300,7 @@ if SERVER then
 	function THEATER:NextVideo()
 
 		self:ClearSkipVotes()
-		
+
 		if !self:IsQueueEmpty() then
 
 			local key
@@ -313,23 +313,30 @@ if SERVER then
 					key = k
 				end
 			end
-			table.remove(self._Queue, key)
 
-			self:SetVideo( Video )
+			if hook.Run( "PrePlayVideo", Video, self ) != false then
 
-			if Video:GetOwnerName() != "" then
-				self:AnnounceToPlayers( {
-					ColDefault,
-					"Current video requested by ",
-					ColHighlight,
-					Video:GetOwnerName(),
-					" (" .. Video:GetOwnerSteamID() .. ")",
-					ColDefault,
-					"."
-				} )
+				table.remove(self._Queue, key)
+
+				self:SetVideo( Video )
+
+				if Video:GetOwnerName() != "" then
+					self:AnnounceToPlayers( {
+						ColDefault,
+						"Current video requested by ",
+						ColHighlight,
+						Video:GetOwnerName(),
+						" (" .. Video:GetOwnerSteamID() .. ")",
+						ColDefault,
+						"."
+					} )
+				end
+
+				self._Finished = false
+
+				hook.Run( "PostPlayVideo", Video, self )
+
 			end
-
-			self._Finished = false
 
 		else
 
@@ -398,7 +405,7 @@ if SERVER then
 
 		-- Create video object and check if the page is valid
 		local vid = VIDEO:Init(info, ply)
-		vid:RequestInfo( function( success ) 
+		vid:RequestInfo( function( success )
 
 			-- Failed to grab video info, etc.
 			if !success then
@@ -436,7 +443,7 @@ if SERVER then
 		if IsValid(ply) then
 			ply.LastVideoRequest = CurTime()
 		end
-		
+
 	end
 
 	function THEATER:Seek( seconds )
@@ -466,7 +473,7 @@ if SERVER then
 		end
 
 		-- Delay for networking latency
-		timer.Simple( 0.1, function() 
+		timer.Simple( 0.1, function()
 
 			if !self then return end
 
@@ -490,7 +497,7 @@ if SERVER then
 			net.Send(ply or self.Players) -- sent to specific player if specified
 
 		end )
-		
+
 	end
 
 	/*
@@ -542,7 +549,7 @@ if SERVER then
 				if (vid:GetOwner() == ply) or
 					(self:GetOwner() == ply) or -- private theater
 					ply:IsAdmin() then
-					
+
 					table.remove(self._Queue, k)
 
 				end
@@ -590,7 +597,7 @@ if SERVER then
 			if !IsValid(ply) then
 				table.remove(k)
 			end
-		end	
+		end
 	end
 
 	function THEATER:HasPlayerVotedToSkip( ply )

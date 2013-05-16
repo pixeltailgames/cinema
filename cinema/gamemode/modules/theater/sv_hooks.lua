@@ -16,7 +16,7 @@ function GM:PreVideoQueued( Video, Theater )
 
 	-- Public theaters should be slightly more managed
 	if Theater:IsReplicated() then
-		
+
 		-- Limit videos to a specified maximum duration
 		local MaxDuration = GetConVarNumber("cinema_video_duration_max")
 		if Video:Duration() > MaxDuration then
@@ -30,8 +30,37 @@ function GM:PreVideoQueued( Video, Theater )
 
 	end
 
-
 	return true
+
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PostVideoQueued
+	Desc: Called after a video has been queued.
+---------------------------------------------------------------------------*/
+function GM:PostVideoQueued( Video, Theater )
+
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PrePlayVideo
+	Desc: Called prior to a video being played. Return false in a hook
+		to prevent the video from playing. However, it will still remain
+		in the video queue. If a video is suspended, the theater will not
+		continue to play any videos unless otherwise set to.
+---------------------------------------------------------------------------*/
+function GM:PrePlayVideo( Video, Theater )
+	return true
+end
+
+
+/*---------------------------------------------------------------------------
+	Name: PostPlayVideo
+	Desc: Called after a video has been set to play.
+---------------------------------------------------------------------------*/
+function GM:PostPlayVideo( Video, Theater )
 
 end
 
@@ -70,7 +99,7 @@ end
 	Desc: Called after the playing has entered a theater.
 ---------------------------------------------------------------------------*/
 function GM:PostPlayerEnterTheater( ply, Theater )
-	
+
 end
 
 
@@ -118,7 +147,7 @@ local function PlayerChangeTheater( ply, loc, old )
 		if !Theater or !AllowedInTheater then
 			ply:SetInTheater(false)
 		end
-		
+
 		hook.Run( "PostPlayerExitTheater", ply, Theater )
 
 	end
