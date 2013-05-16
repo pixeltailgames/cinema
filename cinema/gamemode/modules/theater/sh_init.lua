@@ -97,8 +97,7 @@ end
 local function ServiceMatch( Theater, service, data )
 
 	-- Make sure this service can be used in the theater
-	if service.TheaterType and
-		(!Theater or Theater:GetFlags() != service.TheaterType) then
+	if service.TheaterType and (!Theater or Theater:GetFlags() != service.TheaterType) then
 		return
 	end
 
@@ -129,8 +128,8 @@ local function GetURLInfo( url, Theater )
 	-- Iterate through each service to check if the url is a valid request
 	for _, service in pairs( Services ) do
 
-		-- Skip this for now
-		if service:GetClass() == "url" then
+		-- Ignore certain services
+		if service.Hidden then
 			continue
 		end
 
@@ -143,7 +142,7 @@ local function GetURLInfo( url, Theater )
 	end
 
 	-- Check for valid URL request
-	local URLService = Services["url"]
+	local URLService = Services.url
 	if URLService then
 		info = ServiceMatch( Theater, URLService, data )
 		if istable(info) then

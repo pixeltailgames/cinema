@@ -106,7 +106,7 @@ end
 /*
 	Video
 */
-function THEATER:SetVideo( Video )
+function THEATER:SetVideo( Video, PreventDefault )
 
 	if !Video then return end
 
@@ -119,6 +119,10 @@ function THEATER:SetVideo( Video )
 		if IsValid( self._ThumbEnt ) then
 			self._ThumbEnt:SetTitle( Video:Title() )
 			self._ThumbEnt:SetThumbnail( Video:Thumbnail() )
+		end
+
+		if !PreventDefault then
+			self._Finished = false
 		end
 
 		self:SendVideo()
@@ -292,8 +296,7 @@ if SERVER then
 			Title 		= "No video playing"
 		}
 
-		self:SetVideo( VIDEO:Init(info) )
-		self:SendVideo()
+		self:SetVideo( VIDEO:Init(info), true )
 
 	end
 
@@ -331,8 +334,6 @@ if SERVER then
 						"."
 					} )
 				end
-
-				self._Finished = false
 
 				hook.Run( "PostPlayVideo", Video, self )
 

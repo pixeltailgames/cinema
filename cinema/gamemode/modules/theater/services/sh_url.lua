@@ -3,6 +3,7 @@ local SERVICE = {}
 SERVICE.Name 			= "URL"
 SERVICE.IsTimed 		= false
 SERVICE.TheaterType 	= THEATER_PRIVATE
+SERVICE.Hidden 			= true
 
 SERVICE.ValidExtensions = { '', 'html', 'htm', 'xhtml', 'dhtml', 'php', 'asp', 'aspx' }
 
