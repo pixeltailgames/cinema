@@ -66,7 +66,7 @@ hook.Add( "PostDrawTranslucentRenderables", "CinemaDebugLocations", function ()
 
 	if ( !DebugEnabled:GetBool() ) then return end
 	
-	for k, v in pairs( GetLocations() ) do
+	for k, v in pairs( GetLocations() or {} ) do
 	
 		local center = ( v.Min + v.Max ) / 2
 		
