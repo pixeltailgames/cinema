@@ -381,7 +381,7 @@ function LoadVideo( Video )
 	panel:QueueJavascript( str )
 
 	-- Let the webpage handle loading a video
-	str = string.format( "theater.loadVideo( '%s', '%s', %s );", Video:Type(), Video:Data():Replace("'", "\\'"), startTime )
+	str = string.format( "theater.loadVideo( '%s', '%s', %s );", Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
 	panel:QueueJavascript( str )
 
 	-- Keep previous video for refreshing the theater
