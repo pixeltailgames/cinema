@@ -6,12 +6,9 @@
 
 */
 
--- DON'T CHANGE THIS UNLESS YOU'RE A DEVELOPER!
-if true then return end
-
 module( "Location", package.seeall )
 
-DebugEnabled = CreateClientConVar( "phx_debug_locations", "0", false, false )
+DebugEnabled = CreateClientConVar( "cinema_debug_locations", "0", false, false )
 
 DebugLocStart = nil
 DebugLocEnd = nil
@@ -24,34 +21,26 @@ FootOffset = Vector( 0, 0, -5 )
 	Location editing utilities
 	
 	These two concommands are designed to simplify location creation.
-	Simply run phx_loc_start, move to create a desired box, then run phx_loc_end and grab the lua printed to the console.
+	Simply run cinema_loc_start, move to create a desired box, then run cinema_loc_end and grab the lua printed to the console.
 	This requires you to be an admin!
 */
 
-concommand.Add( "phx_loc_start", function( ply, cmd, args )
+concommand.Add( "cinema_loc_start", function( ply, cmd, args )
 	if !ply:IsAdmin() then return end
 	
 	DebugLocStart = LocalPlayer():GetPos() + FootOffset
 	
-	hook.Add( "PostDrawTranslucentRenderables", "PhxDebugLocation", function()
+	hook.Add( "PostDrawTranslucentRenderables", "CinemaDebugLocation", function()
 		Debug3D.DrawBox( DebugLocStart, LocalPlayer():GetPos() )
 	end	)
 	
 end )
 
-concommand.Add( "phx_loc_tele", function ( ply, cmd, args )
-	if !ply:IsAdmin() then return end
-	
-	local pos = LocalPlayer():GetPos()
-	MsgN( "Vector( " .. pos.x .. ", " .. pos.y .. ", " .. pos.z .. " )," )
-	
-end )
-
-concommand.Add( "phx_loc_end", function ( ply, cmd, args )
+concommand.Add( "cinema_loc_end", function ( ply, cmd, args )
 	if !ply:IsAdmin() then return end
 	
 	DebugLocEnd = LocalPlayer():GetPos() + FootOffset
-	hook.Remove( "PostDrawTranslucentRenderables", "PhxDebugLocation" )
+	hook.Remove( "PostDrawTranslucentRenderables", "CinemaDebugLocation" )
 	
 	local min = DebugLocStart
 	local max = DebugLocEnd
@@ -73,7 +62,7 @@ concommand.Add( "phx_loc_end", function ( ply, cmd, args )
 end )
 
 // location visualizer for debugging
-hook.Add( "PostDrawTranslucentRenderables", "PhxDebugLocations", function ()
+hook.Add( "PostDrawTranslucentRenderables", "CinemaDebugLocations", function ()
 
 	if ( !DebugEnabled:GetBool() ) then return end
 	
