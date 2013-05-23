@@ -68,7 +68,7 @@ end )
 concommand.Add( "cinema_loc_vector", function ( ply, cmd, args )
 	if !ply:IsAdmin() then return end
 	local pos = LocalPlayer():GetPos()
-	local posstr = "Vector( " .. pos.x .. ", " .. pos.y .. ", " .. pos.z .. " ),"
+	local posstr = "Vector( " .. math.Round(pos.x) .. ", " .. math.Round(pos.y) .. ", " .. math.Round(pos.z) .. " ),"
 	SetClipboardText( posstr )
 	MsgN( posstr )
 	MsgN( "The above position has been copied to your clipboard." )
