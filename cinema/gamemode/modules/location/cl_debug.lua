@@ -53,12 +53,25 @@ concommand.Add( "cinema_loc_end", function ( ply, cmd, args )
 	
 	OrderVectors( min, max )
 	
-	MsgN( "[ \"Name\" ] =" )
-	MsgN( "{" )
-	MsgN( "\tMin = Vector( " .. min.x .. ", " .. min.y .. ", " .. min.z .. " )," )
-	MsgN( "\tMax = Vector( " .. max.x .. ", " .. max.y .. ", " .. max.z .. " )," )
-	MsgN( "}," )
+	local locstr = "[ \"Name\" ] =\n"
+	locstr = locstr .. "{\n"
+	locstr = locstr .. "\tMin = Vector( " .. min.x .. ", " .. min.y .. ", " .. min.z .. " ),\n"
+	locstr = locstr .. "\tMax = Vector( " .. max.x .. ", " .. max.y .. ", " .. max.z .. " ),\n"
+	locstr = locstr .. "},\n"
+
+	SetClipboardText( locstr )
+	MsgN( locstr )
+	MsgN( "The above location has been copied to your clipboard." )
 	
+end )
+
+concommand.Add( "cinema_loc_vector", function ( ply, cmd, args )
+	if !ply:IsAdmin() then return end
+	local pos = LocalPlayer():GetPos()
+	local posstr = "Vector( " .. pos.x .. ", " .. pos.y .. ", " .. pos.z .. " ),"
+	SetClipboardText( posstr )
+	MsgN( posstr )
+	MsgN( "The above position has been copied to your clipboard." )
 end )
 
 // location visualizer for debugging
@@ -71,7 +84,7 @@ hook.Add( "PostDrawTranslucentRenderables", "CinemaDebugLocations", function ()
 		local center = ( v.Min + v.Max ) / 2
 		
 		Debug3D.DrawBox( v.Min, v.Max )
-		Debug3D.DrawText( center, k, "HUDNumber5" )
+		Debug3D.DrawText( center, k, "VideoInfoSmall" )
 		
 		if ( !v.Teleports ) then continue end
 		
@@ -84,7 +97,7 @@ hook.Add( "PostDrawTranslucentRenderables", "CinemaDebugLocations", function ()
 			local text = k .. "\nTeleport"
 			
 			Debug3D.DrawBox( min, max, Color( 0, 255, 0, 255 ) )
-			Debug3D.DrawText( center, text, "HUDNumber5", Color( 50, 255, 50, 255 ), 0.25 )
+			Debug3D.DrawText( center, text, "VideoInfoSmall", Color( 50, 255, 50, 255 ), 0.25 )
 			
 		end
 	end
