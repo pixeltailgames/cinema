@@ -4,36 +4,41 @@ include( 'shared.lua' )
 /*
 	Unsupported Notifications
 */
-if Location and !Location.GetLocations() then
 
-	warning.Set(
-		"The current map is unsupported by the Cinema gamemode",
-		"Press F1 to open the official map on workshop"
-	)
+hook.Add( "InitPostEntity", "CheckMapSupport", function()
 
-	control.Add( KEY_F1, function( enabled, held )
-		if enabled and !held then
-			steamworks.ViewFile( 119060917 )
-		end
-	end )
+	if Location and !Location.GetLocations() then
 
-elseif system.IsOSX() then
+		warning.Set(
+			"The current map is unsupported by the Cinema gamemode",
+			"Press F1 to open the official map on workshop"
+		)
 
-	warning.Set(
-		"Mac OS X users may experience blank screens in Cinema",
-		"Press F1 to view troubleshooting tips and to remove this message"
-	)
+		control.Add( KEY_F1, function( enabled, held )
+			if enabled and !held then
+				steamworks.ViewFile( 119060917 )
+			end
+		end )
 
-	control.Add( KEY_F1, function( enabled, held )
-		if enabled and !held then
-			gui.OpenURL( "http://pixeltailgames.com/cinema/help.php" )
-			warning.Clear()
-		end
-	end )
+	elseif system.IsOSX() then
 
-else
-	warning.Clear()
-end
+		warning.Set(
+			"Mac OS X users may experience blank screens in Cinema",
+			"Press F1 to view troubleshooting tips and to remove this message"
+		)
+
+		control.Add( KEY_F1, function( enabled, held )
+			if enabled and !held then
+				gui.OpenURL( "http://pixeltailgames.com/cinema/help.php" )
+				warning.Clear()
+			end
+		end )
+
+	else
+		warning.Clear()
+	end
+
+end )
 
 /*
 	HUD Elements to hide
