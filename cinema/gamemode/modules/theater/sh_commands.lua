@@ -9,7 +9,7 @@ if CLIENT then
 	local MuteNoFocus = CreateClientConVar( "cinema_mute_nofocus", 720, true, false )
 	local ScrollAmount = CreateClientConVar( "cinema_scrollamount", 60, true, false )
 	local HidePlayers = CreateClientConVar( "cinema_hideplayers", 0, true, false )
-	local HideAmount = CreateClientConVar( "cinema_hide_amount", 0.04, true, false )
+	local HideAmount = CreateClientConVar( "cinema_hide_amount", 0.11, true, false )
 
 	cvars.AddChangeCallback( "cinema_resolution", function(cmd, old, new)
 		new = tonumber(new)
@@ -62,6 +62,8 @@ if CLIENT then
 
 	-- Hide Players
 	local amount = 0
+	local undomodelblend = false
+	local matWhite = Material("models/debug/debugwhite")
 	hook.Add( "PrePlayerDraw", "TheaterHidePlayers", function( ply )
 
 		-- Local player in a theater and hide players enabled
@@ -71,30 +73,21 @@ if CLIENT then
 
 			-- Hide model
 			render.SetBlend( amount )
+			render.ModelMaterialOverride(matWhite)
+			render.SetColorModulation(0.2, 0.2, 0.2)
 
-			-- Hide Player Teeth/Eyes
-			if ply:GetRenderMode() != RENDERGROUP_TRANSLUCENT then
-				ply:SetRenderMode( RENDERGROUP_TRANSLUCENT )
-				ply:SetColor( Color(255,255,255, 255 * amount ) )
-				ply.Hidden = true
-			end
-			
-		else
-
-			-- Reset rendergroup
-			if ply.Hidden and ply:GetRenderMode() != RENDERMODE_NORMAL then
-				ply:SetRenderMode(RENDERMODE_NORMAL)
-				ply.Hidden = false
-			end
+			undomodelblend = true
 
 		end
 
 	end )
 
 	hook.Add( "PostPlayerDraw", "TheaterHidePlayers", function( ply )
-		if ply.Hidden == false then
+		if undomodelblend then
 			render.SetBlend(1.0) -- always show model
-			ply.Hidden = nil
+			render.ModelMaterialOverride()
+			render.SetColorModulation(1, 1, 1)
+			undomodelblend = nil
 		end
 	end )
 
