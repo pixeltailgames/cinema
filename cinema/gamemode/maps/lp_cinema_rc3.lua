@@ -201,3 +201,17 @@ Location.Add( "lp_cinema_rc3",
 	},
 
 } )
+
+if CLIENT then
+	
+	hook.Add( "InitPostEntity", "DisableHDR", function()
+
+		-- This command attempts to save the game and change levels.
+		-- By playing in multiplayer, saving the game isn't allowed.
+		if not game.SinglePlayer() then
+			RunConsoleCommand( "mat_hdr_level", 0 )
+		end
+
+	end )
+
+end
