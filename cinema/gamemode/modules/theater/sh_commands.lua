@@ -109,16 +109,12 @@ if CLIENT then
 		if ( LastState and !HasFocus ) or ( !LastState and HasFocus ) then
 			
 			if HasFocus == true then
-				print("Unmuted ", LastVolume)
 				theater.SetVolume( LastVolume )
 				LastVolume = nil
 			else
-				print("Muted")
 				LastVolume = theater.GetVolume()
 				theater.SetVolume( 0 )
 			end
-
-			print("FOCUS CHANGED ", HasFocus)
 
 			LastState = HasFocus
 
