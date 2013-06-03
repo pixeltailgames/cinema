@@ -6,6 +6,7 @@ if CLIENT then
 	CreateClientConVar( "cinema_volume", 25, true, false )
 	CreateClientConVar( "cinema_hd", 0, true, false )
 	CreateClientConVar( "cinema_resolution", 720, true, false )
+	local MuteNoFocus = CreateClientConVar( "cinema_mute_nofocus", 720, true, false )
 	local ScrollAmount = CreateClientConVar( "cinema_scrollamount", 60, true, false )
 	local HidePlayers = CreateClientConVar( "cinema_hideplayers", 0, true, false )
 	local HideAmount = CreateClientConVar( "cinema_hide_amount", 0.04, true, false )
@@ -16,7 +17,7 @@ if CLIENT then
 		if !new then
 			return
 		elseif new < 2 then
-			RunConsoleCommand( "cinema_volume", 2 )
+			RunConsoleCommand( "cinema_resolution", 2 )
 		elseif new > 1080 then
 			RunConsoleCommand( "cinema_resolution", 1080 )
 		else
@@ -95,6 +96,34 @@ if CLIENT then
 			render.SetBlend(1.0) -- always show model
 			ply.Hidden = nil
 		end
+	end )
+
+	-- Mute theater on losing focus to Garry's Mod window
+	local FocusState, HasFocus, LastVolume = true, true, theater.GetVolume()
+	hook.Add( "Think", "TheaterMuteOnFocusChange", function()
+
+		if not MuteNoFocus:GetBool() then return end
+
+		HasFocus = system.HasFocus()
+
+		if ( LastState and !HasFocus ) or ( !LastState and HasFocus ) then
+			
+			if HasFocus == true then
+				print("Unmuted ", LastVolume)
+				theater.SetVolume( LastVolume )
+				LastVolume = nil
+			else
+				print("Muted")
+				LastVolume = theater.GetVolume()
+				theater.SetVolume( 0 )
+			end
+
+			print("FOCUS CHANGED ", HasFocus)
+
+			LastState = HasFocus
+
+		end
+
 	end )
 
 else

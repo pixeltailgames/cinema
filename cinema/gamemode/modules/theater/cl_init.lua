@@ -38,6 +38,8 @@ ReqVoteSkips = 0
 Panels = {}
 Queue = {}
 
+local _Volume = -1
+
 function RegisterPanel( Theater )
 
 	Fullscreen = false
@@ -195,20 +197,24 @@ function GetQueue()
 end
 
 function GetVolume()
-	return GetConVar("cinema_volume"):GetInt()
+	if _Volume < 0 then
+		_Volume = GetConVar("cinema_volume"):GetInt()
+	end
+	return _Volume
 end
 
 function SetVolume( fVolume )
 
 	fVolume = tonumber(fVolume)
-	if !fVolume then return end
+	if !isnumber(fVolume) then return end
 
 	for _, p in pairs(Panels) do
 		if ValidPanel(p) then
-			p:QueueJavascript(string.format('theater.setVolume(%s)', GetVolume()))
+			p:QueueJavascript(string.format('theater.setVolume(%s)', fVolume))
 		end
 	end
 
+	_Volume = fVolume
 	LastInfoDraw = CurTime()
 
 end

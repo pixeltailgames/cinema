@@ -63,7 +63,7 @@ function SETTINGS:PerformLayout()
 	for _, panel in pairs( self.Settings ) do
 
 		panel:InvalidateLayout()
-		curY = curY + panel:GetTall()
+		curY = curY + 28
 
 	end
 
@@ -108,6 +108,15 @@ function SETTINGS:Create()
 	HidePlayers.Label:SetFont( "LabelFont" )
 	HidePlayers.Label:SetColor( color_white )
 	HidePlayers.Label:SetTall(50)
+
+	-- Hide Players
+	local MuteAltTab = self:NewSetting( "TheaterCheckBoxLabel", "Mute audio while alt-tabbed", "cinema_mute_nofocus" )
+	MuteAltTab:SetTooltip( "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)." )
+	MuteAltTab:AlignLeft( 16 )
+	MuteAltTab:AlignTop( self.TitleHeight + 94 )
+	MuteAltTab.Label:SetFont( "LabelFont" )
+	MuteAltTab.Label:SetColor( color_white )
+	MuteAltTab.Label:SetTall(50)
 
 end
 
