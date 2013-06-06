@@ -20,7 +20,13 @@ function PANEL:Init()
 	self:SetFocusTopLevel( true )
 
 	local w = math.Clamp( ScrW() - 100, 800, 1152 + self.HistoryWidth )
-	self:SetSize( w, ScrH() * 3/4 )
+	local h = ScrH()
+	if h > 800 then
+		h = h * 3/4
+	elseif h > 600 then
+		h = h * 7/8
+	end
+	self:SetSize( w, h )
 
 	self.CloseButton = vgui.Create( "DButton", self )
 	self.CloseButton:SetZPos( 5 )
@@ -44,7 +50,7 @@ function PANEL:Init()
 	self.Browser = vgui.Create( "TheaterHTML", self.BrowserContainer )
 
 	self.Browser:SetAllowLua(true)
-	self.Browser:OpenURL( "http://www.pixeltailgames.com/cinema/search/" )
+	self.Browser:OpenURL( "http://cinema.pixeltailgames.com/search.html" )
 
 	self.Controls = vgui.Create( "TheaterHTMLControls", self.BrowserContainer )
 	self.Controls:SetHTML( self.Browser )
