@@ -70,7 +70,7 @@ function PANEL:Init()
 	-- This is the default look, feel free to change it on your created control :)
 	self:SetButtonColor( Color( 250, 250, 250, 200 ) )
 	self.BorderSize = 4
-	self.BackgroundColor = Color( 40, 40, 40, 255 )
+	self.BackgroundColor = Color( 33, 33, 33, 255 )
 	self.HomeURL = "http://www.google.com"
 	
 	
