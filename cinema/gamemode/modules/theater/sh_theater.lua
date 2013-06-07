@@ -695,7 +695,12 @@ if SERVER then
 
 		-- Remove player from list
 		table.RemoveByValue(self.Players, ply)
-
+		
+		-- Remove player from vote skip table if they have voted
+		if self:HasPlayerVotedToSkip( ply ) then
+			table.RemoveByValue(self._SkipVotes, ply)
+		end
+		
 		-- Notify player of leaving the theater
 		net.Start("PlayerLeaveTheater")
 		net.Send(ply)
