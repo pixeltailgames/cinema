@@ -528,6 +528,7 @@ if SERVER then
 	function THEATER:VoteQueuedVideo( ply, id, positive )
 
 		if !IsValid(ply) or !id then return end
+		if GetQueueMode() != QUEUE_VOTEUPDOWN then return end
 
 		for _, vid in pairs(self._Queue) do
 			if vid.id == id then

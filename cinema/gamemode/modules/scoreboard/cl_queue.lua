@@ -179,7 +179,13 @@ function VIDEO:Init()
 	self.Duration:SetFont( "ScoreboardVidDuration" )
 	self.Duration:SetColor( Color( 255, 255, 255 ) )
 
-	self.Votes = vgui.Create( "ScoreboardVideoVote", self )
+	local QueueMode = theater.GetQueueMode()
+
+	if QueueMode == QUEUE_VOTEUPDOWN then
+		self.Controls = vgui.Create( "ScoreboardVideoVote", self )
+	elseif QueueMode == QUEUE_CHRONOLOGICAL then
+		self.Controls = vgui.Create( "ScoreboardVideoControls", self )
+	end
 
 end
 
@@ -188,28 +194,40 @@ function VIDEO:Update()
 	self.Title:SetText( self.Video.Title )
 	self.Title:SetTooltip( self.Video.Title )
 	self.Duration:SetText( string.FormatSeconds(self.Video.Duration) )
-	self.Votes:Update()
+	self.Controls:Update()
 
 end
 
 function VIDEO:SetVideo( vid )
 
 	self.Video = vid
-	self.Votes:SetVideo( vid )
+	self.Controls:SetVideo( vid )
 	self:Update()
 
 end
 
 function VIDEO:PerformLayout()
 
-	self.Votes:SizeToContents()
-	self.Votes:CenterVertical()
-	self.Votes:AlignRight( self.Padding )
+	local QueueMode = theater.GetQueueMode()
 
-	local x, y = self.Votes:GetPos()
+	self.Controls:SizeToContents()
+	self.Controls:CenterVertical()
+	self.Controls:AlignRight( self.Padding )
+
+
+
+	local x, y = self.Controls:GetPos()
 
 	self.Title:SizeToContents()
-	local w = math.Clamp(self.Title:GetWide(), 0, x - self.Padding * 2 )
+	local w = self.Title:GetWide()
+
+	-- Clip video title for voting controls
+	if QueueMode == QUEUE_VOTEUPDOWN then
+		w = math.Clamp( w, 0, x - self.Padding * 2 )
+	else
+		w = math.Clamp( w, 0, x - self.Padding * 2 )
+	end
+	
 	self.Title:SetSize(w, self.Title:GetTall())
 
 	self.Title:AlignTop( -2 )
@@ -439,3 +457,73 @@ function VIDEOVOTE:PerformLayout()
 end
 
 vgui.Register( "ScoreboardVideoVote", VIDEOVOTE )
+
+
+
+
+local VIDEOCONTROLS = {}
+VIDEOCONTROLS.Padding = 8
+
+function VIDEOCONTROLS:Init()
+
+end
+
+function VIDEOCONTROLS:AddRemoveButton()
+
+	if ValidPanel(self.RemoveBtn) then return end
+
+	self.RemoveBtn = vgui.Create( "DImageButton", self )
+	self.RemoveBtn:SetSize( 16, 16 )
+	self.RemoveBtn:SetImage( "theater/trashbin.png" )
+	self.RemoveBtn.DoClick = function()
+		RunConsoleCommand( "cinema_video_remove", self.Video.Id )
+		if ValidPanel(GuiQueue) then
+			GuiQueue:RemoveVideo( self.Video )
+		end
+	end
+	self.RemoveBtn.Think = function()
+		if IsMouseOver( self.RemoveBtn ) or self.RemoveBtn.Voted then
+			self.RemoveBtn:SetAlpha( 255 )
+			self.RemoveBtn:SetColor( Color(255,0,0) )
+		else
+			self.RemoveBtn:SetAlpha( 25 )
+			self.RemoveBtn:SetColor( Color(255,255,255) )
+		end
+	end
+
+end
+
+function VIDEOCONTROLS:Update()
+
+	if !self.Video then return end
+
+	local Theater = LocalPlayer():GetTheater()
+	if self.Video.Owner or LocalPlayer():IsAdmin() or
+		(Theater and Theater:IsPrivate() and Theater:GetOwner() == LocalPlayer()) then
+		self:AddRemoveButton()
+		self:SetWide(16)
+	else
+		self:SetWide(0)
+	end
+
+end
+
+function VIDEOCONTROLS:SetVideo( vid )
+
+	self.Video = vid
+	self:Update()
+
+end
+
+function VIDEOCONTROLS:PerformLayout()
+
+	if ValidPanel(self.RemoveBtn) then
+
+		self.RemoveBtn:Center()
+		self.RemoveBtn:AlignRight()
+
+	end
+	
+end
+
+vgui.Register( "ScoreboardVideoControls", VIDEOCONTROLS )

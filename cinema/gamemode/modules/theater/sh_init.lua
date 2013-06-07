@@ -3,6 +3,9 @@ THEATER_PRIVATE = 1 	-- Private theater which can be rented
 THEATER_REPLICATED = 2 	-- Theater that should be networked
 THEATER_PRIVILEGED = 3 	-- Theater restricted to privileged players
 
+QUEUE_VOTEUPDOWN = 1
+QUEUE_CHRONOLOGICAL = 2
+
 hook.Add( "Think", "TheaterThink", function()
 	for _, Theater in pairs(theater.GetTheaters()) do
 		Theater:Think()
@@ -166,4 +169,8 @@ function ExtractURLData( url, Theater )
 
 	return info
 
+end
+
+function GetQueueMode()
+	return GetConVar("cinema_queue_mode"):GetInt()
 end
