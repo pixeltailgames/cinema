@@ -596,7 +596,7 @@ if SERVER then
 	function THEATER:ValidateSkipVotes()
 		for k, ply in pairs(self._SkipVotes) do
 			if !IsValid(ply) then
-				table.remove(k)
+				table.remove(self._SkipVotes, k)
 			end
 		end
 	end
