@@ -1,4 +1,5 @@
 CreateConVar( "cinema_url", "http://pixeltailgames.github.io/cinema/", FCVAR_REPLICATED, "Cinema url to load on theater screens." )
+CreateConVar( "cinema_queue_mode", 1, { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "1 = Videos may be voted up or down\n2 = Videos are played in the order they're requested" )
 
 if CLIENT then
 
@@ -118,13 +119,10 @@ if CLIENT then
 else
 
 	local fcvar = { FCVAR_ARCHIVE, FCVAR_DONTRECORD }
-	local fcvar2 = { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }
 
 	-- Settings
 	CreateConVar( "cinema_video_duration_max", 20 * 60, fcvar, "Maximum video duration for requests in public theaters." )
-	CreateConVar( "cinema_skip_ratio", 0.66, fcvar, "Ratio between 0-1 determining how many players are required to voteskip a video." )
-	CreateConVar( "cinema_queue_mode", 1, fcvar2, "1 = Videos may be voted up or down\n2 = Videos are played in the order they're requested" )
-	
+	CreateConVar( "cinema_skip_ratio", 0.66, fcvar, "Ratio between 0-1 determining how many players are required to voteskip a video." )	
 	-- Permissions
 	CreateConVar( "cinema_allow_url", 0, fcvar, "Allow any url to be set in private theaters." )
 	CreateConVar( "cinema_allow_reset", 0, fcvar, "Reset the theater after all players have left." )
