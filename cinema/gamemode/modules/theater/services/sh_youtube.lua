@@ -82,6 +82,10 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 			info.thumbnail = info.thumbnail .. "0.jpg"
 		end
 
+		if string.match( body, "<yt:state name='processing'/>" ) then
+			info.type = 'youtubelive'
+		end
+
 		if onSuccess then
 			pcall(onSuccess, info)
 		end
@@ -94,3 +98,15 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 end
 
 theater.RegisterService( 'youtube', SERVICE )
+
+
+local SERVICE = {}
+
+SERVICE.Name 		= "YouTube Live"
+SERVICE.IsTimed 	= false
+SERVICE.TheaterType = THEATER_PRIVATE
+
+-- Implementation is found in 'youtube' service.
+-- GetVideoInfo switches to 'youtubelive'
+
+theater.RegisterService( 'youtubelive', SERVICE )
