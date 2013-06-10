@@ -67,7 +67,7 @@ function DrawActiveTheater()
 		-- Draw 'Loading...' incase page takes too long to load
 		surface.SetDrawColor( 0, 0, 0, 255 )
 		surface.DrawRect( 0, 0, w, h )
-		draw.SimpleText( "Loading...", "VideoInfoLarge", w / 2, h / 2, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		draw.SimpleText( T'Loading', "VideoInfoLarge", w / 2, h / 2, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 
 		draw.HTMLTexture( theater.ActivePanel(), w, h )
 
@@ -113,19 +113,19 @@ function DrawVideoInfo( w, h, scale )
 
 	-- Title
 	if LastTitle != Video:Title() or WasFullscreen != theater.Fullscreen then
-		LastTitle = Video:Title()
+		LastTitle = T( Video:Title() )
 		WasFullscreen = theater.Fullscreen
 		Title = string.reduce( LastTitle, "VideoInfoMedium", w )
 	end
 	draw.TheaterText( Title, "VideoInfoMedium", 10, 10, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 
 	-- Volume
-	draw.TheaterText( "VOLUME", "VideoInfoSmall", w - 72, 120, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	draw.TheaterText( T('Volume'):upper(), "VideoInfoSmall", w - 72, 120, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 	draw.TheaterText( GetVolume() .. "%", "VideoInfoMedium", w - 72, 136, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 
 	-- Vote Skips
 	if NumVoteSkips > 0 then
-		draw.TheaterText( "VOTESKIPS", "VideoInfoSmall", w - 72, 230, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		draw.TheaterText( T('Voteskips'):upper(), "VideoInfoSmall", w - 72, 230, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 		draw.TheaterText( NumVoteSkips .. "/" .. ReqVoteSkips, "VideoInfoMedium", w - 72, 246, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 	end
 

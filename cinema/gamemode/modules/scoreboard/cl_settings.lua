@@ -82,7 +82,7 @@ end
 function SETTINGS:Create()
 
 	-- Volume slider
-	local Volume = self:NewSetting( "TheaterNumSlider", T'Settings_VolumeLabel', "cinema_volume" )
+	local Volume = self:NewSetting( "TheaterNumSlider", T'Volume', "cinema_volume" )
 	Volume:SetTooltip( T'Settings_VolumeTooltip' )
 	Volume:SetMinMax( 0, 100 )
 	Volume:SetDecimals( 0 )

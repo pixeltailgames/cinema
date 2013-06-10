@@ -5,6 +5,9 @@ LANG.Author		= "Sam"		-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
 LANG.Cinema						= "CINEMA"
+LANG.Volume						= "Volume"
+LANG.Voteskips					= "Voteskips"
+LANG.Loading					= "Loading..."
 
 LANG.Request_Url				= "Request URL"
 LANG.Request_Url_Tooltip		= "Press to request a valid video URL\nThe button will be red when the URL is valid"
