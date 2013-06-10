@@ -104,7 +104,7 @@ function HISTORY:Init()
 	self:SetSize( 256, 512 )
 	self:SetPos( 8, ScrH() / 2 - ( self:GetTall() / 2 ) )
 
-	self.Title = Label( "HISTORY", self )
+	self.Title = Label( T'Request_History', self )
 	self.Title:SetFont( "ScoreboardTitle" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 
@@ -119,7 +119,7 @@ function HISTORY:Init()
 	self.Options:SetSpacing( 4 )
 
 	local ClearButton = vgui.Create( "TheaterButton" )
-	ClearButton:SetText( "Clear" )
+	ClearButton:SetText( T'Request_Clear' )
 	ClearButton.DoClick = function()
 		theater.ClearRequestHistory()
 		self.VideoList:Clear(true)
@@ -217,7 +217,7 @@ function VIDEO:Init()
 	self.RequestVideo = vgui.Create( "DImageButton", self )
 	self.RequestVideo:SetSize( 16, 16 )
 	self.RequestVideo:SetImage( "theater/play.png" )
-	self.RequestVideo:SetTooltip( "Request Video" )
+	self.RequestVideo:SetTooltip( T'Request_RequestTooltip' )
 	self.RequestVideo.DoClick = function()
 		RequestVideoURL( self.Video.url )
 	end
@@ -232,7 +232,7 @@ function VIDEO:Init()
 	self.DeleteVideo = vgui.Create( "DImageButton", self )
 	self.DeleteVideo:SetSize( 16, 16 )
 	self.DeleteVideo:SetImage( "theater/trashbin.png" )
-	self.DeleteVideo:SetTooltip( "Remove video from history" )
+	self.DeleteVideo:SetTooltip( T'Request_DeleteTooltip' )
 	self.DeleteVideo.DoClick = function()
 		theater.RemoveRequestById( self.Video.id )
 
@@ -264,7 +264,7 @@ function VIDEO:SetVideo( vid )
 		self.Duration:SetText( "" )
 	end
 
-	self.Requests:SetText( self.Video.count .. " request(s)" )
+	self.Requests:SetText( T('Request_CountLog', self.Video.count) )
 
 end
 

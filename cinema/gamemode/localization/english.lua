@@ -15,13 +15,21 @@ LANG.Scoreboard_A = ""
 
 -- Theater controls
 -- modules/scoreboard/cl_admin.lua
-LANG.Theater_Admin			= "ADMIN"
-LANG.Theater_Owner			= "OWNER"
-LANG.Theater_Skip			= "Skip"
-LANG.Theater_Seek			= "Seek"
-LANG.Theater_Reset			= "Reset"
-LANG.Theater_ChangeName		= "Change Name"
-LANG.Theater_QueueLock		= "Toggle Queue Lock"
+LANG.Theater_Admin				= "ADMIN"
+LANG.Theater_Owner				= "OWNER"
+LANG.Theater_Skip				= "Skip"
+LANG.Theater_Seek				= "Seek"
+LANG.Theater_Reset				= "Reset"
+LANG.Theater_ChangeName			= "Change Name"
+LANG.Theater_QueueLock			= "Toggle Queue Lock"
+
+-- Request Panel
+-- modules/scoreboard/cl_request.lua
+LANG.Request_History			= "HISTORY"
+LANG.Request_Clear				= "Clear"
+LANG.Request_RequestTooltip		= "Request Video"
+LANG.Request_DeleteTooltip		= "Remove video from history"
+LANG.Request_CountLog			= "%d request(s)"
 
 -- Theater list
 -- modules/scoreboard/cl_theaterlist.lua

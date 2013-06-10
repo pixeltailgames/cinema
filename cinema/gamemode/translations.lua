@@ -10,8 +10,9 @@ if CLIENT then
 	end
 
 	function translations.Format( key, ... )
-		local value = Languages[ translations.GetLanguage() ][ key ] or
-			Languages[ DefaultId ][ key ]
+		local lang = translations.GetLanguage()
+		local value = Languages[lang] and Languages[lang][key] or Languages[DefaultId][key]
+		if not value then value = key end
 		return string.format( value, ... )
 	end
 
