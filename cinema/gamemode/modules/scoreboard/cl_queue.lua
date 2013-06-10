@@ -109,14 +109,19 @@ function QUEUE:UpdateList()
 		end
 	end
 
-	self.VideoList:SortVideos( function( a, b ) 
-		if a.Votes == b.Votes then
-			return a.Title > b.Title
-		else
-			return a.Votes > b.Votes
-		end
-	end )
-
+	if theater.GetQueueMode() == QUEUE_CHRONOLOGICAL then
+		self.VideoList:SortVideos( function( a, b ) 
+			return a.Id < b.Id
+		end )
+	else
+		self.VideoList:SortVideos( function( a, b ) 
+			if a.Votes == b.Votes then
+				return a.Title > b.Title
+			else
+				return a.Votes > b.Votes
+			end
+		end )
+	end
 end
 
 function QUEUE:Think()
