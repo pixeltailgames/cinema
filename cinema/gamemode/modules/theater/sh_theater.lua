@@ -309,11 +309,16 @@ if SERVER then
 			local key
 			local Video
 
-			-- Get queued video with the most votes
-			for k, vid in pairs(self._Queue) do
-				if !Video or vid:GetNumVotes() > Video:GetNumVotes() then
-					Video = vid
-					key = k
+			-- Get the next queued video if Chronological, or the video with the most votes
+			if GetQueueMode() == QUEUE_CHRONOLOGICAL then
+				Video = self._Queue[1]
+				key = 1
+			else
+				for k, vid in pairs(self._Queue) do
+					if !Video or vid:GetNumVotes() > Video:GetNumVotes() then
+						Video = vid
+						key = k
+					end
 				end
 			end
 
