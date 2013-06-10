@@ -112,7 +112,7 @@ function DrawVideoInfo( w, h, scale )
 	surface.DrawRect(0, -2, w, 4)
 
 	-- Title
-	if LastTitle != Video:Title() or WasFullscreen != theater.Fullscreen then
+	if LastTitle != T( Video:Title() ) or WasFullscreen != theater.Fullscreen then
 		LastTitle = T( Video:Title() )
 		WasFullscreen = theater.Fullscreen
 		Title = string.reduce( LastTitle, "VideoInfoMedium", w )

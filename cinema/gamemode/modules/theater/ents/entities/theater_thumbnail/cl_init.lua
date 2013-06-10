@@ -96,6 +96,7 @@ function ENT:DrawSubtitle( str, height )
 end
 
 local name, title = nil
+local NoVideoPlaying = 'No_Video_Playing'
 function ENT:DrawText()
 
 	-- Draw name
@@ -103,7 +104,8 @@ function ENT:DrawText()
 	self:DrawSubtitle( name, 0 )
 
 	-- Draw title
-	title = (self:GetTitle() == "") and T'No_Video_Playing' or self:GetTitle()
+	title = (self:GetTitle() == "") and NoVideoPlaying or self:GetTitle()
+	if title == NoVideoPlaying then title = T(title) end
 	self:DrawSubtitle( title, 303 )
 
 end
