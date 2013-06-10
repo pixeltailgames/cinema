@@ -6,7 +6,6 @@ AddCSLuaFile( 'translations.lua' )
 
 include( 'shared.lua' )
 include( 'player.lua' )
-include( 'translations.lua' )
 
 timer.Create( "TheaterPlayerThink", 1, 0, function()
 	for _, v in pairs( player.GetAll() ) do

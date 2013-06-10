@@ -217,7 +217,7 @@ function VIDEO:Init()
 	self.RequestVideo = vgui.Create( "DImageButton", self )
 	self.RequestVideo:SetSize( 16, 16 )
 	self.RequestVideo:SetImage( "theater/play.png" )
-	self.RequestVideo:SetTooltip( T'Request_RequestTooltip' )
+	self.RequestVideo:SetTooltip( T'Request_Video' )
 	self.RequestVideo.DoClick = function()
 		RequestVideoURL( self.Video.url )
 	end
@@ -264,7 +264,7 @@ function VIDEO:SetVideo( vid )
 		self.Duration:SetText( "" )
 	end
 
-	self.Requests:SetText( T('Request_CountLog', self.Video.count) )
+	self.Requests:SetText( T('Request_PlayCount', self.Video.count) )
 
 end
 

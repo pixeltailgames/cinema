@@ -12,7 +12,7 @@ function QUEUE:Init()
 	self:SetSize( 256, 512 )
 	self:SetPos( 8, ScrH() / 2 - ( self:GetTall() / 2 ) )
 
-	self.Title = Label( "QUEUE", self )
+	self.Title = Label( T'Queue_Title', self )
 	self.Title:SetFont( "ScoreboardTitle" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 
@@ -29,7 +29,7 @@ function QUEUE:Init()
 
 	-- Theater Options
 	local RequestButton = vgui.Create( "TheaterButton" )
-	RequestButton:SetText( "Request Video" )
+	RequestButton:SetText( T'Request_Video' )
 	RequestButton.DoClick = function(self)
 		local RequestFrame = vgui.Create( "VideoRequestFrame" )
 		if IsValid(RequestFrame) then
@@ -40,21 +40,21 @@ function QUEUE:Init()
 	self.Options:AddItem(RequestButton)
 
 	local VoteSkipButton = vgui.Create( "TheaterButton" )
-	VoteSkipButton:SetText( "Vote Skip" )
+	VoteSkipButton:SetText( T'Vote_Skip' )
 	VoteSkipButton.DoClick = function(self)
 		RunConsoleCommand( "cinema_voteskip" )
 	end
 	self.Options:AddItem(VoteSkipButton)
 
 	local FullscreenButton = vgui.Create( "TheaterButton" )
-	FullscreenButton:SetText( "Toggle Fullscreen" )
+	FullscreenButton:SetText( T'Toggle_Fullscreen' )
 	FullscreenButton.DoClick = function(self)
 		RunConsoleCommand( "cinema_fullscreen" )
 	end
 	self.Options:AddItem(FullscreenButton)
 
 	local RefreshButton = vgui.Create( "TheaterButton" )
-	RefreshButton:SetText( "Refresh Theater" )
+	RefreshButton:SetText( T'Refresh_Theater' )
 	RefreshButton.DoClick = function(self)
 		RunConsoleCommand( "cinema_refresh" )
 	end

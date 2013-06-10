@@ -1,13 +1,14 @@
-include( 'sh_load.lua' )
-
-include( 'player_shd.lua' )
-include( 'player_class/player_lobby.lua' )
-
 GM.Name 		= "Cinema"
 GM.Author		= "pixelTail Games"
 GM.Email 		= "contact@pixeltailgames.com"
 GM.Website 		= "www.pixeltailgames.com"
 GM.TeamBased 	= false
+
+include( 'sh_load.lua' )
+
+include( 'player_shd.lua' )
+include( 'player_class/player_lobby.lua' )
+include( 'translations.lua' )
 
 Loader.Load( "extensions" )
 Loader.Load( "modules" )

@@ -1,5 +1,4 @@
 include( 'shared.lua' )
-include( 'translations.lua' )
 
 /*
 	Unsupported Notifications

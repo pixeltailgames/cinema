@@ -99,11 +99,11 @@ local name, title = nil
 function ENT:DrawText()
 
 	-- Draw name
-	name = (self:GetTheaterName() == "") and "[INVALID]" or self:GetTheaterName()
+	name = (self:GetTheaterName() == "") and T'Invalid' or self:GetTheaterName()
 	self:DrawSubtitle( name, 0 )
 
 	-- Draw title
-	title = (self:GetTitle() == "") and "No video playing" or self:GetTitle()
+	title = (self:GetTitle() == "") and T'No_Video_Playing' or self:GetTitle()
 	self:DrawSubtitle( title, 303 )
 
 end

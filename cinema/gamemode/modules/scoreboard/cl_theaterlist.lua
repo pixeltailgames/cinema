@@ -161,7 +161,7 @@ function THEATER:Update()
 
 	self.Title:SetText( string.upper( Theater:Name() ) )
 	self.Time:SetText( Theater:VideoTime() )
-	self.Video:SetText( Theater:VideoTitle() )
+	self.Video:SetText( T( Theater:VideoTitle() ) )
 
 end
 
