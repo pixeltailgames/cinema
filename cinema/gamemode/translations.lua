@@ -1,6 +1,6 @@
 if CLIENT then
 	
-	local KeysOnly = CreateClientConVar( "cinema_translation_keysonly", 0, false, false )
+	local Debug = CreateClientConVar( "cinema_translation_debug", 0, false, false )
 
 	translations = {}
 
@@ -12,10 +12,10 @@ if CLIENT then
 	end
 
 	function translations.Format( key, ... )
-		print(key)
+		if Debug:GetBool() then print("TRANSLATION: " .. key) end
 		local lang = translations.GetLanguage()
 		local value = Languages[lang] and Languages[lang][key] or Languages[DefaultId][key]
-		if not value or KeysOnly:GetBool() then value = key end
+		if not value or Debug:GetBool() then value = key end
 		return string.format( value, ... )
 	end
 
