@@ -80,7 +80,13 @@ function THEATERLIST:Think()
 	if RealTime() > self.NextUpdate then
 		self:Update()
 		self:InvalidateLayout()
-		self.NextUpdate = RealTime() + 3.0
+
+		for _, panel in pairs( self.Theaters ) do
+			panel:Update()
+			panel:InvalidateLayout()
+		end
+
+		self.NextUpdate = RealTime() + 1.0
 	end
 
 end
@@ -107,7 +113,6 @@ function THEATERLIST:PerformLayout()
 	for _, th in pairs( TheatersSorted ) do
 
 		th.Panel:InvalidateLayout( true )
-		th.Panel:Update()
 		th.Panel:SetPos( 0, curY )
 		th.Panel:SetWide( self:GetWide() )
 

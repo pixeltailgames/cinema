@@ -12,6 +12,7 @@ if CLIENT then
 	end
 
 	function translations.Format( key, ... )
+		print(key)
 		local lang = translations.GetLanguage()
 		local value = Languages[lang] and Languages[lang][key] or Languages[DefaultId][key]
 		if not value or KeysOnly:GetBool() then value = key end

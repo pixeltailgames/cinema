@@ -33,6 +33,8 @@ InfoScale = 1
 w = 0
 h = 0
 
+local LoadingStr = T'Loading'
+
 function DrawActiveTheater()
 
 	if input.IsKeyDown(KEY_Q) then
@@ -67,7 +69,7 @@ function DrawActiveTheater()
 		-- Draw 'Loading...' incase page takes too long to load
 		surface.SetDrawColor( 0, 0, 0, 255 )
 		surface.DrawRect( 0, 0, w, h )
-		draw.SimpleText( T'Loading', "VideoInfoLarge", w / 2, h / 2, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		draw.SimpleText( LoadingStr, "VideoInfoLarge", w / 2, h / 2, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 
 		draw.HTMLTexture( theater.ActivePanel(), w, h )
 

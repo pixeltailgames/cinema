@@ -95,18 +95,38 @@ function ENT:DrawSubtitle( str, height )
 
 end
 
-local name, title = nil
-local NoVideoPlaying = 'No_Video_Playing'
+local name, title
+local CurrentName, CurrentTitle
+local TranslatedName, TranslatedTitle
+
 function ENT:DrawText()
 
+	name = self:GetTheaterName()
+	title = self:GetTitle()
+
+	-- Name has changed
+	if name != CurrentName then
+		CurrentName = name
+		TranslatedName = name
+		if name == 'Invalid' then
+			TranslatedName = T'Invalid'
+		end
+	end
+
+	-- Title has changed
+	if title != CurrentTitle then
+		CurrentTitle = title
+		TranslatedTitle = title
+		if title == 'No_Video_Playing' then
+			TranslatedTitle = T'No_Video_Playing'
+		end
+	end
+
 	-- Draw name
-	name = (self:GetTheaterName() == "") and T'Invalid' or self:GetTheaterName()
-	self:DrawSubtitle( name, 0 )
+	self:DrawSubtitle( TranslatedName, 0 )
 
 	-- Draw title
-	title = (self:GetTitle() == "") and NoVideoPlaying or self:GetTitle()
-	if title == NoVideoPlaying then title = T(title) end
-	self:DrawSubtitle( title, 303 )
+	self:DrawSubtitle( TranslatedTitle, 303 )
 
 end
 

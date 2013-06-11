@@ -12,7 +12,7 @@ LANG.Request_Url				= "Request URL"
 LANG.Request_Url_Tooltip		= "Press to request a valid video URL\nThe button will be red when the URL is valid"
 LANG.Invalid					= "[INVALID]"
 LANG.No_Video_Playing			= "No video playing"
-LANG.ActCommand 				= "%s %ss"
+LANG.ActCommand 				= "%s %ss" -- e.g. Sam dances
 
 -- Theater Announcements
 -- modules/theater/cl_init.lua
