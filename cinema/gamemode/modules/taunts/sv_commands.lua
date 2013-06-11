@@ -12,6 +12,7 @@ local commands = {
 	laugh = "laugh",
 	muscle = "muscle",
 	-- point = "point",
+	robot = "robot",
 	-- salute = "salute",
 	sexy = "muscle",
 	wave = "wave",
