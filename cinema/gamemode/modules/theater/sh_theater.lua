@@ -55,7 +55,7 @@ function THEATER:Init( locId, info )
 
 	else
 
-		info.Title = info.Title or 'No_Video_Playing'
+		info.Title = info.Title or 'NoVideoPlaying'
 		o._Video = VIDEO:Init( info )
 
 	end
@@ -173,7 +173,7 @@ function THEATER:VideoTime()
 end
 
 function THEATER:VideoTitle()
-	return self._Video and self._Video:Title() or 'No_Video_Playing'
+	return self._Video and self._Video:Title() or 'NoVideoPlaying'
 end
 
 function THEATER:VideoStartTime()
@@ -293,7 +293,7 @@ if SERVER then
 			Data 		= "",
 			StartTime 	= 0,
 			Duration 	= 0,
-			Title 		= 'No_Video_Playing'
+			Title 		= 'NoVideoPlaying'
 		}
 
 		self:SetVideo( VIDEO:Init(info), true )

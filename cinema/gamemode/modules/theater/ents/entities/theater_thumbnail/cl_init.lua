@@ -117,8 +117,8 @@ function ENT:DrawText()
 	if title != CurrentTitle then
 		CurrentTitle = title
 		TranslatedTitle = title
-		if title == 'No_Video_Playing' then
-			TranslatedTitle = T'No_Video_Playing'
+		if title == 'NoVideoPlaying' then
+			TranslatedTitle = T'NoVideoPlaying'
 		end
 	end
 

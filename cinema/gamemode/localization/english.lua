@@ -8,10 +8,8 @@ LANG.Cinema						= "CINEMA"
 LANG.Volume						= "Volume"
 LANG.Voteskips					= "Voteskips"
 LANG.Loading					= "Loading..."
-LANG.Request_Url				= "Request URL"
-LANG.Request_Url_Tooltip		= "Press to request a valid video URL.\nThe button will be red when the URL is valid"
 LANG.Invalid					= "[INVALID]"
-LANG.No_Video_Playing			= "No video playing"
+LANG.NoVideoPlaying				= "No video playing"
 LANG.ActCommand 				= "%s %ss" -- e.g. Sam dances
 
 -- Theater Announcements
@@ -70,7 +68,9 @@ LANG.TheaterList_NowShowing		= "NOW SHOWING"
 LANG.Request_History			= "HISTORY"
 LANG.Request_Clear				= "Clear"
 LANG.Request_DeleteTooltip		= "Remove video from history"
-LANG.Request_PlayCount			= "%d request(s)"
+LANG.Request_PlayCount			= "%d request(s)" -- e.g. 10 request(s)
+LANG.Request_Url				= "Request URL"
+LANG.Request_Url_Tooltip		= "Press to request a valid video URL.\nThe button will be red when the URL is valid"
 
 -- Scoreboard settings panel
 -- modules/scoreboard/cl_settings.lua
@@ -81,6 +81,6 @@ LANG.Settings_VolumeTooltip		= "Use the +/- keys to increase/decrease volume."
 LANG.Settings_HDLabel			= "HD Video Playback"
 LANG.Settings_HDTooltip			= "Enable HD video playback for HD enabled videos."
 LANG.Settings_HidePlayersLabel	= "Hide Players In Theater"
-LANG.Settings_HidePlayersTooltip= "Reduce player visibility inside of theaters."
+LANG.Settings_HidePlayersTooltip = "Reduce player visibility inside of theaters."
 LANG.Settings_MuteFocusLabel	= "Mute audio while alt-tabbed"
 LANG.Settings_MuteFocusTooltip	= "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)."
