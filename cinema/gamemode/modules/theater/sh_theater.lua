@@ -55,7 +55,7 @@ function THEATER:Init( locId, info )
 
 	else
 
-		info.Title = info.Title or T'No_Video_Playing'
+		info.Title = info.Title or 'No_Video_Playing'
 		o._Video = VIDEO:Init( info )
 
 	end
@@ -325,13 +325,8 @@ if SERVER then
 
 				if Video:GetOwnerName() != "" then
 					self:AnnounceToPlayers( {
-						ColDefault,
-						"Current video requested by ",
-						ColHighlight,
-						Video:GetOwnerName(),
-						" (" .. Video:GetOwnerSteamID() .. ")",
-						ColDefault,
-						"."
+						'Theater_VideoRequestedBy',
+						Video:GetOwnerName()
 					} )
 				end
 
@@ -363,7 +358,7 @@ if SERVER then
 
 			-- Prevent requests from non-theater-owner if queue is locked
 			if self:IsQueueLocked() and ply != self:GetOwner() then
-				return self:AnnounceToPlayer( ply, "The owner of the theater has locked the queue." )
+				return self:AnnounceToPlayer( ply, 'Theater_OwnerLockedQueue' )
 			end
 
 		end
@@ -372,7 +367,7 @@ if SERVER then
 
 		-- Invalid request data
 		if !info then
-			return self:AnnounceToPlayer( ply, "Invalid video request." )
+			return self:AnnounceToPlayer( ply, 'Theater_InvalidRequest' )
 		end
 
 		-- Check for duplicate requests
@@ -384,7 +379,7 @@ if SERVER then
 				-- Place vote for player
 				vid:AddVote(ply, true)
 
-				self:AnnounceToPlayer( ply, "The requested video is already in the queue." )
+				self:AnnounceToPlayer( ply, 'Theater_AlreadyQueued' )
 
 				return
 			end
@@ -393,15 +388,10 @@ if SERVER then
 
 		local service = GetServiceByClass( info.Type )
 		if service then
-			local msg = {
-				ColDefault,
-				"Processing ",
-				ColHighlight,
-				service:GetName(),
-				ColDefault,
-				" request..."
-			}
-			self:AnnounceToPlayer( ply, msg )
+			self:AnnounceToPlayer( ply, {
+				'Theater_ProcessingRequest',
+				service:GetName()
+			} )
 		end
 
 		-- Create video object and check if the page is valid
@@ -410,7 +400,7 @@ if SERVER then
 
 			-- Failed to grab video info, etc.
 			if !success then
-				self:AnnounceToPlayer( ply, "There was a problem processing the requested video." )
+				self:AnnounceToPlayer( ply, 'Theater_RequestFailed' )
 				return
 			elseif type(success) == 'string' then -- failure message
 				self:AnnounceToPlayer( ply, success )
@@ -643,11 +633,7 @@ if SERVER then
 		-- Skip the current video if the voteskip requirement is met
 		if self:NumVoteSkips() >= self:NumRequiredVoteSkips() then
 
-			local msg = {
-				theater.ColDefault,
-				"The current video has been voteskipped."
-			}
-			self:AnnounceToPlayers( msg )
+			self:AnnounceToPlayers( 'Theater_Voteskipped' )
 
 			self:SkipVideo()
 
@@ -708,7 +694,7 @@ if SERVER then
 		-- Owner leaving private theater
 		if self:IsPrivate() and ply == self:GetOwner() then
 			self:ResetOwner()
-			self:AnnounceToPlayer( ply, "You have lost theater ownership due to leaving the theater." )
+			self:AnnounceToPlayer( ply, 'Theater_LostOwnership' )
 		end
 
 		-- Players remain in the theater
@@ -733,12 +719,12 @@ if SERVER then
 	function THEATER:AnnounceToPlayer( ply, tbl )
 
 		-- Single message without coloring
-		if type(tbl) == 'string' then
-			tbl = { ColDefault, tbl }
+		if isstring(tbl) then
+			tbl = { tbl }
 		end
 
 		-- Send announcement to all players or a single player
-		if type(ply) == 'table' or IsValid(ply) then
+		if istable(ply) or IsValid(ply) then
 			net.Start( "TheaterAnnouncement" )
 				net.WriteTable( tbl )
 			net.Send(ply)
@@ -760,7 +746,7 @@ if SERVER then
 		if IsValid( self:GetOwner() ) then return end
 
 		self._Owner = ply
-		self:AnnounceToPlayer( ply, "You're now the owner of the private theater." )
+		self:AnnounceToPlayer( ply, 'Theater_NotifyOwnership' )
 
 		RequestTheaterInfo(ply)
 
@@ -778,18 +764,9 @@ if SERVER then
 		self._QueueLocked = !self._QueueLocked
 
 		-- Notify theater players of change
-		local text = nil
-		if self:IsQueueLocked() then
-			text = " has locked the theater queue."
-		else
-			text = " has unlocked the theater queue."
-		end
-
 		self:AnnounceToPlayers( {
-			ColHighlight,
-			ply:Nick(),
-			ColDefault,
-			text
+			self:IsQueueLocked() and 'Theater_LockedQueue' or 'Theater_UnlockedQueue',
+			ply:Nick()
 		} )
 
 	end

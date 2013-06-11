@@ -4,11 +4,11 @@ if CLIENT then
 
 	translations = {}
 
-	local Languages = {}
+	Languages = {}
 	local DefaultId = "en"
 
 	function translations.GetLanguage()
-		return "en" -- TODO: Get user's language
+		return GetConVarString("gmod_language")
 	end
 
 	function translations.Format( key, ... )
@@ -26,9 +26,97 @@ if CLIENT then
 		end
 	end
 
+	local patterns = {
+		format 	= "{{%s:%s}}",
+		tag 	= "{{.-}}",
+		data 	= "{{(.-):(.-)}}",
+		rgb 	= "(%d+),(%d+),(%d+)"
+	}
+
+	local function buildTag(name, data)
+		return string.format(patterns.format, name, data)
+	end
+
+	local function parseTag(tag)
+		local key, value = string.match(tag, patterns.data)
+
+		-- Deserialize color
+		if key == 'rgb' then
+			local r,g,b = string.match(value, patterns.rgb)
+			return Color(r,g,b)
+		end
+
+		return tag
+	end
+
+	function translations.FormatChat( key, ... )
+		local value = translations.Format( key, ... )
+
+		-- Parse tags
+		if string.find(value, patterns.tag) then
+
+			local tbl = {}
+
+			while true do
+
+				-- Find first tag occurance
+				local start, stop = string.find(value, patterns.tag)
+
+				-- Break loop if there are no more tags
+				if not start then
+					-- Insert remaining fragment of translation
+					if value != "" then
+						table.insert( tbl, value )
+					end
+					break
+				end
+
+				-- Insert beginning fragment of translation
+				if start > 0 then
+					local str = value:sub(0, start - 1)
+					table.insert( tbl, str )
+				end
+
+				-- Extract tag
+				local tag = value:sub(start, stop)
+
+				-- Parse and insert tag object
+				table.insert( tbl, parseTag(tag) )
+
+				-- Reduce translation string past tag
+				value = value:sub(stop + 1, string.len(value))
+
+			end
+
+			value = tbl
+
+		end
+
+		return istable(value) and value or {value}
+	end
+
+	function translations.Compile(...)
+		local str = ""
+		for _, v in pairs({...}) do
+			-- Serialize color
+			if istable(v) and v.r and v.g and v.b then
+				local col = string.format("%d,%d,%d", v.r, v.g, v.b)
+				str = str .. buildTag('rgb', col)
+			else
+				str = str .. tostring(v)
+			end
+		end
+		return str
+	end
+
 	T = translations.Format
+	C = translations.Compile
 
 end
+
+-- Chat colors
+ColDefault = Color( 200, 200, 200 )
+ColHighlight = Color( 158, 37, 33 )
 
 -- Load language files
 local LanguageFiles = file.Find( GM.FolderName .. "/gamemode/localization/*", "LUA" )
@@ -42,3 +130,6 @@ for _, filename in pairs( LanguageFiles ) do
 		LANG = nil
 	end
 end
+
+-- Unset variable
+if CLIENT then C = nil end

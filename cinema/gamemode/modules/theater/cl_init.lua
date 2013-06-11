@@ -343,8 +343,12 @@ function ReceiveVoteSkips()
 	local skips = net.ReadInt(7)
 	local required = net.ReadInt(7)
 
-	local str = string.format( "%s has voted to skip (%s/%s)", name, skips, required )
-	AddAnnouncement( str )
+	AddAnnouncement( {
+		'Theater_PlayerVoteSkipped',
+		name,
+		skips,
+		required
+	} )
 
 	NumVoteSkips = skips
 	ReqVoteSkips = required

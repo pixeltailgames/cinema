@@ -8,11 +8,33 @@ LANG.Cinema						= "CINEMA"
 LANG.Volume						= "Volume"
 LANG.Voteskips					= "Voteskips"
 LANG.Loading					= "Loading..."
-
 LANG.Request_Url				= "Request URL"
 LANG.Request_Url_Tooltip		= "Press to request a valid video URL\nThe button will be red when the URL is valid"
 LANG.Invalid					= "[INVALID]"
 LANG.No_Video_Playing			= "No video playing"
+LANG.ActCommand 				= "%s %ss"
+
+-- Theater Announcements
+-- modules/theater/cl_init.lua
+-- modules/theater/sh_commands.lua
+-- modules/theater/sh_theater.lua
+LANG.Theater_VideoRequestedBy 		= C("Current video requested by ",ColHighlight,"%s",ColDefault,".")
+LANG.Theater_InvalidRequest 		= "Invalid video request."
+LANG.Theater_AlreadyQueued 			= "The requested video is already in the queue."
+LANG.Theater_ProcessingRequest 		= C("Processing ",ColHighlight,"%s",ColDefault," request...")
+LANG.Theater_RequestFailed 			= "There was a problem processing the requested video."
+LANG.Theater_Voteskipped 			= "The current video has been voteskipped."
+LANG.Theater_ForceSkipped 			= C(ColHighlight,"%s",ColDefault," has forced to skip the current video.")
+LANG.Theater_PlayerReset 			= C(ColHighlight,"%s",ColDefault," has reset the theater.")
+LANG.Theater_LostOwnership 			= "You have lost theater ownership due to leaving the theater."
+LANG.Theater_NotifyOwnership 		= "You're now the owner of the private theater."
+LANG.Theater_OwnerLockedQueue 		= "The owner of the theater has locked the queue."
+LANG.Theater_LockedQueue 			= C(ColHighlight,"%s",ColDefault," has locked the theater queue.")
+LANG.Theater_UnlockedQueue 			= C(ColHighlight,"%s",ColDefault," has unlocked the theater queue.")
+LANG.Theater_OwnerUseOnly 			= "Only the theater owner can use that."
+LANG.Theater_PublicVideoLength 		= "Public theater requests are limited to %s second(s) in length."
+LANG.Theater_PlayerVoteSkipped 		= "%s has voted to skip (%s/%s)"
+LANG.Theater_VideoAddedToQueue 		= C(ColHighlight,"%s",ColDefault," has been added to the queue.")
 
 -- Warnings
 -- cl_init.lua
@@ -62,5 +84,3 @@ LANG.Settings_HidePlayersLabel	= "Hide Players In Theater"
 LANG.Settings_HidePlayersTooltip= "Reduce player visibility inside of theaters."
 LANG.Settings_MuteFocusLabel	= "Mute audio while alt-tabbed"
 LANG.Settings_MuteFocusTooltip	= "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)."
-
-LANG.Private_Theater_1 = ""

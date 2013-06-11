@@ -264,13 +264,10 @@ else
 
 	TheaterPrivilegedCommand( "cinema_forceskip", function( Theater, ply, cmd, args )
 
-		local msg = {
-			theater.ColHighlight,
-			ply:Nick(),
-			theater.ColDefault,
-			" has forced to skip the current video."
-		}
-		Theater:AnnounceToPlayers( msg )
+		Theater:AnnounceToPlayers( {
+			'Theater_ForceSkipped',
+			ply:Nick()
+		} )
 
 		Theater:SkipVideo()
 
@@ -286,13 +283,10 @@ else
 
 		if !ply:IsAdmin() then return end
 
-		local msg = {
-			theater.ColHighlight,
-			ply:Nick(),
-			theater.ColDefault,
-			" has reset the theater."
-		}
-		Theater:AnnounceToPlayers( msg )
+		Theater:AnnounceToPlayers( {
+			'Theater_PlayerReset',
+			ply:Nick()
+		} )
 
 		Theater:Reset()
 

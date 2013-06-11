@@ -9,8 +9,8 @@ hook.Add( "InitPostEntity", "CheckMapSupport", function()
 	if Location and !Location.GetLocations() then
 
 		warning.Set(
-			"The current map is unsupported by the Cinema gamemode",
-			"Press F1 to open the official map on workshop"
+			T'Warning_Unsupported_Line1',
+			T'Warning_Unsupported_Line2'
 		)
 
 		control.Add( KEY_F1, function( enabled, held )
@@ -22,8 +22,8 @@ hook.Add( "InitPostEntity", "CheckMapSupport", function()
 	elseif system.IsOSX() then
 
 		warning.Set(
-			"Mac OS X users may experience blank screens in Cinema",
-			"Press F1 to view troubleshooting tips and to remove this message"
+			T'Warning_OSX_Line1',
+			T'Warning_OSX_Line2'
 		)
 
 		control.Add( KEY_F1, function( enabled, held )

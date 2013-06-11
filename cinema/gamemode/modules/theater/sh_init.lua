@@ -16,10 +16,6 @@ local url2 = url -- keep reference for extracting url data
 
 module( "theater", package.seeall )
 
--- Chat colors
-ColDefault = Color( 200, 200, 200 )
-ColHighlight = Color( 158, 37, 33 )
-
 Theaters = {}
 
 function GetTheaters()

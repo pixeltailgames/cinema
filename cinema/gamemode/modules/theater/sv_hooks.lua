@@ -21,8 +21,10 @@ function GM:PreVideoQueued( Video, Theater )
 		local MaxDuration = GetConVarNumber("cinema_video_duration_max")
 		if Video:Duration() > MaxDuration then
 
-			local msg = string.format( "Public theater requests are limited to %s second(s) in length.", MaxDuration )
-			Theater:AnnounceToPlayer( ply, msg )
+			Theater:AnnounceToPlayer( ply, {
+				'Theater_PublicVideoLength',
+				MaxDuration
+			} )
 
 			return false
 
