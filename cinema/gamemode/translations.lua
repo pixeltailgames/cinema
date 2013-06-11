@@ -115,10 +115,6 @@ if CLIENT then
 
 end
 
--- Chat colors
-ColDefault = Color( 200, 200, 200 )
-ColHighlight = Color( 158, 37, 33 )
-
 -- Load language files
 local LanguageFiles = file.Find( GM.FolderName .. "/gamemode/localization/*", "LUA" )
 for _, filename in pairs( LanguageFiles ) do
