@@ -255,7 +255,7 @@ else
 
 	TheaterPrivilegedCommand( "cinema_seek", function( Theater, ply, cmd, args )
 
-		local seconds = tonumber(args[1])
+		local seconds = args[1]
 		if !seconds then return end
 
 		Theater:Seek(seconds)

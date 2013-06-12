@@ -437,12 +437,30 @@ if SERVER then
 
 	end
 
+	local hhmmss = "(%d+):(%d+):(%d+)"
+	local mmss = "(%d+):(%d+)"
 	function THEATER:Seek( seconds )
 
 		if !IsVideoTimed(self:VideoType()) then return end
 
+		-- Seconds isn't a number, check HH:MM:SS
+		if !tonumber(seconds) then
+			local hr, min, sec = string.match(seconds, hhmmss)
+
+			-- Not in HH:MM:SS, try MM:SS
+			if not hr then
+			    min, sec = string.match(seconds, mmss)
+			    if not min then return end -- Not in MM:SS, give up
+			    hr = 0
+			end
+
+			seconds = tonumber(hr) * 3600 + 
+				tonumber(min) * 60 +
+				tonumber(sec)
+		end
+
 		-- Clamp video seek time between 0 and video duration
-		seconds = math.Clamp(seconds, 0, self:VideoDuration())
+		seconds = math.Clamp(tonumber(seconds), 0, self:VideoDuration())
 
 		-- Convert seek seconds to time after video start
 		if self._Video then
