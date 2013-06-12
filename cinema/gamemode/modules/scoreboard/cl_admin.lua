@@ -14,12 +14,7 @@ function ADMIN:Init()
 	self:SetSize( 256, 512 )
 	self:SetPos( ScrW() - (256 + 8), ScrH() / 2 - ( self:GetTall() / 2 ) )
 
-	local title = "ADMIN"
-	if Theater and Theater:IsPrivate() and Theater:GetOwner() == LocalPlayer() then
-		title = "OWNER"
-	end
-
-	self.Title = Label( title, self )
+	self.Title = Label( "", self )
 	self.Title:SetFont( "ScoreboardTitle" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 
@@ -33,7 +28,7 @@ function ADMIN:Init()
 
 	-- Skip the current video
 	local VoteSkipButton = vgui.Create( "TheaterButton" )
-	VoteSkipButton:SetText( "Skip" )
+	VoteSkipButton:SetText( T'Theater_Skip' )
 	VoteSkipButton.DoClick = function(self)
 		RunConsoleCommand( "cinema_forceskip" )
 	end
@@ -41,16 +36,16 @@ function ADMIN:Init()
 
 	-- Seek
 	local SeekButton = vgui.Create( "TheaterButton" )
-	SeekButton:SetText( "Seek" )
+	SeekButton:SetText( T'Theater_Seek' )
 	SeekButton.DoClick = function(self)
 
-		Derma_StringRequest( "Enter the desired seek time in seconds", 
-			"Time in seconds", 
-			"0", 
+		Derma_StringRequest( T'Theater_Seek', 
+			T'Theater_SeekQuery', 
+			"0",
 			function( strTextOut ) RunConsoleCommand( "cinema_seek", strTextOut ) end,
 			function( strTextOut ) end,
-			"Seek", 
-			"Cancel" )
+			T'Theater_Seek', 
+			T'Cancel' )
 
 	end
 	self.Options:AddItem(SeekButton)
@@ -60,7 +55,7 @@ function ADMIN:Init()
 		
 		-- Reset the theater
 		local ResetButton = vgui.Create( "TheaterButton" )
-		ResetButton:SetText( "Reset" )
+		ResetButton:SetText( T'Theater_Reset' )
 		ResetButton.DoClick = function(self)
 			RunConsoleCommand( "cinema_reset" )
 		end
@@ -72,20 +67,20 @@ function ADMIN:Init()
 	if Theater and Theater:IsPrivate() then
 
 		local NameButton = vgui.Create( "TheaterButton" )
-		NameButton:SetText( "Change Name" )
+		NameButton:SetText( T'Theater_ChangeName' )
 		NameButton.DoClick = function(self)
-			Derma_StringRequest( "Set the name of the theater", 
-				"Name of the theater", 
-				Theater:Name(), 
+			Derma_StringRequest( T'Theater_ChangeName', 
+				"",
+				Theater:Name(),
 				function( strTextOut ) RunConsoleCommand( "cinema_name", strTextOut ) end,
 				function( strTextOut ) end,
-				"Set Name", 
-				"Cancel" )
+				T'Set',
+				T'Cancel' )
 		end
 		self.Options:AddItem(NameButton)
 
 		local LockButton = vgui.Create( "TheaterButton" )
-		LockButton:SetText( "Toggle Queue Lock" )
+		LockButton:SetText( T'Theater_QueueLock' )
 		LockButton.DoClick = function(self)
 			RunConsoleCommand( "cinema_lock" )
 		end
@@ -102,9 +97,9 @@ function ADMIN:Update()
 
 	-- Change title text
 	if Theater:IsPrivate() and Theater:GetOwner() == LocalPlayer() then
-		self.Title:SetText( "OWNER" )
+		self.Title:SetText( T'Theater_Owner' )
 	elseif LocalPlayer():IsAdmin() then
-		self.Title:SetText( "ADMIN" )
+		self.Title:SetText( T'Theater_Admin' )
 	end
 
 end

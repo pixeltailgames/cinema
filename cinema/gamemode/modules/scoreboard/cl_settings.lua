@@ -6,11 +6,11 @@ SETTINGS.TitleHeight = 88
 
 function SETTINGS:Init()
 
-	self.Title = Label( "SETTINGS", self )
+	self.Title = Label( T'Settings_Title', self )
 	self.Title:SetFont( "ScoreboardTitleSmall" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 
-	self.Help = Label( "CLICK TO ACTIVATE YOUR MOUSE", self )
+	self.Help = Label( T'Settings_ClickActivate', self )
 	self.Help:SetFont( "ScoreboardHelp" )
 	self.Help:SetColor( Color( 255, 255, 255, 150 ) )
 
@@ -82,8 +82,8 @@ end
 function SETTINGS:Create()
 
 	-- Volume slider
-	local Volume = self:NewSetting( "TheaterNumSlider", "Volume", "cinema_volume" )
-	Volume:SetTooltip( "Use the +/- keys to increase/decrease volume." )
+	local Volume = self:NewSetting( "TheaterNumSlider", T'Volume', "cinema_volume" )
+	Volume:SetTooltip( T'Settings_VolumeTooltip' )
 	Volume:SetMinMax( 0, 100 )
 	Volume:SetDecimals( 0 )
 	Volume:SetWide( 256 - 32 )
@@ -92,8 +92,8 @@ function SETTINGS:Create()
 	Volume:AlignTop( self.TitleHeight - 20 )
 
 	-- HD Playback checkbox
-	local HD = self:NewSetting( "TheaterCheckBoxLabel", "HD Video Playback", "cinema_hd" )
-	HD:SetTooltip( "Enable HD video playback for HD enabled videos." )
+	local HD = self:NewSetting( "TheaterCheckBoxLabel", T'Settings_HDLabel', "cinema_hd" )
+	HD:SetTooltip( T'Settings_HDTooltip' )
 	HD:AlignLeft( 16 )
 	HD:AlignTop( self.TitleHeight + 34 )
 	HD.Label:SetFont( "LabelFont" )
@@ -101,8 +101,8 @@ function SETTINGS:Create()
 	HD.Label:SetTall(50)
 
 	-- Hide Players
-	local HidePlayers = self:NewSetting( "TheaterCheckBoxLabel", "Hide Players In Theater", "cinema_hideplayers" )
-	HidePlayers:SetTooltip( "Reduce player visibility inside of theaters." )
+	local HidePlayers = self:NewSetting( "TheaterCheckBoxLabel", T'Settings_HidePlayersLabel', "cinema_hideplayers" )
+	HidePlayers:SetTooltip( T'Settings_HidePlayersTooltip' )
 	HidePlayers:AlignLeft( 16 )
 	HidePlayers:AlignTop( self.TitleHeight + 64 )
 	HidePlayers.Label:SetFont( "LabelFont" )
@@ -110,8 +110,8 @@ function SETTINGS:Create()
 	HidePlayers.Label:SetTall(50)
 
 	-- Hide Players
-	local MuteAltTab = self:NewSetting( "TheaterCheckBoxLabel", "Mute audio while alt-tabbed", "cinema_mute_nofocus" )
-	MuteAltTab:SetTooltip( "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)." )
+	local MuteAltTab = self:NewSetting( "TheaterCheckBoxLabel", T'Settings_MuteFocusLabel', "cinema_mute_nofocus" )
+	MuteAltTab:SetTooltip( T'Settings_MuteFocusTooltip' )
 	MuteAltTab:AlignLeft( 16 )
 	MuteAltTab:AlignTop( self.TitleHeight + 94 )
 	MuteAltTab.Label:SetFont( "LabelFont" )

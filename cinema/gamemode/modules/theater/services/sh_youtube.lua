@@ -68,9 +68,9 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 	local onReceive = function( body, length, headers, code )
 
 		if string.match( body, "noembed" ) then
-			return onFailure( "The requested video is embed disabled." )
+			return onFailure( 'Service_EmbedDisabled' )
 		elseif string.match( body, "paidContent" ) then
-			return onFailure( "The requested video is purchasable content and can't be played." )
+			return onFailure( 'Service_PurchasableContent' )
 		end
 
 		local info = {}

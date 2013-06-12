@@ -55,7 +55,7 @@ function THEATER:Init( locId, info )
 
 	else
 
-		info.Title = info.Title or "No video playing"
+		info.Title = info.Title or 'NoVideoPlaying'
 		o._Video = VIDEO:Init( info )
 
 	end
@@ -173,11 +173,19 @@ function THEATER:VideoTime()
 end
 
 function THEATER:VideoTitle()
-	return self._Video and self._Video:Title() or "No video playing"
+	return self._Video and self._Video:Title() or 'NoVideoPlaying'
 end
 
 function THEATER:VideoStartTime()
 	return self._Video and self._Video:StartTime() or 0
+end
+
+function THEATER:VideoOwnerName()
+	return self._Video and self._Video:GetOwnerName() or 'Invalid'
+end
+
+function THEATER:VideoOwnerSteamID()
+	return self._Video and self._Video:GetOwnerSteamID() or 'STEAM_0:0:0'
 end
 
 /*
@@ -293,7 +301,7 @@ if SERVER then
 			Data 		= "",
 			StartTime 	= 0,
 			Duration 	= 0,
-			Title 		= "No video playing"
+			Title 		= 'NoVideoPlaying'
 		}
 
 		self:SetVideo( VIDEO:Init(info), true )
@@ -330,13 +338,8 @@ if SERVER then
 
 				if Video:GetOwnerName() != "" then
 					self:AnnounceToPlayers( {
-						ColDefault,
-						"Current video requested by ",
-						ColHighlight,
-						Video:GetOwnerName(),
-						" (" .. Video:GetOwnerSteamID() .. ")",
-						ColDefault,
-						"."
+						'Theater_VideoRequestedBy',
+						Video:GetOwnerName()
 					} )
 				end
 
@@ -368,7 +371,7 @@ if SERVER then
 
 			-- Prevent requests from non-theater-owner if queue is locked
 			if self:IsQueueLocked() and ply != self:GetOwner() then
-				return self:AnnounceToPlayer( ply, "The owner of the theater has locked the queue." )
+				return self:AnnounceToPlayer( ply, 'Theater_OwnerLockedQueue' )
 			end
 
 		end
@@ -377,7 +380,7 @@ if SERVER then
 
 		-- Invalid request data
 		if !info then
-			return self:AnnounceToPlayer( ply, "Invalid video request." )
+			return self:AnnounceToPlayer( ply, 'Theater_InvalidRequest' )
 		end
 
 		-- Check for duplicate requests
@@ -389,7 +392,7 @@ if SERVER then
 				-- Place vote for player
 				vid:AddVote(ply, true)
 
-				self:AnnounceToPlayer( ply, "The requested video is already in the queue." )
+				self:AnnounceToPlayer( ply, 'Theater_AlreadyQueued' )
 
 				return
 			end
@@ -398,15 +401,10 @@ if SERVER then
 
 		local service = GetServiceByClass( info.Type )
 		if service then
-			local msg = {
-				ColDefault,
-				"Processing ",
-				ColHighlight,
-				service:GetName(),
-				ColDefault,
-				" request..."
-			}
-			self:AnnounceToPlayer( ply, msg )
+			self:AnnounceToPlayer( ply, {
+				'Theater_ProcessingRequest',
+				service:GetName()
+			} )
 		end
 
 		-- Create video object and check if the page is valid
@@ -415,7 +413,7 @@ if SERVER then
 
 			-- Failed to grab video info, etc.
 			if !success then
-				self:AnnounceToPlayer( ply, "There was a problem processing the requested video." )
+				self:AnnounceToPlayer( ply, 'Theater_RequestFailed' )
 				return
 			elseif type(success) == 'string' then -- failure message
 				self:AnnounceToPlayer( ply, success )
@@ -452,12 +450,30 @@ if SERVER then
 
 	end
 
+	local hhmmss = "(%d+):(%d+):(%d+)"
+	local mmss = "(%d+):(%d+)"
 	function THEATER:Seek( seconds )
 
 		if !IsVideoTimed(self:VideoType()) then return end
 
+		-- Seconds isn't a number, check HH:MM:SS
+		if !tonumber(seconds) then
+			local hr, min, sec = string.match(seconds, hhmmss)
+
+			-- Not in HH:MM:SS, try MM:SS
+			if not hr then
+			    min, sec = string.match(seconds, mmss)
+			    if not min then return end -- Not in MM:SS, give up
+			    hr = 0
+			end
+
+			seconds = tonumber(hr) * 3600 + 
+				tonumber(min) * 60 +
+				tonumber(sec)
+		end
+
 		-- Clamp video seek time between 0 and video duration
-		seconds = math.Clamp(seconds, 0, self:VideoDuration())
+		seconds = math.Clamp(tonumber(seconds), 0, self:VideoDuration())
 
 		-- Convert seek seconds to time after video start
 		if self._Video then
@@ -488,6 +504,8 @@ if SERVER then
 				net.WriteString( self:VideoType() )
 				net.WriteString( self:VideoData() )
 				net.WriteString( self:VideoTitle() )
+				net.WriteString( self:VideoOwnerName() )
+				net.WriteString( self:VideoOwnerSteamID() )
 
 				-- Timed video information
 				if IsVideoTimed(self:VideoType()) then
@@ -648,11 +666,7 @@ if SERVER then
 		-- Skip the current video if the voteskip requirement is met
 		if self:NumVoteSkips() >= self:NumRequiredVoteSkips() then
 
-			local msg = {
-				theater.ColDefault,
-				"The current video has been voteskipped."
-			}
-			self:AnnounceToPlayers( msg )
+			self:AnnounceToPlayers( 'Theater_Voteskipped' )
 
 			self:SkipVideo()
 
@@ -713,7 +727,7 @@ if SERVER then
 		-- Owner leaving private theater
 		if self:IsPrivate() and ply == self:GetOwner() then
 			self:ResetOwner()
-			self:AnnounceToPlayer( ply, "You have lost theater ownership due to leaving the theater." )
+			self:AnnounceToPlayer( ply, 'Theater_LostOwnership' )
 		end
 
 		-- Players remain in the theater
@@ -738,12 +752,12 @@ if SERVER then
 	function THEATER:AnnounceToPlayer( ply, tbl )
 
 		-- Single message without coloring
-		if type(tbl) == 'string' then
-			tbl = { ColDefault, tbl }
+		if isstring(tbl) then
+			tbl = { tbl }
 		end
 
 		-- Send announcement to all players or a single player
-		if type(ply) == 'table' or IsValid(ply) then
+		if istable(ply) or IsValid(ply) then
 			net.Start( "TheaterAnnouncement" )
 				net.WriteTable( tbl )
 			net.Send(ply)
@@ -765,7 +779,7 @@ if SERVER then
 		if IsValid( self:GetOwner() ) then return end
 
 		self._Owner = ply
-		self:AnnounceToPlayer( ply, "You're now the owner of the private theater." )
+		self:AnnounceToPlayer( ply, 'Theater_NotifyOwnership' )
 
 		RequestTheaterInfo(ply)
 
@@ -783,18 +797,9 @@ if SERVER then
 		self._QueueLocked = !self._QueueLocked
 
 		-- Notify theater players of change
-		local text = nil
-		if self:IsQueueLocked() then
-			text = " has locked the theater queue."
-		else
-			text = " has unlocked the theater queue."
-		end
-
 		self:AnnounceToPlayers( {
-			ColHighlight,
-			ply:Nick(),
-			ColDefault,
-			text
+			self:IsQueueLocked() and 'Theater_LockedQueue' or 'Theater_UnlockedQueue',
+			ply:Nick()
 		} )
 
 	end

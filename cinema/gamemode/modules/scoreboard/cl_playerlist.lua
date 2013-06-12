@@ -12,7 +12,7 @@ PLAYERLIST.PlyHeight = 48
 
 function PLAYERLIST:Init()
 
-	self.Title = Label( "CINEMA", self )
+	self.Title = Label( T'Cinema', self )
 	self.Title:SetFont( "ScoreboardTitle" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 

@@ -9,7 +9,7 @@ THEATERLIST.TheaterHeight = 56
 
 function THEATERLIST:Init()
 
-	self.Title = Label( "NOW SHOWING", self )
+	self.Title = Label( T'TheaterList_NowShowing', self )
 	self.Title:SetFont( "ScoreboardTitleSmall" )
 	self.Title:SetColor( Color( 255, 255, 255 ) )
 
@@ -80,7 +80,13 @@ function THEATERLIST:Think()
 	if RealTime() > self.NextUpdate then
 		self:Update()
 		self:InvalidateLayout()
-		self.NextUpdate = RealTime() + 3.0
+
+		for _, panel in pairs( self.Theaters ) do
+			panel:Update()
+			panel:InvalidateLayout()
+		end
+
+		self.NextUpdate = RealTime() + 1.0
 	end
 
 end
@@ -107,7 +113,6 @@ function THEATERLIST:PerformLayout()
 	for _, th in pairs( TheatersSorted ) do
 
 		th.Panel:InvalidateLayout( true )
-		th.Panel:Update()
 		th.Panel:SetPos( 0, curY )
 		th.Panel:SetWide( self:GetWide() )
 
@@ -161,7 +166,7 @@ function THEATER:Update()
 
 	self.Title:SetText( string.upper( Theater:Name() ) )
 	self.Time:SetText( Theater:VideoTime() )
-	self.Video:SetText( Theater:VideoTitle() )
+	self.Video:SetText( T( Theater:VideoTitle() ) )
 
 end
 

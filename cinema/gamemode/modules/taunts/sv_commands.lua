@@ -12,6 +12,7 @@ local commands = {
 	laugh = "laugh",
 	muscle = "muscle",
 	-- point = "point",
+	robot = "robot",
 	-- salute = "salute",
 	sexy = "muscle",
 	wave = "wave",
@@ -32,15 +33,12 @@ hook.Add( "PlayerSay", "TheaterActCommands", function( ply, chat )
 
 			ply:SendLua( "RunConsoleCommand('act', '" .. commands[command] .. "')" )
 
-			local msg = {
-				theater.ColHighlight,
-				ply:Nick(),
-				theater.ColDefault,
-				" " .. command .. "s"
-			}
-
 			net.Start( "TheaterAnnouncement" )
-				net.WriteTable(msg)
+				net.WriteTable({
+					'ActCommand',
+					ply:Nick(),
+					command
+				})
 			net.Send( Location.GetPlayersInLocation( ply:GetLocation() ) )
 
 			return ""

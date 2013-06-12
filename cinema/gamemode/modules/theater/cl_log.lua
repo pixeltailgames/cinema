@@ -56,13 +56,10 @@ function LogRequest()
 	local duration = net.ReadInt(32)
 
 	-- Notify player of video added to queue
-	local announcement = {
-		ColHighlight,
-		title,
-		ColDefault,
-		" has been added to the queue."
-	}
-	AddAnnouncement( announcement )
+	AddAnnouncement( {
+		'Theater_VideoAddedToQueue',
+		title
+	} )
 
 	-- Escape strings
 	title = sql.SQLStr(title)

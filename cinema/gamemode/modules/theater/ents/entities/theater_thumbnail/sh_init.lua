@@ -7,6 +7,12 @@ function ENT:SetupDataTables()
 	self:NetworkVar( "String", 0, "TheaterName" )
 	self:NetworkVar( "String", 1, "Title" )
 	self:NetworkVar( "String", 2, "Thumbnail" )
+
+	if SERVER then
+		self:SetTitle('NoVideoPlaying')
+		self:SetTheaterName('Invalid')
+		self:SetThumbnail('')
+	end
 end
 
 function ENT:OnRemove()

@@ -241,6 +241,8 @@ function ReceiveVideo()
 	info.Type = net.ReadString()
 	info.Data = net.ReadString()
 	info.Title = net.ReadString()
+	info.OwnerName = net.ReadString()
+	info.OwnerSteamID = net.ReadString()
 
 	if IsVideoTimed(info.Type) then
 		info.StartTime = net.ReadFloat()
@@ -343,8 +345,12 @@ function ReceiveVoteSkips()
 	local skips = net.ReadInt(7)
 	local required = net.ReadInt(7)
 
-	local str = string.format( "%s has voted to skip (%s/%s)", name, skips, required )
-	AddAnnouncement( str )
+	AddAnnouncement( {
+		'Theater_PlayerVoteSkipped',
+		name,
+		skips,
+		required
+	} )
 
 	NumVoteSkips = skips
 	ReqVoteSkips = required
@@ -393,10 +399,13 @@ function LoadVideo( Video )
 	-- Keep previous video for refreshing the theater
 	LastVideo = Video
 
-	/*Msg("Loaded Video\n")
-	Msg("\tType:\t"..tostring(Video:Type()).."\n")
-	Msg("\tData:\t"..tostring(Video:Data()).."\n")
-	Msg("\tTime:\t"..tostring(startTime).."\n")
-	Msg("\tDur:\t"..tostring(Video:Duration()).."\n")*/
+	Msg("Loaded Video\n")
+	Msg("\tTitle:\t\t"..tostring(Video:Title()).."\n")
+	Msg("\tType:\t\t"..tostring(Video:Type()).."\n")
+	Msg("\tData:\t\t"..tostring(Video:Data()).."\n")
+	Msg("\tTime:\t\t"..tostring(startTime).."\n")
+	Msg("\tDuration:\t"..tostring(Video:Duration()).."\n")
+	Msg( string.format("\tRequested by %s (%s)", Video:GetOwnerName(),
+		Video:GetOwnerSteamID() ) .."\n" )
 
 end
