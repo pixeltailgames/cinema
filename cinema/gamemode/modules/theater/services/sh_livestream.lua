@@ -28,15 +28,17 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		
 		local response = util.JSONToTable(body)
 		
+		PrintTable(response)
+
 		if length == 0 then
             return onFailure("HTTP request failed (length = 0)")
         end
 		
-		if response.isLive == false then
-			return onFailure("Stream request failed (isLive = false)")
-		end
-		
 		response = response.channel
+		
+		if response.isLive == false then
+			return onFailure('Service_StreamOffline')
+		end
 		
 		local info = {}
 		info.thumbnail = response.image.url
