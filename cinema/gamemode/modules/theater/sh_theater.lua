@@ -180,6 +180,14 @@ function THEATER:VideoStartTime()
 	return self._Video and self._Video:StartTime() or 0
 end
 
+function THEATER:VideoOwnerName()
+	return self._Video and self._Video:GetOwnerName() or 'Invalid'
+end
+
+function THEATER:VideoOwnerSteamID()
+	return self._Video and self._Video:GetOwnerSteamID() or 'STEAM_0:0:0'
+end
+
 /*
 	Private Theater
 */
@@ -491,6 +499,8 @@ if SERVER then
 				net.WriteString( self:VideoType() )
 				net.WriteString( self:VideoData() )
 				net.WriteString( self:VideoTitle() )
+				net.WriteString( self:VideoOwnerName() )
+				net.WriteString( self:VideoOwnerSteamID() )
 
 				-- Timed video information
 				if IsVideoTimed(self:VideoType()) then

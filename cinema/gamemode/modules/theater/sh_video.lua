@@ -21,6 +21,9 @@ function VIDEO:Init( info, ply )
 		o._Votes = {}
 
 		o:AddVote(ply, true)
+	else
+		o._OwnerName = info.OwnerName
+		o._OwnerSteamID = info.OwnerSteamID
 	end
 
 
@@ -60,32 +63,31 @@ function VIDEO:Thumbnail()
 	return self._VideoThumbnail
 end
 
+/*
+	Owner
+*/
+function VIDEO:GetOwner()
+	return self._Owner
+end
+
+function VIDEO:GetOwnerName()
+	if IsValid(self:GetOwner()) then
+		return self:GetOwner():Nick()
+	else
+		return self._OwnerName
+	end
+end
+
+function VIDEO:GetOwnerSteamID()
+	if IsValid(self:GetOwner()) then
+		return self:GetOwner():SteamID()
+	else
+		return self._OwnerSteamID
+	end
+end
+
 if SERVER then
-
-	/*
-		Owner
-	*/
-	function VIDEO:GetOwner()
-		return self._Owner
-	end
-
-	function VIDEO:GetOwnerName()
-		if IsValid(self:GetOwner()) then
-			return self:GetOwner():Nick()
-		else
-			return self._OwnerName
-		end
-	end
 	
-	function VIDEO:GetOwnerSteamID()
-		if IsValid(self:GetOwner()) then
-			return self:GetOwner():SteamID()
-		else
-			return self._OwnerSteamID
-		end
-	end
-	
-
 	/*
 		Votes
 	*/

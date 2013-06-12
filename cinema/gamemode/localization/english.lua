@@ -32,7 +32,7 @@ LANG.Theater_LockedQueue 			= C(ColHighlight,"%s",ColDefault," has locked the th
 LANG.Theater_UnlockedQueue 			= C(ColHighlight,"%s",ColDefault," has unlocked the theater queue.")
 LANG.Theater_OwnerUseOnly 			= "Only the theater owner can use that."
 LANG.Theater_PublicVideoLength 		= "Public theater requests are limited to %s second(s) in length."
-LANG.Theater_PlayerVoteSkipped 		= "%s has voted to skip (%s/%s)"
+LANG.Theater_PlayerVoteSkipped 		= C(ColHighlight,"%s",ColDefault," has voted to skip ",ColHighlight,"(%s/%s)",ColDefault,".")
 LANG.Theater_VideoAddedToQueue 		= C(ColHighlight,"%s",ColDefault," has been added to the queue.")
 
 -- Warnings
