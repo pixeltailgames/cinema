@@ -1,4 +1,5 @@
 surface.CreateFont( "ScoreboardTitleSmall", { font = "Ultra", size = 28, weight = 400 } )
+surface.CreateFont( "ScoreboardTitleSmaller", { font = "Ultra", size = 22, weight = 400 } )
 surface.CreateFont( "ScoreboardTheaterName", { font = "Open Sans Condensed Light", size = 30, weight = 100 } )
 surface.CreateFont( "ScoreboardTheaterTime", { font = "Open Sans Condensed Bold", size = 16, weight = 600 } )
 surface.CreateFont( "ScoreboardTheaterVideo", { font = "Open Sans Condensed", size = 16, weight = 200 } )
@@ -120,11 +121,15 @@ function THEATERLIST:PerformLayout()
 
 	end
 
+	self:SetTall( curY )
+
 	self.Title:SizeToContents()
 	self.Title:SetTall( self.TitleHeight )
 	self.Title:CenterHorizontal()
 
-	self:SetTall( curY )
+	if self.Title:GetWide() > self:GetWide() and self.Title:GetFont() != "ScoreboardTitleSmaller" then
+		self.Title:SetFont( "ScoreboardTitleSmaller" )
+	end
 
 end
 

@@ -1,5 +1,6 @@
 
 surface.CreateFont( "ScoreboardHelp", { font = "Open Sans Condensed Light", size = 20, weight = 100 } )
+surface.CreateFont( "ScoreboardHelpSmall", { font = "Open Sans Condensed Light", size = 18, weight = 100 } )
 
 SETTINGS = {}
 SETTINGS.TitleHeight = 88
@@ -70,6 +71,21 @@ function SETTINGS:PerformLayout()
 		panel:InvalidateLayout()
 		curY = curY + 28
 
+		-- Resize label if needed for localization
+		if ValidPanel( panel.Label ) and panel.Label:GetFont() != "ScoreboardHelpSmall" then
+			
+			local px, py = panel:GetPos()
+
+			local x, y = panel.Label:GetPos()
+			local w, h = panel.Label:GetSize()
+
+			if ( px + x + w ) > self:GetWide() then
+				panel.Label:SetFont( "ScoreboardHelpSmall" )
+				panel.Label:SizeToContents()
+			end
+
+		end
+
 	end
 
 	self:SetTall( curY )
@@ -81,6 +97,10 @@ function SETTINGS:PerformLayout()
 	self.Help:SizeToContents()
 	self.Help:CenterHorizontal()
 	self.Help:AlignBottom( 10 )
+
+	if self.Help:GetWide() > self:GetWide() and self.Help:GetFont() != "ScoreboardHelpSmall" then
+		self.Help:SetFont( "ScoreboardHelpSmall" )
+	end
 
 end
 
@@ -130,9 +150,6 @@ function SETTINGS:Create()
 	LanguageSelect:AlignTop( self.TitleHeight + 124 )
 
 	LanguageSelect.OnSelect = function( self, index, value, data )
-
-		print("OnSelect", data)
-
 		RunConsoleCommand( "gmod_language", data )
 
 		if ValidPanel( Gui ) then 
@@ -152,7 +169,6 @@ function SETTINGS:Create()
 			GuiAdmin:Remove()
 			GuiAdmin = nil
 		end
-
 	end
 
 	-- Add language options
