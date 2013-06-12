@@ -30,7 +30,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 		-- Stream offline
 		if body == "" then
-			return onFailure("The requested stream is offline")
+			return onFailure( 'Service_StreamOffline' )
 		end
 
 		local response = util.JSONToTable(body)

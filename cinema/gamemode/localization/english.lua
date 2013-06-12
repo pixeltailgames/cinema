@@ -87,6 +87,11 @@ LANG.Settings_HidePlayersTooltip = "Reduce player visibility inside of theaters.
 LANG.Settings_MuteFocusLabel	= "Mute audio while alt-tabbed"
 LANG.Settings_MuteFocusTooltip	= "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)."
 
+-- Video Services
+LANG.Service_EmbedDisabled 		= "The requested video is embed disabled."
+LANG.Service_PurchasableContent = "The requested video is purchasable content and can't be played."
+LANG.Service_StreamOffline 		= "The requested stream is offline."
+
 -- Act command (don't bother translating this)
 -- modules/taunts/sv_commands.lua
 LANG.ActCommand = C(ColHighlight,"%s",ColDefault," %ss") -- e.g. Sam dances

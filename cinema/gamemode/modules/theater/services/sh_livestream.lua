@@ -31,7 +31,7 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		PrintTable(response)
 
 		if length == 0 then
-            return onFailure("HTTP request failed (length = 0)")
+            return onFailure(404)
         end
 		
 		response = response.channel
