@@ -28,8 +28,6 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		
 		local response = util.JSONToTable(body)
 		
-		PrintTable(response)
-
 		if length == 0 then
             return onFailure(404)
         end
