@@ -1,5 +1,5 @@
 -- Basic information
-LANG.Name		= "Spanish/EspaÒol"			-- Native name for language
+LANG.Name		= "Spanish / Espa√±ol"			-- Native name for language
 LANG.Id			= "es-ES"					-- Find corresponding ID in garrysmod/resource/localization
 LANG.Author		= "Robert Lind (ptown2)"	-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
@@ -27,13 +27,13 @@ LANG.Theater_ForceSkipped			= C(ColHighlight,"%s",ColDefault," ha obligado a omi
 LANG.Theater_PlayerReset			= C(ColHighlight,"%s",ColDefault," ha reiniciado el teatro.")
 LANG.Theater_LostOwnership			= "Usted ha perdido la propiedad y poder por salir de su teatro privado."
 LANG.Theater_NotifyOwnership		= "Usted es ahora el propietario de este teatro privado."
-LANG.Theater_OwnerLockedQueue		= "El dueÒo de este teatro ha cerrado la lista."
+LANG.Theater_OwnerLockedQueue		= "El due√±o de este teatro ha cerrado la lista."
 LANG.Theater_LockedQueue			= C(ColHighlight,"%s",ColDefault," ha cerrado la lista del teatro.")
 LANG.Theater_UnlockedQueue			= C(ColHighlight,"%s",ColDefault," ha abierto la lista del teatro.")
 LANG.Theater_OwnerUseOnly			= "Solamente el propietario de este teatro puede usar eso."
 LANG.Theater_PublicVideoLength		= "Las solicitudes en teatros publicos son limitados a %s segundo(s) largo de video."
 LANG.Theater_PlayerVoteSkipped		= C(ColHighlight,"%s",ColDefault," ha votado para omitir ",ColHighlight,"(%s/%s)",ColDefault,".")
-LANG.Theater_VideoAddedToQueue		= C(ColHighlight,"%s",ColDefault," fue aÒadido a la lista.")
+LANG.Theater_VideoAddedToQueue		= C(ColHighlight,"%s",ColDefault," fue a√±adido a la lista.")
 
 -- Warnings
 -- cl_init.lua
@@ -53,13 +53,13 @@ LANG.Refresh_Theater			= "Actualizar teatro"
 -- Theater controls
 -- modules/scoreboard/cl_admin.lua
 LANG.Theater_Admin				= "ADMIN"
-LANG.Theater_Owner				= "DUE—O"
+LANG.Theater_Owner				= "DUE√ëO"
 LANG.Theater_Skip				= "Omitir"
 LANG.Theater_Seek				= "Brincar"
 LANG.Theater_Reset				= "Reiniciar"
 LANG.Theater_ChangeName			= "Cambiar el nombre"
 LANG.Theater_QueueLock			= "Alternar la lista de videos"
-LANG.Theater_SeekQuery			= "HH:MM:SS o en segundos totales (e.g. 1:30:00 Û 5400)"
+LANG.Theater_SeekQuery			= "HH:MM:SS o en segundos totales (e.g. 1:30:00 √≥ 5400)"
 
 -- Theater list
 -- modules/scoreboard/cl_theaterlist.lua
@@ -72,7 +72,7 @@ LANG.Request_Clear				= "Eliminar"
 LANG.Request_DeleteTooltip		= "Remover el historial de este video"
 LANG.Request_PlayCount			= "%d solicitud(es)" -- e.g. 10 request(s)
 LANG.Request_Url				= "Solicitar el enlace"
-LANG.Request_Url_Tooltip		= "Pulsar para solicitar un enlace del video.\nEl boton ser· rojo cuando el enlace es v·lido."
+LANG.Request_Url_Tooltip		= "Pulsar para solicitar un enlace del video.\nEl boton ser√° rojo cuando el enlace es v√°lido."
 
 -- Scoreboard settings panel
 -- modules/scoreboard/cl_settings.lua
@@ -80,8 +80,8 @@ LANG.Settings_Title					= "AJUSTES"
 LANG.Settings_ClickActivate			= "PULSAR EL BOTON IZQUIERDO PARA ACTIVAR TU CURSOR"
 LANG.Settings_VolumeLabel			= "Volumen"
 LANG.Settings_VolumeTooltip			= "Pulsar los teclados +/- para incrementar o disminuir el volumen."
-LANG.Settings_HDLabel				= "ReproducciÛn de video en alta-definiciÛn"
-LANG.Settings_HDTooltip				= "Habilite la selecciÛn para videos en alta-definiciÛn. (Si necesario)"
+LANG.Settings_HDLabel				= "Reproducci√≥n de video en alta-definici√≥n"
+LANG.Settings_HDTooltip				= "Habilite la selecci√≥n para videos en alta-definici√≥n. (Si necesario)"
 LANG.Settings_HidePlayersLabel		= "Ocultar jugadores en el teatro"
 LANG.Settings_HidePlayersTooltip	= "Reduce la visibilidad de los jugadores en los teatros."
 LANG.Settings_MuteFocusLabel		= "Desactivar el audio del teatro cuando estas afuera de foco."
