@@ -23,9 +23,12 @@ end
 function SETTINGS:NewSetting( control, text, convar )
 
 	local Control = vgui.Create( control, self )
-	Control:SetConVar( convar )
-	Control:SetText( text )
+	Control:SetText( text or "" )
 	Control:SetWidth( 300 )
+
+	if convar then
+		Control:SetConVar( convar )
+	end
 
 	if !table.HasValue( self.Settings, Control ) then
 		table.insert( self.Settings, Control )
@@ -52,7 +55,9 @@ end
 
 function SETTINGS:Think()
 
-	self.Help:SetVisible( !Gui.MouseEnabled )
+	if ValidPanel( Gui ) then
+		self.Help:SetVisible( !Gui.MouseEnabled )
+	end
 
 end
 
@@ -117,6 +122,45 @@ function SETTINGS:Create()
 	MuteAltTab.Label:SetFont( "LabelFont" )
 	MuteAltTab.Label:SetColor( color_white )
 	MuteAltTab.Label:SetTall(50)
+
+	-- Languages
+	local LanguageSelect = self:NewSetting( "DComboBox" )
+	LanguageSelect:SetWidth( 224 )
+	LanguageSelect:AlignLeft( 16 )
+	LanguageSelect:AlignTop( self.TitleHeight + 124 )
+
+	LanguageSelect.OnSelect = function( self, index, value, data )
+
+		print("OnSelect", data)
+
+		RunConsoleCommand( "gmod_language", data )
+
+		if ValidPanel( Gui ) then 
+			Gui:Remove()
+			Gui = nil
+			timer.Simple( 0.1, function()
+				GAMEMODE:ScoreboardShow()
+			end )
+		end
+
+		if ValidPanel( GuiQueue ) then
+			GuiQueue:Remove()
+			GuiQueue = nil
+		end
+
+		if ValidPanel( GuiAdmin ) then
+			GuiAdmin:Remove()
+			GuiAdmin = nil
+		end
+
+	end
+
+	-- Add language options
+	local CurrentLanguage = translations.GetLanguage()
+	for idx, lang in pairs( translations.GetLanguages() ) do
+		LanguageSelect:AddChoice( lang.Name, lang.Id,
+			CurrentLanguage == lang.Id )
+	end
 
 end
 

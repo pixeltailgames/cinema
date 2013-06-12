@@ -4,11 +4,15 @@ if CLIENT then
 
 	translations = {}
 
-	Languages = {}
+	local Languages = {}
 	local DefaultId = "en"
 
 	function translations.GetLanguage()
 		return GetConVarString("gmod_language")
+	end
+
+	function translations.GetLanguages()
+		return Languages
 	end
 
 	function translations.Format( key, ... )
