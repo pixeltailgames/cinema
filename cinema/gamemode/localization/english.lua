@@ -10,7 +10,8 @@ LANG.Voteskips					= "Voteskips"
 LANG.Loading					= "Loading..."
 LANG.Invalid					= "[INVALID]"
 LANG.NoVideoPlaying				= "No video playing"
-LANG.ActCommand 				= "%s %ss" -- e.g. Sam dances
+LANG.Cancel						= "Cancel"
+LANG.Set						= "Set"
 
 -- Theater Announcements
 -- modules/theater/cl_init.lua
@@ -58,6 +59,7 @@ LANG.Theater_Seek				= "Seek"
 LANG.Theater_Reset				= "Reset"
 LANG.Theater_ChangeName			= "Change Name"
 LANG.Theater_QueueLock			= "Toggle Queue Lock"
+LANG.Theater_SeekQuery			= "HH:MM:SS or number of seconds (e.g. 1:30:00 or 5400)"
 
 -- Theater list
 -- modules/scoreboard/cl_theaterlist.lua
@@ -84,3 +86,7 @@ LANG.Settings_HidePlayersLabel	= "Hide Players In Theater"
 LANG.Settings_HidePlayersTooltip = "Reduce player visibility inside of theaters."
 LANG.Settings_MuteFocusLabel	= "Mute audio while alt-tabbed"
 LANG.Settings_MuteFocusTooltip	= "Mute theater volume while Garry's Mod is out-of-focus (e.g. you alt-tabbed)."
+
+-- Act command (don't bother translating this)
+-- modules/taunts/sv_commands.lua
+LANG.ActCommand = C(ColHighlight,"%s",ColDefault," %ss") -- e.g. Sam dances

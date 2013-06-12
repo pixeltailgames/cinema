@@ -39,13 +39,13 @@ function ADMIN:Init()
 	SeekButton:SetText( T'Theater_Seek' )
 	SeekButton.DoClick = function(self)
 
-		Derma_StringRequest( "Enter the desired seek time in seconds", 
-			"Time in seconds", 
-			"0", 
+		Derma_StringRequest( T'Theater_Seek', 
+			T'Theater_SeekQuery', 
+			"0",
 			function( strTextOut ) RunConsoleCommand( "cinema_seek", strTextOut ) end,
 			function( strTextOut ) end,
-			"Seek", 
-			"Cancel" )
+			T'Theater_Seek', 
+			T'Cancel' )
 
 	end
 	self.Options:AddItem(SeekButton)
@@ -69,13 +69,13 @@ function ADMIN:Init()
 		local NameButton = vgui.Create( "TheaterButton" )
 		NameButton:SetText( T'Theater_ChangeName' )
 		NameButton.DoClick = function(self)
-			Derma_StringRequest( "Set the name of the theater", 
-				"Name of the theater", 
-				Theater:Name(), 
+			Derma_StringRequest( T'Theater_ChangeName', 
+				"",
+				Theater:Name(),
 				function( strTextOut ) RunConsoleCommand( "cinema_name", strTextOut ) end,
 				function( strTextOut ) end,
-				"Set Name", 
-				"Cancel" )
+				T'Set',
+				T'Cancel' )
 		end
 		self.Options:AddItem(NameButton)
 
