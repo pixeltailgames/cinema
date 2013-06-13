@@ -407,9 +407,21 @@ if SERVER then
 			} )
 		end
 
+
 		-- Create video object and check if the page is valid
 		local vid = VIDEO:Init(info, ply)
+		local VideoType = vid:Type()
+
 		vid:RequestInfo( function( success )
+
+			-- Revalidate video in the case its type changes
+			if success and VideoType != vid:Type() then
+				service = GetServiceByClass( vid:Type() )
+				if service and service.TheaterType and (self:GetFlags() != service.TheaterType) then
+					self:AnnounceToPlayer( ply, 'Theater_InvalidRequest' )
+					return
+				end
+			end
 
 			-- Failed to grab video info, etc.
 			if !success then
