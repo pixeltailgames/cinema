@@ -1,10 +1,9 @@
 -- Basic information
-LANG.Name		= "Spanish / Español"		-- Native name for language
+LANG.Name		= "Español"					-- Native name for language
 LANG.Id			= "es-ES"					-- Find corresponding ID in garrysmod/resource/localization
 LANG.Author		= "Robert Lind (ptown2)"	-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
-LANG.Cinema						= "CINEMA"
 LANG.Volume						= "Volumen"
 LANG.Voteskips					= "Omitido por votos"
 LANG.Loading					= "Cargando..."
@@ -91,7 +90,3 @@ LANG.Settings_MuteFocusTooltip		= "Habilite la selección para desactivar el aud
 LANG.Service_EmbedDisabled			= "El video solicitado esta deshabilitado."
 LANG.Service_PurchasableContent		= "El video solicitado esta para compra y no se puede habilitar."
 LANG.Service_StreamOffline			= "El video en vivo solicitado está fuera de servicio."
-
--- Act command (don't bother translating this)
--- modules/taunts/sv_commands.lua
-LANG.ActCommand						= C(ColHighlight,"%s",ColDefault," %ss") -- e.g. Sam dances
