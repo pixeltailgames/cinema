@@ -1,6 +1,6 @@
 surface.CreateFont( "ScoreboardTitle", { font = "Ultra", size = 50, weight = 400 } )
 surface.CreateFont( "ScoreboardTitleSmall", { font = "Ultra", size = 28, weight = 400 } )
-surface.CreateFont( "ScoreboardTitleSmaller", { font = "Ultra", size = 22, weight = 400 } )
+surface.CreateFont( "ScoreboardTitleSmaller", { font = "Ultra", size = 18, weight = 400 } )
 surface.CreateFont( "ScoreboardServerName", { font = "Open Sans Condensed Light", size = 28, weight = 200 } )
 surface.CreateFont( "ScoreboardMapName", { font = "Open Sans Condensed Light", size = 22, weight = 200 } )
 surface.CreateFont( "ScoreboardName", { font = "Open Sans", size = 20, weight = 800 } )
