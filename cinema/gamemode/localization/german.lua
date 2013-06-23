@@ -45,7 +45,7 @@ LANG.Warning_OSX_Line2			= "Drücke F1 um Tipps bei der Fehlerbehebung zu bekomm
 -- modules/scoreboard/cl_queue.lua
 -- In English the 2nd Words are also written with capital Letters.
 -- But here in German I need up to 3 words, it would look weird here
-LANG.Queue_Title				= "WARTELISTE" -- WARTESCHLANGE sounds better, but doesn't fit
+LANG.Queue_Title				= "WARTESCHLANGE"
 LANG.Request_Video 				= "Video anfordern"
 LANG.Vote_Skip 					= "Für Überspringen stimmen"
 LANG.Toggle_Fullscreen 			= "Vollbildmodus umschalten"

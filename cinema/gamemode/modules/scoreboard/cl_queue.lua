@@ -159,6 +159,10 @@ function QUEUE:PerformLayout()
 	self.Title:SetTall( self.TitleHeight )
 	self.Title:CenterHorizontal()
 
+	if self.Title:GetWide() > self:GetWide() and self.Title:GetFont() != "ScoreboardTitleSmall" then
+		self.Title:SetFont( "ScoreboardTitleSmall" )
+	end
+
 	self.VideoList:Dock( FILL )
 
 	self.Options:Dock( BOTTOM )
