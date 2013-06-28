@@ -144,38 +144,15 @@ function SETTINGS:Create()
 	MuteAltTab.Label:SetTall(50)
 
 	-- Languages
-	local LanguageSelect = self:NewSetting( "DComboBox" )
+	local LanguageSelect = self:NewSetting( "DLanguageSelect" )
 	LanguageSelect:SetWidth( 224 )
 	LanguageSelect:AlignLeft( 16 )
 	LanguageSelect:AlignTop( self.TitleHeight + 124 )
 
-	LanguageSelect.OnSelect = function( self, index, value, data )
-		RunConsoleCommand( "gmod_language", data )
-
-		if ValidPanel( Gui ) then 
-			Gui:Remove()
-			Gui = nil
-			timer.Simple( 0.1, function()
-				GAMEMODE:ScoreboardShow()
-			end )
-		end
-
-		if ValidPanel( GuiQueue ) then
-			GuiQueue:Remove()
-			GuiQueue = nil
-		end
-
-		if ValidPanel( GuiAdmin ) then
-			GuiAdmin:Remove()
-			GuiAdmin = nil
-		end
-	end
-
 	-- Add language options
 	local CurrentLanguage = translations.GetLanguage()
 	for idx, lang in pairs( translations.GetLanguages() ) do
-		LanguageSelect:AddChoice( lang.Name, lang.Id,
-			CurrentLanguage == lang.Id )
+		LanguageSelect:AddLanguage( lang, CurrentLanguage == lang.Id )
 	end
 
 end

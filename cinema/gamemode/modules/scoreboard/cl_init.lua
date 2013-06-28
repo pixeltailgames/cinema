@@ -84,6 +84,7 @@ function GM:ScoreboardHide()
 	if ValidPanel( Gui ) then
 	    Gui:SetVisible( false )
 	    GAMEMODE:HideMouse()
+	    CloseDermaMenus()
 	end
 
 end

@@ -95,3 +95,6 @@ LANG.Service_StreamOffline 		= "The requested stream is offline."
 -- Act command (don't bother translating this)
 -- modules/taunts/sv_commands.lua
 LANG.ActCommand = C(ColHighlight,"%s",ColDefault," %ss") -- e.g. Sam dances
+
+-- Version 1.1
+LANG.TranslationsCredit = "Translations by %s"
