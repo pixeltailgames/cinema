@@ -91,7 +91,3 @@ LANG.Settings_MuteFocusTooltip	= "Mykistä teatterin audio kun Garry's Mod ei ol
 LANG.Service_EmbedDisabled 		= "Pyydetty video ei ole upotettavissa."
 LANG.Service_PurchasableContent = "Pyydetty video on ostettavaa materiaalia eikä ole toistettavissa."
 LANG.Service_StreamOffline 		= "Pyydetty videostreami on offline."
-
--- Act command (don't bother translating this)
--- modules/taunts/sv_commands.lua
-LANG.ActCommand = C(ColHighlight,"%s",ColDefault," %ss") -- e.g. Sam dances
