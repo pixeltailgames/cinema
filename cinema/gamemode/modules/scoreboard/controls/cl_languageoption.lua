@@ -211,7 +211,7 @@ function PANEL:SetLanguage( name, id, author )
 	self:SetText( name )
 	self.Flag:SetMaterial( MatStr:format( id ) )
 
-	if author then
+	if author and author != "" then
 		self:SetTooltip( T('TranslationsCredit',author) )
 	end
 

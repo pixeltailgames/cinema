@@ -1,7 +1,7 @@
 -- Basic information
 LANG.Name		= "English"	-- Native name for language
 LANG.Id			= "en"		-- Find corresponding ID in garrysmod/resource/localization
-LANG.Author		= "Sam"		-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
+LANG.Author		= ""		-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
 LANG.Cinema						= "CINEMA"
