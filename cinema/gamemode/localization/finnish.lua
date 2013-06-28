@@ -31,7 +31,7 @@ LANG.Theater_OwnerLockedQueue 		= "Teatterin omistaja on lukinnut videojonon."
 LANG.Theater_LockedQueue 			= C(ColHighlight,"%s",ColDefault," on lukinnut videojonon.")
 LANG.Theater_UnlockedQueue 			= C(ColHighlight,"%s",ColDefault," on avannut teatterin videojonon.")
 LANG.Theater_OwnerUseOnly 			= "Vain teatterin omistaja voi käyttää tuota."
-LANG.Theater_PublicVideoLength 		= "Julkisen teatterin pyynnöt ovat rajoitettu %s sekunnin pituuteen."
+LANG.Theater_PublicVideoLength 		= "Julkisen teatterin videopyynnöt ovat rajoitettu %s sekunnin pituuteen."
 LANG.Theater_PlayerVoteSkipped 		= C(ColHighlight,"%s",ColDefault," on äänestänyt ohittamista ",ColHighlight,"(%s/%s)",ColDefault,".")
 LANG.Theater_VideoAddedToQueue 		= C(ColHighlight,"%s",ColDefault," on lisätty videojonoon.")
 
@@ -58,12 +58,12 @@ LANG.Theater_Skip				= "Ohita"
 LANG.Theater_Seek				= "Siirry kohtaan"
 LANG.Theater_Reset				= "Käynnistä uudelleen"
 LANG.Theater_ChangeName			= "Vaihda nimi"
-LANG.Theater_QueueLock			= "Videojonon lukko käyttöön"
+LANG.Theater_QueueLock			= "Videojonon lukko on/off"
 LANG.Theater_SeekQuery			= "HH:MM:SS tai sekunnit numeroina (esim. 1:30:00 tai 5400)"
 
 -- Theater list
 -- modules/scoreboard/cl_theaterlist.lua
-LANG.TheaterList_NowShowing		= "NYT NÄYTETÄÄN"
+LANG.TheaterList_NowShowing		= "NYT TOISTOSSA"
 
 -- Request Panel
 -- modules/scoreboard/cl_request.lua
@@ -71,13 +71,13 @@ LANG.Request_History			= "HISTORIA"
 LANG.Request_Clear				= "Tyhjennä"
 LANG.Request_DeleteTooltip		= "Poista video historiasta"
 LANG.Request_PlayCount			= "%d pyyntö(ä)" -- esim. 10 pyyntö(ä)
-LANG.Request_Url				= "Pyydä URL:ia"
-LANG.Request_Url_Tooltip		= "Paina pyytääksesi kelvollista URL:ia.\nPainike on punainen, jos URL on kelvollinen."
+LANG.Request_Url				= "Pyydä URL:ia toistettavaksi"
+LANG.Request_Url_Tooltip		= "Paina pyytääksesi kelvollista URL:ia toistettavaksi.\nPainike on punainen, jos URL on kelvollinen."
 
 -- Scoreboard settings panel
 -- modules/scoreboard/cl_settings.lua
 LANG.Settings_Title				= "ASETUKSET"
-LANG.Settings_ClickActivate		= "KLIKKAA AKTIVOIDAKSESI HIIREN"
+LANG.Settings_ClickActivate		= "KLIKKAA AKTIVOIDAKSESI HIIRI"
 LANG.Settings_VolumeLabel		= "Äänenvoimakkuus"
 LANG.Settings_VolumeTooltip		= "Käytä +/- näppäimiä nostaaksesi/pienentääksesi äänenvoimakkuutta."
 LANG.Settings_HDLabel			= "HD Videoiden toisto"
