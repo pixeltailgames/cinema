@@ -180,12 +180,12 @@ function PANEL:OpenMenu( pControlOpener )
 	end
 
 	self.Menu = DermaMenu()
-	self.Menu.AddOption = function( self, strName, strAuthor, funcFunction )
+	self.Menu.AddOption = function( self, strName, strId, strAuthor, funcFunction )
 
-		local pnl = vgui.Create( "DMenuOption", self )
+		local pnl = vgui.Create( "DLanguageOption", self )
 		pnl:SetMenu( self )
-		pnl:SetText( strName or "Language is missing name!" )
-		if strAuthor then pnl:SetTooltip( T('TranslationsCredit',strAuthor) ) end
+		pnl:SetLanguage( strName, strId, strAuthor )
+
 		if ( funcFunction ) then pnl.DoClick = funcFunction end
 
 		self:AddPanel( pnl )
@@ -195,7 +195,8 @@ function PANEL:OpenMenu( pControlOpener )
 	end
 
 		for k, v in pairs( self.Choices ) do
-			self.Menu:AddOption( v.Name, v.Author, function() self:ChooseOption( v, k ) end )
+			self.Menu:AddOption( v.Name, v.Id, v.Author,
+				function() self:ChooseOption( v, k ) end )
 		end
 		
 		local x, y = self:LocalToScreen( 0, self:GetTall() )
