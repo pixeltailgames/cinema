@@ -422,7 +422,23 @@ if SERVER then
 					return
 				end
 			end
+		
+			-- Check for duplicate requests again in the case it was requested again while processing
+			for _, video in pairs(self:GetQueue()) do
 
+				if video:Type() == VideoType and
+					video:Data() == vid:Data() then
+
+					-- Place vote for player
+					video:AddVote(ply, true)
+
+					self:AnnounceToPlayer( ply, 'Theater_AlreadyQueued' )
+
+					return
+				end
+
+			end
+		
 			-- Failed to grab video info, etc.
 			if !success then
 				self:AnnounceToPlayer( ply, 'Theater_RequestFailed' )
