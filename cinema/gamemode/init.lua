@@ -7,6 +7,8 @@ AddCSLuaFile( 'translations.lua' )
 include( 'shared.lua' )
 include( 'player.lua' )
 
+resource.AddWorkshop( "118824086" )
+
 timer.Create( "TheaterPlayerThink", 1, 0, function()
 	for _, v in pairs( player.GetAll() ) do
 		if ( !IsValid( v ) ) then continue end

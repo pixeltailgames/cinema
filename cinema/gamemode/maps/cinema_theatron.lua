@@ -1,32 +1,3 @@
-if SERVER then
-	resource.AddDirectory( "materials/sunabouzu" )
-	resource.AddDirectory( "materials/models/mansion" )
-	resource.AddDirectory( "materials/models/sunabouzu" )
-	resource.AddDirectory( "models/sunabouzu" )
-	resource.AddDirectory( "models/mansion" )
-	resource.AddDirectory( "sound/sunabouzu" )
-
-	resource.AddFile( "materials/decals/overlay_light_generic.vmt" )
-	resource.AddFile( "materials/decals/overlay_light_guide.vmt" )
-
-	resource.AddFile( "materials/models/gmod_tower/theater_seat.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_left.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_left_cup.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_left_up.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_right.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_right_cup.vmt" )
-	resource.AddFile( "materials/models/gmod_tower/theater_seat_right_down.vmt" )
-	resource.AddFile( "models/gmod_tower/theater_seat.mdl" )
-
-	resource.AddFile( "materials/sprites/lensflare_01.vmt" )
-	resource.AddFile( "materials/sprites/lensflare_01b.vmt" )
-	resource.AddFile( "materials/sprites/marker_light.vmt" )
-
-	resource.AddFile( "materials/tools/toolswhite.vmt" )
-
-end
-
-
 game.AddParticles( "particles/cinema_fx.pcf" )
 PrecacheParticleSystem( "cn_rain" )
 

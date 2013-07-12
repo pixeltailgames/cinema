@@ -2,10 +2,6 @@ AddCSLuaFile('cl_init.lua')
 AddCSLuaFile('sh_init.lua')
 include('sh_init.lua')
 
-resource.AddFile( "models/sunabouzu/thumbnail_case.mdl" )
-resource.AddFile( "materials/models/sunabouzu/thumbnail_case.vmt" )
-resource.AddFile( "materials/theater/STATIC.vmt" )
-
 function ENT:Initialize()
 
 	self:SetModel( self.Model )
