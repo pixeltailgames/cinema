@@ -7,7 +7,8 @@ AddCSLuaFile( 'translations.lua' )
 include( 'shared.lua' )
 include( 'player.lua' )
 
-resource.AddWorkshop( "118824086" )
+resource.AddWorkshop( "118824086" ) -- cinema gamemode
+resource.AddWorkshop( "119060917" ) -- cinema_theatron
 
 timer.Create( "TheaterPlayerThink", 1, 0, function()
 	for _, v in pairs( player.GetAll() ) do
