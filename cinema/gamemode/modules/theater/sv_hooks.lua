@@ -166,3 +166,20 @@ local function PlayerChangeTheater( ply, loc, old )
 
 end
 hook.Add( "PlayerChangeLocation", "TheaterInit", PlayerChangeTheater )
+
+/*---------------------------------------------------------------------------
+	Name: PreVoteSkipAccept
+	Desc: Called before a voteskip is added. 
+		Return false to stop the skip from being added.
+---------------------------------------------------------------------------*/
+function GM:PreVoteSkipAccept (ply, Theater)
+
+end
+
+/*---------------------------------------------------------------------------
+	Name: PostVoteSkipAccept
+	Desc: Called after a voteskip is added. 
+---------------------------------------------------------------------------*/
+function GM:PostVoteSkipAccept (ply, Theater)
+
+end
