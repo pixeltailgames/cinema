@@ -113,14 +113,6 @@ function PANEL:Think()
 
 end
 
-function PANEL:Paint()
-
-	if ( self:IsLoading() ) then
-		return true
-	end
-
-end
-
 function PANEL:QueueJavascript( js )
 
 	--
@@ -224,8 +216,4 @@ end
 function PANEL:FinishedURL( url )
 end
 
-function PANEL:Remove()
-	self.BaseClass.Remove( self )
-end
-
-derma.DefineControl( "TheaterHTML", "Extended DHTML control", PANEL, "DHTML" )
+derma.DefineControl( "TheaterHTML", "Extended DHTML control", PANEL, "Awesomium" )

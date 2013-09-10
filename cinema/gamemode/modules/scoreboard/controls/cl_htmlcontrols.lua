@@ -42,7 +42,14 @@ function PANEL:Init()
 	self.HomeButton:SetMaterial( "gui/HTML/home" )
 	self.HomeButton:Dock( LEFT )
 	self.HomeButton:DockMargin( Spacing, Margins, Spacing*3, Margins )
-	self.HomeButton.DoClick = function() if ( self.HTML.URL == self.HomeURL ) then return end self.HTML:Stop() self.HTML:OpenURL( self.HomeURL ) end
+	self.HomeButton.DoClick = function()
+		if not self:IsLoading() and self.HTML.URL == self.HomeURL then
+			return
+		end
+
+		self.HTML:Stop()
+		self.HTML:OpenURL( self.HomeURL )
+	end
 	
 	self.AddressBar = vgui.Create( "DTextEntry", self )
 	self.AddressBar:Dock( FILL )
