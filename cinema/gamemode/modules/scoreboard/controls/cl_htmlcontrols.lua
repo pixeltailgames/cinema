@@ -21,21 +21,35 @@ function PANEL:Init()
 	self.BackButton:SetMaterial( "gui/HTML/back" )
 	self.BackButton:Dock( LEFT )
 	self.BackButton:DockMargin( Spacing*3, Margins, Spacing, Margins )
-	self.BackButton.DoClick = function() self.BackButton:SetDisabled( true ) self.HTML:HTMLBack(); self.Cur = self.Cur - 1; self.Navigating = true end
+	self.BackButton.DoClick = function()
+		self.BackButton:SetDisabled( true )
+		self.HTML:HTMLBack()
+		self.Cur = self.Cur - 1
+		self.Navigating = true
+	end
 	
 	self.ForwardButton = vgui.Create( "DImageButton", self )
 	self.ForwardButton:SetSize( ButtonSize, ButtonSize )
 	self.ForwardButton:SetMaterial( "gui/HTML/forward" )
 	self.ForwardButton:Dock( LEFT )
 	self.ForwardButton:DockMargin( Spacing, Margins, Spacing, Margins )
-	self.ForwardButton.DoClick = function() self.ForwardButton:SetDisabled( true ) self.HTML:HTMLForward(); self.Cur = self.Cur + 1; self.Navigating = true end
+	self.ForwardButton.DoClick = function()
+		self.ForwardButton:SetDisabled( true )
+		self.HTML:HTMLForward()
+		self.Cur = self.Cur + 1
+		self.Navigating = true
+	end
 	
 	self.RefreshButton = vgui.Create( "DImageButton", self )
 	self.RefreshButton:SetSize( ButtonSize, ButtonSize )
 	self.RefreshButton:SetMaterial( "gui/HTML/refresh" )
 	self.RefreshButton:Dock( LEFT )
 	self.RefreshButton:DockMargin( Spacing, Margins, Spacing, Margins )
-	self.RefreshButton.DoClick = function() self.RefreshButton:SetDisabled( true ) self.Refreshing = true; self.HTML:Refresh() end
+	self.RefreshButton.DoClick = function()
+		self.RefreshButton:SetDisabled( true )
+		self.Refreshing = true
+		self.HTML:Refresh()
+	end
 	
 	self.HomeButton = vgui.Create( "DImageButton", self )
 	self.HomeButton:SetSize( ButtonSize, ButtonSize )
@@ -43,10 +57,6 @@ function PANEL:Init()
 	self.HomeButton:Dock( LEFT )
 	self.HomeButton:DockMargin( Spacing, Margins, Spacing*3, Margins )
 	self.HomeButton.DoClick = function()
-		if not self:IsLoading() and self.HTML.URL == self.HomeURL then
-			return
-		end
-
 		self.HTML:Stop()
 		self.HTML:OpenURL( self.HomeURL )
 	end
@@ -54,7 +64,10 @@ function PANEL:Init()
 	self.AddressBar = vgui.Create( "DTextEntry", self )
 	self.AddressBar:Dock( FILL )
 	self.AddressBar:DockMargin( Spacing, Margins * 3, Spacing, Margins * 3 )
-	self.AddressBar.OnEnter = function() self.HTML:Stop() self.HTML:OpenURL( self.AddressBar:GetValue() ) end
+	self.AddressBar.OnEnter = function()
+		self.HTML:Stop()
+		self.HTML:OpenURL( self.AddressBar:GetValue() )
+	end
 	
 	self.RequestButton = vgui.Create( "TheaterButton", self )
 	self.RequestButton:SetSize( ButtonSize*8, ButtonSize )
@@ -79,8 +92,6 @@ function PANEL:Init()
 	self.BorderSize = 4
 	self.BackgroundColor = Color( 33, 33, 33, 255 )
 	self.HomeURL = "http://www.google.com"
-	
-	
 
 end
 
