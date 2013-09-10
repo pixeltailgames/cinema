@@ -658,7 +658,7 @@ if SERVER then
 	end
 
 	function THEATER:VoteSkip( ply )
-
+	
 		-- Can't vote skip if the queue is locked
 		if self:IsQueueLocked() then return end
 
@@ -670,9 +670,15 @@ if SERVER then
 
 		-- Ensure the player hasn't already voted
 		if self:HasPlayerVotedToSkip(ply) then return end
+		
+		-- Give hooks a chance to deny the voteskip
+		if hook.Run("PreVoteSkipAccept", ply, self) == false then return end
 
 		-- Insert player into list of vote skips
 		table.insert(self._SkipVotes, ply)
+		
+		-- Run post accept hook
+		hook.Run("PostVoteSkipAccept", ply, self)
 
 		-- Notify theater players of vote skip
 		net.Start( "TheaterVoteSkips" )
