@@ -4,7 +4,7 @@ LANG.Id			= "ru"		-- Find corresponding ID in garrysmod/resource/localization
 LANG.Author		= "Joker[Rus]"		-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
-LANG.Cinema						= "Кинотеатр"
+LANG.Cinema						= "CINEMA"
 LANG.Volume						= "Громкость"
 LANG.Voteskips					= "Пропуск"
 LANG.Loading					= "Загрузка..."

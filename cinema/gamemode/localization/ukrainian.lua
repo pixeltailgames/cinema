@@ -4,14 +4,14 @@ LANG.Id                 = "uk"          -- Find corresponding ID in garrysmod/re
 LANG.Author             = "Joker[Rus]"         -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
-LANG.Cinema                                             = "Кінотеатр"
-LANG.Volume                                             = "Гучність"
+LANG.Cinema                                     = "CINEMA"
+LANG.Volume                                     = "Гучність"
 LANG.Voteskips                                  = "Пропуск"
 LANG.Loading                                    = "Завантаження..."
 LANG.Invalid                                    = "[НЕПРАВИЛЬНО]"
 LANG.NoVideoPlaying                             = "Немае Відео"
-LANG.Cancel                                             = "Відміна"
-LANG.Set                                                = "Встановити"
+LANG.Cancel                                     = "Відміна"
+LANG.Set                                        = "Встановити"
 
 -- Theater Announcements
 -- modules/theater/cl_init.lua

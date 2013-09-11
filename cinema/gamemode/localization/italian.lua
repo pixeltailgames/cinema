@@ -20,7 +20,7 @@ LANG.Set	= "Setta"
 LANG.Theater_VideoRequestedBy = C("Video corrente richiesto da ",ColHighlight,"%s",ColDefault,".")
 LANG.Theater_InvalidRequest = "Richiesta non valida."
 LANG.Theater_AlreadyQueued = "Il video richiesto è gia in coda."
-LANG.Theater_ProcessingRequest = C("Processando la richiesta di ",ColHighlight,"%s",ColDefault," ...")
+LANG.Theater_ProcessingRequest = C("Richiedendo il video a ",ColHighlight,"%s",ColDefault," ...")
 LANG.Theater_RequestFailed = "Si è verificato un problema nella richiesta del video."
 LANG.Theater_Voteskipped = "Il seguente video è stato saltato a causa di un voto."
 LANG.Theater_ForceSkipped = C(ColHighlight,"%s",ColDefault," ha forzato il salto del video.")
@@ -38,7 +38,7 @@ LANG.Theater_VideoAddedToQueue = C(ColHighlight,"%s",ColDefault," è stato aggiu
 -- Warnings
 -- cl_init.lua
 LANG.Warning_Unsupported_Line1	= "La corrente mappa non è supportata da cinema gamemode"
-LANG.Warning_Unsupported_Line2	= "Premi f1 per aprire la mappa officiale nel Workshop steam"
+LANG.Warning_Unsupported_Line2	= "Premi f1 per aprire la mappa ufficiale nel Workshop steam"
 LANG.Warning_OSX_Line1	= "Utenti mac possono incontrare schermi bianchi all interno del cinema"
 LANG.Warning_OSX_Line2	= "Premi f1 per visionare i consigli e rimuovere questo messaggio"
 
@@ -54,11 +54,11 @@ LANG.Refresh_Theater	= "Ricarica teatro"
 -- modules/scoreboard/cl_admin.lua
 LANG.Theater_Admin	= "AMMINISTRATORE"
 LANG.Theater_Owner	= "PROPIETARIO"
-LANG.Theater_Skip	= "Skip"
-LANG.Theater_Seek	= "Seek"
-LANG.Theater_Reset	= "Reset"
-LANG.Theater_ChangeName	= "Change Name"
-LANG.Theater_QueueLock	= "Toggle Queue Lock"
+LANG.Theater_Skip	= "Salta"
+LANG.Theater_Seek	= "Ripeti"
+LANG.Theater_Reset	= "Resetta"
+LANG.Theater_ChangeName	= "Cambia nome"
+LANG.Theater_QueueLock	= "Blocca la coda"
 LANG.Theater_SeekQuery	= "HH:MM:SS o numero di secondi (es. 1:30:00 o 5400)"
 
 -- Theater list
@@ -76,7 +76,7 @@ LANG.Request_Url_Tooltip	= "Premi per richiedere un URL valido.\nil bottone sar�
 
 -- Scoreboard settings panel
 -- modules/scoreboard/cl_settings.lua
-LANG.Settings_Title	= "IMPOSTAZIONE"
+LANG.Settings_Title	= "IMPOSTAZIONI"
 LANG.Settings_ClickActivate	= "CLICCA PER ATTIVARE IL MUOSE"
 LANG.Settings_VolumeLabel	= "Volume"
 LANG.Settings_VolumeTooltip	= "Usa i tasti +/- per aumentare/diminuire il volume."
