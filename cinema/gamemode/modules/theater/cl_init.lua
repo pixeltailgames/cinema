@@ -379,24 +379,14 @@ function LoadVideo( Video )
 
 	end
 
-	if not hook.Run( "PreVideoLoad", Video ) then return end
+	if hook.Run( "PreVideoLoad", Video ) then return end
 
-	if Video:Type() == "url" then
-		panel:OpenURL( Video:Data() )
-	elseif panel.URL != theaterUrl then
+	local service = theater.GetServiceByClass( Video:Type() )
+	if service then
+		service:LoadVideo( Video, panel )
+	else
 		panel:OpenURL( theaterUrl )
 	end
-
-	local startTime = CurTime() - Video:StartTime()
-
-	-- Set the volume before playing anything
-	local str = string.format( "if (window.theater) theater.setVolume(%s)", GetVolume() )
-	panel:QueueJavascript( str )
-
-	-- Let the webpage handle loading a video
-	str = string.format( "if (window.theater) theater.loadVideo( '%s', '%s', %s );",
-		Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
-	panel:QueueJavascript( str )
 
 	hook.Run( "PostVideoLoad", Video )
 

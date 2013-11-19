@@ -40,4 +40,35 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 	onFailure( "GetVideoInfo: No implementation found for Video API." )
 end
 
+if CLIENT then
+	
+	function SERVICE:LoadVideo( Video, panel )
+
+		panel.OnFinishLoading = function() end
+
+		local theaterUrl = GetConVarString( "cinema_url" )
+
+		if Video:Type() == "url" then
+			panel:OpenURL( Video:Data() )
+		elseif panel:GetURL() != theaterUrl then
+			panel:OpenURL( theaterUrl )
+		end
+
+		local startTime = CurTime() - Video:StartTime()
+
+		-- Set the volume before playing anything
+		local str = string.format(
+			"if (window.theater) theater.setVolume(%s)", theater.GetVolume() )
+		panel:QueueJavascript( str )
+
+		-- Let the webpage handle loading a video
+		str = string.format( "if (window.theater) theater.loadVideo( '%s', '%s', %s );",
+			Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
+
+		panel:QueueJavascript( str )
+
+	end
+
+end
+
 theater.RegisterService( "base", SERVICE )

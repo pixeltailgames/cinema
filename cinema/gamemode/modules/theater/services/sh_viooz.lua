@@ -2,7 +2,7 @@ local SERVICE = {}
 
 SERVICE.Name 			= "Viooz"
 SERVICE.IsTimed 		= true
-SERVICE.TheaterType 	= THEATER_PRIVATE
+-- SERVICE.TheaterType 	= THEATER_PRIVATE
 
 local UrlPattern = "http://viooz.co/movies/%s-.html"
 local DataPattern = "^/movies/(%d+)%-.-%.html"
@@ -50,12 +50,9 @@ theater.RegisterService( 'viooz', SERVICE )
 
 if CLIENT then
 
-	--[[
-		Viooz hooks
-		Overrides default player behavior
-	]]
-
 	local JS_AddTheaterScript = [[
+window.open = function() {};
+
 var script = document.createElement('script');
 script.src = 'http://localhost/cinema/js/theater.js';
 document.body.appendChild(script);
@@ -68,12 +65,7 @@ function onTheaterReady() {
 }
 ]]
 
-	hook.Add( "PreVideoLoad", "PreVioozLoad", function( Video )
-
-		-- Video must be Viooz
-		if Video:Type() ~= "viooz" then
-			return true
-		end
+	function SERVICE:LoadVideo( Video, panel )
 
 		local VioozUrl = string.format( UrlPattern, Video:Data() )
 
@@ -84,7 +76,6 @@ function onTheaterReady() {
 		local startTime = CurTime() - Video:StartTime()
 
 		panel.OnFinishLoading = function(self)
-
 			local str = string.format( JS_OnTheaterReady,
 				theater.GetVolume(), Video:Type(),
 				string.JavascriptSafe(Video:Data()), startTime )
@@ -93,10 +84,6 @@ function onTheaterReady() {
 			self:RunJavascript(JS_AddTheaterScript)
 		end
 
-		hook.Run( "PostVideoLoad", Video )
-
-		return false
-
-	end )
+	end
 
 end
