@@ -373,12 +373,11 @@ function LoadVideo( Video )
 		
 		-- Initialize panel and load the webpage
 		panel = RegisterPanel( Theater )
-
-		if Video:Type() != "url" then
-			panel:OpenURL( theaterUrl )
-		end
+		panel:OpenURL( theaterUrl )
 
 	end
+
+	if not hook.Run( "PreVideoLoad", Video ) then return end
 
 	if Video:Type() == "url" then
 		panel:OpenURL( Video:Data() )
@@ -399,13 +398,6 @@ function LoadVideo( Video )
 	-- Keep previous video for refreshing the theater
 	LastVideo = Video
 
-	Msg("Loaded Video\n")
-	Msg("\tTitle:\t\t"..tostring(Video:Title()).."\n")
-	Msg("\tType:\t\t"..tostring(Video:Type()).."\n")
-	Msg("\tData:\t\t"..tostring(Video:Data()).."\n")
-	Msg("\tTime:\t\t"..tostring(startTime).."\n")
-	Msg("\tDuration:\t"..tostring(Video:Duration()).."\n")
-	Msg( string.format("\tRequested by %s (%s)", Video:GetOwnerName(),
-		Video:GetOwnerSteamID() ) .."\n" )
+	hook.Run( "PostVideoLoad", Video )
 
 end
