@@ -287,6 +287,8 @@ function ReceiveSeek()
 	Theater._VideoStart = seconds
 	panel:QueueJavascript( string.format( 'theater.seek(%s)', CurTime() - seconds ) )
 
+	PollServer()
+
 end
 
 net.Receive( "TheaterSeek", ReceiveSeek )
@@ -388,11 +390,12 @@ function LoadVideo( Video )
 	local startTime = CurTime() - Video:StartTime()
 
 	-- Set the volume before playing anything
-	local str = string.format( "theater.setVolume(%s)", GetVolume() )
+	local str = string.format( "if (window.theater) theater.setVolume(%s)", GetVolume() )
 	panel:QueueJavascript( str )
 
 	-- Let the webpage handle loading a video
-	str = string.format( "theater.loadVideo( '%s', '%s', %s );", Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
+	str = string.format( "if (window.theater) theater.loadVideo( '%s', '%s', %s );",
+		Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
 	panel:QueueJavascript( str )
 
 	hook.Run( "PostVideoLoad", Video )
