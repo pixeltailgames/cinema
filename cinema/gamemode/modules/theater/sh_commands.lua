@@ -40,6 +40,23 @@ if CLIENT then
 		end
 	end)
 
+	concommand.Add( "cinema_toggle_controls", function()
+		local panel = theater.ActivePanel()
+		if panel then
+			if panel._controlsEnabled then
+				panel:SetPaintedManually(true)
+				panel:SetKeyBoardInputEnabled(false)
+				panel:SetMouseInputEnabled(false)
+				panel._controlsEnabled = nil
+			else
+				panel:SetPaintedManually(false)
+				panel:SetKeyBoardInputEnabled(true)
+				panel:SetMouseInputEnabled(true)
+				panel._controlsEnabled = true
+			end
+		end
+	end )
+
 	concommand.Add( "cinema_refresh", function()
 		theater.RefreshPanel(true)
 	end )
