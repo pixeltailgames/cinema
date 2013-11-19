@@ -395,9 +395,6 @@ function LoadVideo( Video )
 	str = string.format( "theater.loadVideo( '%s', '%s', %s );", Video:Type(), string.JavascriptSafe(Video:Data()), startTime )
 	panel:QueueJavascript( str )
 
-	-- Keep previous video for refreshing the theater
-	LastVideo = Video
-
 	hook.Run( "PostVideoLoad", Video )
 
 end

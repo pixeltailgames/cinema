@@ -16,6 +16,7 @@ end
 ---------------------------------------------------------------------------*/
 function GM:PostVideoLoad( Video )
 
+	-- Output debug information
 	Msg("Loaded Video\n")
 	Msg("\tTitle:\t\t"..tostring(Video:Title()).."\n")
 	Msg("\tType:\t\t"..tostring(Video:Type()).."\n")
@@ -24,5 +25,8 @@ function GM:PostVideoLoad( Video )
 	Msg("\tDuration:\t"..tostring(Video:Duration()).."\n")
 	Msg( string.format("\tRequested by %s (%s)", Video:GetOwnerName(),
 		Video:GetOwnerSteamID() ) .."\n" )
+
+	-- Keep previous video for refreshing the theater
+	theater.LastVideo = Video
 
 end
