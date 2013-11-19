@@ -83,7 +83,6 @@ function onTheaterReady() {
 
 		local startTime = CurTime() - Video:StartTime()
 
-		-- TODO
 		panel.OnFinishLoading = function(self)
 
 			local str = string.format( JS_OnTheaterReady,

@@ -47,11 +47,15 @@ if CLIENT then
 				panel:SetPaintedManually(true)
 				panel:SetKeyBoardInputEnabled(false)
 				panel:SetMouseInputEnabled(false)
+				panel:RunJavascript(
+					"if (window.theater) theater.toggleControls(false);")
 				panel._controlsEnabled = nil
 			else
 				panel:SetPaintedManually(false)
 				panel:SetKeyBoardInputEnabled(true)
 				panel:SetMouseInputEnabled(true)
+				panel:RunJavascript(
+					"if (window.theater) theater.toggleControls(true);")
 				panel._controlsEnabled = true
 			end
 		end
