@@ -9,6 +9,12 @@
 
 --]]
 
+local JS_CallbackHack = [[(function(){
+	var funcname = '%s';
+	window[funcname] = function(){
+		_gm[funcname].apply(_gm,arguments);
+	}
+})();]]
 
 PANEL = {}
 
@@ -19,8 +25,6 @@ AccessorFunc( PANEL, "m_bAllowLua", 			"AllowLua", 		FORCE_BOOL )
 
 -----------------------------------------------------------]]
 function PANEL:Init()
-
-	self.LoadedContent = true
 
 	self.History = {}
 	self.CurrentPage = 0
@@ -85,31 +89,71 @@ function PANEL:Init()
 
 end
 
+function PANEL:SetupCallbacks()
+
+end
+
 function PANEL:Think()
 
 	if self:IsLoading() then
-		if self.LoadedContent then
+
+		-- Call started loading
+		if not self._loading then
+
+			-- Get the page URL
 			self:RunJavascript("gmod.getUrl(window.location.href, false);")
-			self.LoadedContent = false
+
+			-- Delay setting up callbacks
+			timer.Simple( 0.02, function()
+				self:SetupCallbacks()
+			end )
+
+			self:OnStartLoading()
+			self._loading = true
+			
 		end
+
 	else
-		if !self.LoadedContent then
+
+		-- Call finished loading
+		if self._loading then
+
+			-- Get the page URL
 			self:RunJavascript("gmod.getUrl(window.location.href, true);")
-			self.LoadedContent = true
+
+			-- Hack to add window object callbacks
+			if self.Callbacks.window then
+
+				for funcname, callback in pairs(self.Callbacks.window) do
+					local js = JS_CallbackHack
+					js = js:format(funcname)
+					self:RunJavascript(js)
+				end
+
+			end
+
+			self:OnFinishLoading()
+			self._loading = nil
+
 		end
+
+		-- Run queued javascript
+		if self.JS then
+			for k, v in pairs( self.JS ) do
+				self:RunJavascript( v )
+			end
+			self.JS = nil
+		end
+
 	end
 
-	if ( self.JS && !self:IsLoading() ) then
+end
 
-		for k, v in pairs( self.JS ) do
+function PANEL:OnStartLoading()
 
-			self:RunJavascript( v )
+end
 
-		end
-
-		self.JS = nil
-
-	end
+function PANEL:OnFinishLoading()
 
 end
 
@@ -129,9 +173,8 @@ function PANEL:QueueJavascript( js )
 
 end
 
-function PANEL:Call( js )
-	self:QueueJavascript( js )
-end
+PANEL.QueueJavaScript = PANEL.QueueJavascript
+PANEL.Call = PANEL.QueueJavascript
 
 function PANEL:ConsoleMessage( msg )
 
@@ -153,15 +196,26 @@ function PANEL:ConsoleMessage( msg )
 
 end
 
+local JSObjects = {
+	window 	= "_gm",
+	this 	= "_gm",
+	_gm = "window"
+}
+
 --
 -- Called by the engine when a callback function is called
 --
 function PANEL:OnCallback( obj, func, args )
 
+	-- Hack for adding window callbacks
+	obj = JSObjects[obj] or obj
+
+	if not self.Callbacks[ obj ] then return end
+
 	--
 	-- Use AddFunction to add functions to this.
 	--
-	local f = self.Callbacks[ obj .. "." .. func ]
+	local f = self.Callbacks[ obj ][ func ]
 
 	if ( f ) then
 		return f( unpack( args ) )
@@ -174,23 +228,27 @@ end
 --
 function PANEL:AddFunction( obj, funcname, func )
 
+	if obj == "this" then
+		obj = "window"
+	end
+
 	--
 	-- Create the `object` if it doesn't exist
 	--
 	if ( !self.Callbacks[ obj ] ) then
 		self:NewObject( obj )
-		self.Callbacks[ obj ] = true
+		self.Callbacks[ obj ] = {}
 	end
 
 	--
 	-- This creates the function in javascript (which redirects to c++ which calls OnCallback here)
 	--
-	self:NewObjectCallback( obj, funcname )
+	self:NewObjectCallback( JSObjects[obj] or obj, funcname )
 
 	--
 	-- Store the function so OnCallback can find it and call it
 	--
-	self.Callbacks[ obj .. "." .. funcname ] = func;
+	self.Callbacks[ obj ][ funcname ] = func;
 
 end
 
