@@ -1,8 +1,7 @@
 local SERVICE = {}
 
-SERVICE.Name 			= "Viooz"
-SERVICE.IsTimed 		= true
--- SERVICE.TheaterType 	= THEATER_PRIVATE
+SERVICE.Name 	= "Viooz"
+SERVICE.IsTimed = true
 
 local UrlPattern = "http://viooz.co/movies/%s-.html"
 local DataPattern = "^/movies/(%d+)%-.-%.html"

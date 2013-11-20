@@ -142,7 +142,7 @@ else
 	local fcvar = { FCVAR_ARCHIVE, FCVAR_DONTRECORD }
 
 	-- Settings
-	CreateConVar( "cinema_video_duration_max", 20 * 60, fcvar, "Maximum video duration for requests in public theaters." )
+	CreateConVar( "cinema_video_duration_max", 3 * 60 * 60, fcvar, "Maximum video duration for requests in public theaters." )
 	CreateConVar( "cinema_skip_ratio", 0.66, fcvar, "Ratio between 0-1 determining how many players are required to voteskip a video." )	
 	-- Permissions
 	CreateConVar( "cinema_allow_url", 0, fcvar, "Allow any url to be set in private theaters." )
