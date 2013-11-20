@@ -20,6 +20,7 @@ surface.CreateFont( "VideoInfoSmall", {
 })
 
 local gradientDown = surface.GetTextureID("VGUI/gradient_down")
+local refreshTexture = surface.GetTextureID("gui/html/refresh")
 
 module( "theater", package.seeall )
 
@@ -89,9 +90,10 @@ hook.Add( "PostDrawOpaqueRenderables", "DrawTheaterScreen", DrawActiveTheater )
 local LastTitle = ""
 local WasFullscreen = false
 local Title = ""
+local panel
 function DrawVideoInfo( w, h, scale )
 
-	local panel = ActivePanel()
+	panel = ActivePanel()
 	if !ValidPanel(panel) then return end
 
 	local Video = CurrentVideo()
@@ -148,6 +150,13 @@ function DrawVideoInfo( w, h, scale )
 		-- Duration
 		local strDuration = string.FormatSeconds(Video:Duration())
 		draw.TheaterText( strDuration, "VideoInfoMedium", w - 16, h - bh, Color(255,255,255,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP )
+	end
+
+	-- Loading indicater
+	if panel:IsLoading() then
+		surface.SetDrawColor(255,255,255,255)
+		surface.SetTexture(refreshTexture)
+		surface.DrawTexturedRectRotated( 32, 128, 64, 64, RealTime() * -256 )
 	end
 
 end

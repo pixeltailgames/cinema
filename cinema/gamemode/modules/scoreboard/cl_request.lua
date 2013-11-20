@@ -1,6 +1,7 @@
 function RequestVideoURL( url )
 
 	if ValidPanel( RequestPanel ) then
+		RequestPanel:OnClose()
 		RequestPanel:Remove()
 	end
 
@@ -32,7 +33,10 @@ function PANEL:Init()
 	self.CloseButton:SetZPos( 5 )
 	self.CloseButton:NoClipping( true )
 	self.CloseButton:SetText( "" )
-	self.CloseButton.DoClick = function ( button ) self:Remove() end
+	self.CloseButton.DoClick = function ( button )
+		self:OnClose()
+		self:Remove()
+	end
 	self.CloseButton.Paint = function( panel, w, h )
 		DisableClipping( true )
 		surface.SetDrawColor( 48, 55, 71 )
@@ -49,6 +53,8 @@ function PANEL:Init()
 
 	self.Browser = vgui.Create( "TheaterHTML", self.BrowserContainer )
 
+	Msg("AWESOMIUM: Initialized instance for video request window\n")
+
 	self.Browser:SetAllowLua(true)
 	self.Browser:OpenURL( "http://cinema.pixeltailgames.com/search.html" )
 
@@ -61,6 +67,13 @@ function PANEL:Init()
 
 end
 
+function PANEL:OnClose()
+	if ValidPanel(self.Browser) then
+		Msg("AWESOMIUM: Destroyed instance for video request window\n")
+		self.Browser:Remove()
+	end
+end
+
 function PANEL:Think()
 
 	local x, y = self:CursorPos()
@@ -68,6 +81,7 @@ function PANEL:Think()
 	-- Remove panel if mouse is clicked outside of itself
 	if ( x < 0 or x > self:GetWide() or y < 0 or y > self:GetTall() ) and
 		input.IsMouseDown( MOUSE_LEFT ) then
+		self:OnClose()
 		self:Remove()
 	end
 

@@ -219,7 +219,8 @@ function THEATER:Think()
 			local panel = ActivePanel()
 			if time > 5 and ValidPanel(panel) then
 
-				local str = string.format( "theater.sync(%s)", time )
+				local str = string.format(
+					"if(window.theater) theater.sync(%s);", time )
 				panel:QueueJavascript( str )
 
 				self.NextSync = RealTime() + 5

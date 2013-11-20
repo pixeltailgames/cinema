@@ -40,6 +40,27 @@ if CLIENT then
 		end
 	end)
 
+	concommand.Add( "cinema_toggle_controls", function()
+		local panel = theater.ActivePanel()
+		if panel then
+			if panel._controlsEnabled then
+				panel:SetPaintedManually(true)
+				panel:SetKeyBoardInputEnabled(false)
+				panel:SetMouseInputEnabled(false)
+				panel:RunJavascript(
+					"if (window.theater) theater.toggleControls(false);")
+				panel._controlsEnabled = nil
+			else
+				panel:SetPaintedManually(false)
+				panel:SetKeyBoardInputEnabled(true)
+				panel:SetMouseInputEnabled(true)
+				panel:RunJavascript(
+					"if (window.theater) theater.toggleControls(true);")
+				panel._controlsEnabled = true
+			end
+		end
+	end )
+
 	concommand.Add( "cinema_refresh", function()
 		theater.RefreshPanel(true)
 	end )
@@ -121,7 +142,7 @@ else
 	local fcvar = { FCVAR_ARCHIVE, FCVAR_DONTRECORD }
 
 	-- Settings
-	CreateConVar( "cinema_video_duration_max", 20 * 60, fcvar, "Maximum video duration for requests in public theaters." )
+	CreateConVar( "cinema_video_duration_max", 3 * 60 * 60, fcvar, "Maximum video duration for requests in public theaters." )
 	CreateConVar( "cinema_skip_ratio", 0.66, fcvar, "Ratio between 0-1 determining how many players are required to voteskip a video." )	
 	-- Permissions
 	CreateConVar( "cinema_allow_url", 0, fcvar, "Allow any url to be set in private theaters." )
