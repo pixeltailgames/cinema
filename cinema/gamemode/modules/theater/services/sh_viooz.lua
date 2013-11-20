@@ -52,7 +52,7 @@ if CLIENT then
 
 	local JS_AddTheaterScript = [[
 var script = document.createElement('script');
-script.src = 'http://localhost/cinema/js/theater.js';
+script.src = '%s';
 document.body.appendChild(script);
 ]]
 
@@ -65,6 +65,10 @@ function onTheaterReady() {
 
 	function SERVICE:LoadVideo( Video, panel )
 
+		local theaterJsUrl = string.format( "%s/js/theater.min.js",
+			GetConVarString("cinema_url") or
+			"http://pixeltailgames.github.io/cinema/" )
+
 		local VioozUrl = string.format( UrlPattern, Video:Data() )
 
 		local panel = theater.ActivePanel()
@@ -74,14 +78,16 @@ function onTheaterReady() {
 		local startTime = CurTime() - Video:StartTime()
 
 		panel.OnFinishLoading = function(self)
-			print("viooz.OnFinishLoading")
-
+			-- Begin loading video after loading theater.js
 			local str = string.format( JS_OnTheaterReady,
 				theater.GetVolume(), Video:Type(),
 				string.JavascriptSafe(Video:Data()), startTime )
 			self:RunJavascript(str)
 
-			self:RunJavascript(JS_AddTheaterScript)
+			-- Inject theater.js
+			str = string.format( JS_AddTheaterScript, 
+				string.JavascriptSafe(theaterJsUrl) ) 
+			self:RunJavascript(str)
 		end
 
 	end

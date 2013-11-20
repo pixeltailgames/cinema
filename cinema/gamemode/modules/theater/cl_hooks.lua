@@ -16,6 +16,8 @@ end
 ---------------------------------------------------------------------------*/
 function GM:PostVideoLoad( Video )
 
+	local startTime = CurTime() - Video:StartTime()
+
 	-- Output debug information
 	Msg("Loaded Video\n")
 	Msg("\tTitle:\t\t"..tostring(Video:Title()).."\n")
