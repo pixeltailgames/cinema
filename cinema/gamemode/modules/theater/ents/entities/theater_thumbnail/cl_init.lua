@@ -132,6 +132,12 @@ end
 
 local DefaultThumbnail = Material( "theater/static.vmt" )
 
+function ENT:OnRemoveHTML()
+	Msg("AWESOMIUM: Destroyed instance for video thumbnail: ")
+	Msg(self:GetThumbnail())
+	Msg("\n")
+end
+
 function ENT:DrawThumbnail()
 
 	-- Thumbnail isn't set yet
@@ -149,6 +155,7 @@ function ENT:DrawThumbnail()
 		if (!self.LastURL or self.LastURL != self:GetThumbnail()) then
 
 			if ValidPanel( self.HTML ) then
+				self:OnRemoveHTML()
 				self.HTML:Remove()
 			end
 
@@ -160,14 +167,17 @@ function ENT:DrawThumbnail()
 			if !ValidPanel( self.HTML ) then
 
 				-- Create HTML panel to load thumbnail
-				self.HTML = vgui.Create( "DHTML" )
+				self.HTML = vgui.Create( "Awesomium" )
 				self.HTML:SetSize( ThumbWidth, ThumbHeight )
 				self.HTML:SetPaintedManually(true)
-				self.HTML:SetScrollbars(false)
 				self.HTML:SetKeyBoardInputEnabled(false)
 				self.HTML:SetMouseInputEnabled(false)
 				self.HTML:OpenURL( self:GetThumbnail() )
 			
+				Msg("AWESOMIUM: Initialized instance for video thumbnail: ")
+				Msg(self:GetThumbnail())
+				Msg("\n")
+
 			elseif !self.HTML:IsLoading() and !self.JSDelay then
 
 				-- Force thumbnail sizes
@@ -206,6 +216,7 @@ function ENT:DrawThumbnail()
 					self.h = self.h * ph
 
 					-- Free resources after grabbing material
+					self:OnRemoveHTML()
 					self.HTML:Remove()
 					self.JSDelay = nil
 

@@ -44,8 +44,6 @@ if CLIENT then
 	
 	function SERVICE:LoadVideo( Video, panel )
 
-		panel.OnFinishLoading = function() end
-
 		local theaterUrl = GetConVarString( "cinema_url" )
 
 		if Video:Type() == "url" then

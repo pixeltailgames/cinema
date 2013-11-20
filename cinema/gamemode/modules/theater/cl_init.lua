@@ -50,18 +50,22 @@ function RegisterPanel( Theater )
 	local tw, th = Theater:GetSize()
 	local scale = tw / th
 
-	local h = GetConVar("cinema_resolution") and GetConVar("cinema_resolution"):GetInt() or 720
+	local h = GetConVar("cinema_resolution") and
+		GetConVar("cinema_resolution"):GetInt() or 720
 
 	local panel = vgui.Create( "TheaterHTML", vgui.GetWorldPanel(), "TheaterScreen" )
 	panel:SetSize( h * scale, h )
 
+	Msg("AWESOMIUM: Initialized instance for theater screen\n")
+
 	timer.Simple(0.5, function()
 		if ValidPanel(panel) then
-			local js = string.format( "theater.setVolume(%s);", GetVolume() )
+			local js = string.format(
+				"if(window.theater) theater.setVolume(%s);", GetVolume() )
 			panel:QueueJavascript(js)
 
 			if GetConVar("cinema_hd"):GetBool() then
-				panel:QueueJavascript( "theater.enableHD();" )
+				panel:QueueJavascript( "if(window.theater) theater.enableHD();" )
 			end
 		end
 	end)
@@ -119,33 +123,34 @@ function ResizePanel()
 
 end
 
+local function RemovePanel(panel)
+	Msg("AWESOMIUM: Destroyed instance for theater screen\n")
+	panel:Remove()
+end
+
 function RemovePanels()
 
 	local panel = ActivePanel()
 	if ValidPanel(panel) then
-		panel:Remove()
+		RemovePanel(panel)
 	end
 
 	-- Remove panels from table
 	for loc, p in pairs(Panels) do
 		if ValidPanel(p) and loc != LocalPlayer():GetLocation() then
-			p:Remove()
+			RemovePanel(p)
 			Panels[loc] = nil
 		end	
 	end
 
 	-- Remove any remaining panels that might exist
-	for _, p in pairs( vgui.GetWorldPanel():GetChildren() ) do
-		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
-			p:Remove()
-		end
-	end
+	local panels = {}
+	table.Add( panels, vgui.GetWorldPanel() )
+	table.Add( panels, GetHUDPanel():GetChildren() )
 
-	-- Remove any remaining panels that might exist
-	-- This doesn't always seem to work
-	for _, p in pairs( GetHUDPanel():GetChildren() ) do
+	for _, p in pairs(panels) do
 		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
-			p:Remove()
+			RemovePanel(p)
 		end
 	end
 
@@ -380,6 +385,8 @@ function LoadVideo( Video )
 	end
 
 	if hook.Run( "PreVideoLoad", Video ) then return end
+
+	panel.OnFinishLoading = function() end
 
 	local service = theater.GetServiceByClass( Video:Type() )
 	if service then

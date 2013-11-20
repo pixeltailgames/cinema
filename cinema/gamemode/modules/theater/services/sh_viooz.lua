@@ -51,8 +51,6 @@ theater.RegisterService( 'viooz', SERVICE )
 if CLIENT then
 
 	local JS_AddTheaterScript = [[
-window.open = function() {};
-
 var script = document.createElement('script');
 script.src = 'http://localhost/cinema/js/theater.js';
 document.body.appendChild(script);
@@ -76,6 +74,8 @@ function onTheaterReady() {
 		local startTime = CurTime() - Video:StartTime()
 
 		panel.OnFinishLoading = function(self)
+			print("viooz.OnFinishLoading")
+
 			local str = string.format( JS_OnTheaterReady,
 				theater.GetVolume(), Video:Type(),
 				string.JavascriptSafe(Video:Data()), startTime )

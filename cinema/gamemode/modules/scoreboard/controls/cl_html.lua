@@ -154,7 +154,9 @@ function PANEL:OnStartLoading()
 end
 
 function PANEL:OnFinishLoading()
-
+	self:RunJavascript([[
+window.open = function() {};
+]])
 end
 
 function PANEL:QueueJavascript( js )
