@@ -38,10 +38,14 @@ function PANEL:Init()
 	self.Callbacks = {}
 
 	--
-	-- Implement a console.log - because awesomium doesn't provide it for us anymore.
+	-- Implement a console - because awesomium doesn't provide it for us anymore.
 	--
-	self:AddFunction( "console", "log", function( param ) self:ConsoleMessage( param ) end )
-	self:AddFunction( "console", "error", function( param ) self:ConsoleMessage( param ) end )
+	local console_funcs = {'log','error','debug','warn','info'}
+	for _, func in pairs(console_funcs) do
+		self:AddFunction( "console", func, function( param )
+			self:ConsoleMessage( param, func )
+		end )
+	end
 	
 	self:AddFunction( "gmod", "getUrl", function( href, finished )
 		self.URL = href
@@ -178,7 +182,7 @@ end
 PANEL.QueueJavaScript = PANEL.QueueJavascript
 PANEL.Call = PANEL.QueueJavascript
 
-function PANEL:ConsoleMessage( msg )
+function PANEL:ConsoleMessage( msg, func )
 
 	if ( !isstring( msg ) ) then msg = "*js variable*" end
 
@@ -187,13 +191,19 @@ function PANEL:ConsoleMessage( msg )
 		local strLua = msg:sub( 8 )
 
 		SELF = self
-		RunString( strLua );
+		RunString( strLua )
 		SELF = nil
 		return; 
 
 	end
 
-	MsgC( Color( 255, 160, 255 ), "[HTML] " );
+	local prefix = "[HTML"
+	if func and func ~= "log" then
+		prefix = prefix .. "::" .. func:upper()
+	end
+	prefix = prefix .. "] "
+
+	MsgC( Color( 255, 160, 255 ), prefix )
 	MsgC( Color( 255, 255, 255 ), msg, "\n" )	
 
 end
