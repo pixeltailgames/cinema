@@ -16,6 +16,14 @@ local JS_CallbackHack = [[(function(){
 	}
 })();]]
 
+local ConsoleColors = {
+	["default"] = Color(255,160,255),
+	["text"] = Color(255,255,255),
+	["error"] = Color(235,57,65),
+	["warn"] = Color(227,181,23),
+	["info"] = Color(100,173,229),
+}
+
 PANEL = {}
 
 AccessorFunc( PANEL, "m_bScrollbars", 			"Scrollbars", 		FORCE_BOOL )
@@ -197,14 +205,18 @@ function PANEL:ConsoleMessage( msg, func )
 
 	end
 
+	local prefixColor = ConsoleColors.default
 	local prefix = "[HTML"
 	if func and func:len() > 0 and func ~= "log" then
+		if ConsoleColors[func] then
+			prefixColor = ConsoleColors[func]
+		end
 		prefix = prefix .. "::" .. func:upper()
 	end
 	prefix = prefix .. "] "
 
-	MsgC( Color( 255, 160, 255 ), prefix )
-	MsgC( Color( 255, 255, 255 ), msg, "\n" )	
+	MsgC( prefixColor, prefix )
+	MsgC( ConsoleColors.text, msg, "\n" )	
 
 end
 
