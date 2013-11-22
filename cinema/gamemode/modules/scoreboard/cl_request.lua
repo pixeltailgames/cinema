@@ -79,7 +79,8 @@ function PANEL:Think()
 	local x, y = self:CursorPos()
 
 	-- Remove panel if mouse is clicked outside of itself
-	if ( x < 0 or x > self:GetWide() or y < 0 or y > self:GetTall() ) and
+	if not (gui.IsGameUIVisible() or gui.IsConsoleVisible()) and
+		( x < 0 or x > self:GetWide() or y < 0 or y > self:GetTall() ) and
 		input.IsMouseDown( MOUSE_LEFT ) then
 		self:OnClose()
 		self:Remove()
