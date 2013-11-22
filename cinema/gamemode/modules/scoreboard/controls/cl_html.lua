@@ -198,7 +198,7 @@ function PANEL:ConsoleMessage( msg, func )
 	end
 
 	local prefix = "[HTML"
-	if func and func ~= "log" then
+	if func and func:len() > 0 and func ~= "log" then
 		prefix = prefix .. "::" .. func:upper()
 	end
 	prefix = prefix .. "] "
