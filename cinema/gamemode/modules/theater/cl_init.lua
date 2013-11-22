@@ -211,11 +211,12 @@ end
 function SetVolume( fVolume )
 
 	fVolume = tonumber(fVolume)
-	if !isnumber(fVolume) then return end
+	if !fVolume then return end
 
+	local js = string.format('if(window.theater) theater.setVolume(%s);', fVolume)
 	for _, p in pairs(Panels) do
 		if ValidPanel(p) then
-			p:QueueJavascript(string.format('theater.setVolume(%s)', fVolume))
+			p:QueueJavascript(js)
 		end
 	end
 
@@ -290,7 +291,9 @@ function ReceiveSeek()
 
 	Video._VideoStart = seconds
 	Theater._VideoStart = seconds
-	panel:QueueJavascript( string.format( 'theater.seek(%s)', CurTime() - seconds ) )
+
+	local js = string.format( 'if(window.theater) theater.seek(%s);', CurTime() - seconds )
+	panel:QueueJavascript(  )
 
 	PollServer()
 
