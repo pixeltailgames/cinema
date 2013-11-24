@@ -16,6 +16,7 @@ if CLIENT then
 	end
 
 	function translations.Format( key, ... )
+		if !key then return "" end
 		if Debug:GetBool() then print("TRANSLATION: " .. key) end
 		local lang = translations.GetLanguage()
 		local value = Languages[lang] and Languages[lang][key] or Languages[DefaultId][key]
