@@ -145,7 +145,7 @@ function RemovePanels()
 
 	-- Remove any remaining panels that might exist
 	local panels = {}
-	table.Add( panels, vgui.GetWorldPanel() )
+	table.Add( panels, vgui.GetWorldPanel():GetChildren() )
 	table.Add( panels, GetHUDPanel():GetChildren() )
 
 	for _, p in pairs(panels) do
