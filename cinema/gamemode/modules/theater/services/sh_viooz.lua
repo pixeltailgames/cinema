@@ -3,8 +3,8 @@ local SERVICE = {}
 SERVICE.Name 	= "Viooz"
 SERVICE.IsTimed = true
 
-local UrlPattern = "http://viooz.co/movies/%s-.html"
-local DataPattern = "^/movies/(%d+)%-.-%.html"
+local UrlPattern = "http://viooz.co/movies/%s.html"
+local DataPattern = "^/movies/(.-).html"
 local TitlePattern = "</span><span>(.-)</span></a>"
 local DurationPattern = "Duration: <span>(.-) min</span>"
 local ThumbnailPattern = '<img height="%d-" width="%d-" title=".-" alt=".-" src="(.-)" />'
@@ -32,7 +32,14 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 		info.duration = string.match( body, DurationPattern )
 		info.thumbnail = string.match( body, ThumbnailPattern )
 
-		info.duration = tonumber(info.duration) * 60 -- minutes to seconds
+		info.duration = tonumber(info.duration)
+
+		-- Viooz might be returning a Cloudflare page
+		if not info.duration then
+			return pcall(onFailure, 404)
+		end
+
+		info.duration = info.duration * 60 -- minutes to seconds
 
 		if onSuccess then
 			pcall(onSuccess, info)
