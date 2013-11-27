@@ -293,7 +293,7 @@ function ReceiveSeek()
 	Theater._VideoStart = seconds
 
 	local js = string.format( 'if(window.theater) theater.seek(%s);', CurTime() - seconds )
-	panel:QueueJavascript(  )
+	panel:QueueJavascript( js )
 
 	PollServer()
 
