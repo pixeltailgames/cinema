@@ -179,11 +179,12 @@ end
 function GM:PlayerCanSeePlayersChat( strText, bTeamOnly, pListener, pSpeaker )
 	
 	if ( bTeamOnly ) then
-		if ( !IsValid( pSpeaker ) || !IsValid( pListener ) ) then return false end
-		if ( pListener:Team() != pSpeaker:Team() ) then return false end
+		return true
+	else
+		if pSpeaker:GetTheater() == pListener:GetTheater() then return true end
 	end
 	
-	return true
+	return false
 	
 end
 
