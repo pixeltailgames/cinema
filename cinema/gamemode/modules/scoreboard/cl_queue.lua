@@ -314,7 +314,7 @@ function VIDEOVOTE:Init()
 		end
 	end
 
-	self.VoteDown = vgui.Create( "DImageButton", self )
+	--[[self.VoteDown = vgui.Create( "DImageButton", self )
 	self.VoteDown:SetSize( 16, 16 )
 	self.VoteDown:SetImage( "theater/down.png" )
 	self.VoteDown.DoClick = function()
@@ -349,7 +349,7 @@ function VIDEOVOTE:Init()
 		else
 			self.VoteDown:SetAlpha( 25 )
 		end
-	end
+	end]]
 
 end
 
@@ -383,18 +383,18 @@ function VIDEOVOTE:Vote( up )
 	if up then
 		self.VoteUp:SetColor(Color(0,255,0))
 		self.VoteUp.Voted = true
-		self.VoteDown:SetColor(Color(255,255,255))
-		self.VoteDown.Voted = nil
+		-- self.VoteDown:SetColor(Color(255,255,255))
+		-- self.VoteDown.Voted = nil
 	elseif up == false then
-		self.VoteDown:SetColor(Color(255,0,0))
-		self.VoteDown.Voted = true
 		self.VoteUp:SetColor(Color(255,255,255))
 		self.VoteUp.Voted = nil
+		-- self.VoteDown:SetColor(Color(255,0,0))
+		-- self.VoteDown.Voted = true
 	else
 		self.VoteUp:SetColor(Color(255,255,255))
-		self.VoteDown:SetColor(Color(255,255,255))
 		self.VoteUp.Voted = nil
-		self.VoteDown.Voted = nil
+		-- self.VoteDown:SetColor(Color(255,255,255))
+		-- self.VoteDown.Voted = nil
 	end
 
 end
@@ -443,8 +443,8 @@ function VIDEOVOTE:PerformLayout()
 
 	if self.RemoveBtn then
 
-		self.VoteDown:Center()
-		self.VoteDown:AlignRight(24)
+		-- self.VoteDown:Center()
+		-- self.VoteDown:AlignRight(24)
 
 		self.Votes:Center()
 
@@ -456,8 +456,8 @@ function VIDEOVOTE:PerformLayout()
 
 	else
 
-		self.VoteDown:Center()
-		self.VoteDown:AlignRight()
+		-- self.VoteDown:Center()
+		-- self.VoteDown:AlignRight()
 
 		self.Votes:Center()
 

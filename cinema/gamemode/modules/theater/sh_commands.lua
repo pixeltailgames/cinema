@@ -223,14 +223,14 @@ else
 
 	end)
 
-	TheaterCommand( "cinema_votedown", function( Theater, ply, cmd, args )
+	--[[TheaterCommand( "cinema_votedown", function( Theater, ply, cmd, args )
 
 		local QueueId = tonumber(args[1])
 		if !QueueId then return end
 
 		Theater:VoteQueuedVideo(ply, QueueId, false)
 
-	end)
+	end)]]
 
 	/*
 		Admin/Developer Commands
