@@ -178,13 +178,14 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerCanSeePlayersChat( strText, bTeamOnly, pListener, pSpeaker )
 	
-	if ( bTeamOnly ) then
+	-- Local chat functions as global chat in Cinema
+	if bTeamOnly then
 		return true
-	else
-		if pSpeaker:GetTheater() == pListener:GetTheater() then return true end
 	end
 	
-	return false
+	-- Players should only receive chat messages from users in the same 
+	-- theater if it wasn't global.
+	return pSpeaker:GetTheater() == pListener:GetTheater()
 	
 end
 
