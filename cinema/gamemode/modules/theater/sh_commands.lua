@@ -1,5 +1,5 @@
 CreateConVar( "cinema_url", "http://pixeltailgames.github.io/cinema/", FCVAR_REPLICATED, "Cinema url to load on theater screens." )
-CreateConVar( "cinema_queue_mode", 2, { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "1 = Videos may be voted up or down\n2 = Videos are played in the order they're requested" )
+CreateConVar( "cinema_queue_mode", 1, { FCVAR_ARCHIVE, FCVAR_DONTRECORD, FCVAR_REPLICATED }, "1 = Videos may be voted up or down\n2 = Videos are played in the order they're requested" )
 
 if CLIENT then
 
@@ -222,15 +222,6 @@ else
 		Theater:VoteQueuedVideo(ply, QueueId, true)
 
 	end)
-
-	--[[TheaterCommand( "cinema_votedown", function( Theater, ply, cmd, args )
-
-		local QueueId = tonumber(args[1])
-		if !QueueId then return end
-
-		Theater:VoteQueuedVideo(ply, QueueId, false)
-
-	end)]]
 
 	/*
 		Admin/Developer Commands
