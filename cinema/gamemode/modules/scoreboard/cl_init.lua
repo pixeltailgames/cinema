@@ -121,6 +121,16 @@ hook.Add( "Think", "ScoreThink", function( ply, bind, pressed )
 
 end )
 
+hook.Add( "OnVideoVote", "SortQueueList", function()
+
+	if IsValid( GuiQueue ) and GuiQueue:IsVisible() then
+		
+		GuiQueue:SortList()
+
+	end
+
+end )
+
 function GM:MenuShow()
 
 	if !IsValid(LocalPlayer()) or !LocalPlayer().GetTheater then return end

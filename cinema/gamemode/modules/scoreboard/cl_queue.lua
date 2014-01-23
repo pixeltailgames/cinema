@@ -109,6 +109,12 @@ function QUEUE:UpdateList()
 		end
 	end
 
+	self:SortList()
+
+end
+
+function QUEUE:SortList()
+
 	if theater.GetQueueMode() == QUEUE_CHRONOLOGICAL then
 		self.VideoList:SortVideos( function( a, b ) 
 			return a.Id < b.Id
@@ -116,12 +122,13 @@ function QUEUE:UpdateList()
 	else
 		self.VideoList:SortVideos( function( a, b ) 
 			if a.Votes == b.Votes then
-				return a.Title > b.Title
+				return a.Id < b.Id
 			else
 				return a.Votes > b.Votes
 			end
 		end )
 	end
+
 end
 
 function QUEUE:Think()
@@ -355,6 +362,8 @@ function VIDEOVOTE:Vote( up )
 		self.VoteUp:SetColor(Color(255,255,255))
 		self.VoteUp.Voted = nil
 	end
+
+	hook.Run( "OnVideoVote" )
 
 end
 
