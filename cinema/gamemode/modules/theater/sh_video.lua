@@ -13,7 +13,7 @@ function VIDEO:Init( info, ply )
 		o.id = -1 			-- set by theater
 		o.theaterId = -1 	-- set by theater
 
-		o._QueueTime = CurTime()
+		o._RequestTime = CurTime()
 		o._Owner = ply
 		o._OwnerName = IsValid(ply) and ply:Nick() or "" -- in case they disconnect
 		o._OwnerSteamID = IsValid(ply) and ply:SteamID() or ""
@@ -87,6 +87,10 @@ function VIDEO:GetOwnerSteamID()
 end
 
 if SERVER then
+
+	function VIDEO:RequestTime()
+		return self._RequestTime
+	end
 	
 	/*
 		Votes

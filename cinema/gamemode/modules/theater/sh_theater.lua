@@ -323,10 +323,17 @@ if SERVER then
 				Video = self._Queue[1]
 				key = 1
 			else
+				local curVotes, topVotes = 0, 0
+
 				for k, vid in pairs(self._Queue) do
-					if !Video or vid:GetNumVotes() > Video:GetNumVotes() then
+					curVotes = vid:GetNumVotes()
+
+					if not Video or -- first index
+						( curVotes > topVotes ) or -- more votes
+						( (curVotes == topVotes) and (vid:RequestTime() < Votes:RequestTime()) ) then -- earlier request
 						Video = vid
 						key = k
+						topVotes = curVotes
 					end
 				end
 			end
