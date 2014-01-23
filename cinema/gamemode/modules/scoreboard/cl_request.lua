@@ -74,14 +74,13 @@ function PANEL:OnClose()
 	end
 end
 
-function PANEL:Think()
+function PANEL:CheckClose()
 
 	local x, y = self:CursorPos()
 
 	-- Remove panel if mouse is clicked outside of itself
 	if not (gui.IsGameUIVisible() or gui.IsConsoleVisible()) and
-		( x < 0 or x > self:GetWide() or y < 0 or y > self:GetTall() ) and
-		input.IsMouseDown( MOUSE_LEFT ) then
+		( x < 0 or x > self:GetWide() or y < 0 or y > self:GetTall() ) then
 		self:OnClose()
 		self:Remove()
 	end

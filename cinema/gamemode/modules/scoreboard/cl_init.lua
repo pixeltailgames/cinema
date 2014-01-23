@@ -184,7 +184,7 @@ concommand.Add("-menu_context", GM.MenuHide )
 -- Scroll playerlist
 hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 
-	if !ValidPanel(Gui) then return end
+	if not ValidPanel(Gui) then return end
 
 	if bind == "invnext" then
 		Gui.PlayerList.PlayerList.VBar:AddScroll(2)
@@ -192,4 +192,10 @@ hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 		Gui.PlayerList.PlayerList.VBar:AddScroll(-2)
 	end
 
+end )
+
+hook.Add( "GUIMousePressed", "RequestClose", function( key )
+	if ValidPanel( RequestPanel ) and key == MOUSE_LEFT then
+		RequestPanel:CheckClose()
+	end
 end )
