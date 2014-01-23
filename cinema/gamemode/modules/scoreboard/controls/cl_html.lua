@@ -24,6 +24,11 @@ local ConsoleColors = {
 	["info"] = Color(100,173,229),
 }
 
+local FilterCVar = CreateClientConVar( "cinema_html_filter", 0, true, false )
+
+local FILTER_ALL = 0
+local FILTER_NONE = 1
+
 PANEL = {}
 
 AccessorFunc( PANEL, "m_bScrollbars", 			"Scrollbars", 		FORCE_BOOL )
@@ -48,7 +53,7 @@ function PANEL:Init()
 	--
 	-- Implement a console - because awesomium doesn't provide it for us anymore.
 	--
-	local console_funcs = {'log','error','debug','warn','info'}
+	local console_funcs = {'log','error','debug','warn','info','gmod'}
 	for _, func in pairs(console_funcs) do
 		self:AddFunction( "console", func, function( param )
 			self:ConsoleMessage( param, func )
@@ -204,6 +209,11 @@ function PANEL:ConsoleMessage( msg, func )
 		return; 
 
 	end
+
+	-- Filter messages output to the console
+	-- 'console.gmod' always gets output
+	local filterLevel = FilterCVar:GetInt()
+	if ( func != "gmod" and filterLevel == FILTER_ALL ) then return end
 
 	local prefixColor = ConsoleColors.default
 	local prefix = "[HTML"
