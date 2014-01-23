@@ -224,13 +224,9 @@ end
 
 function VIDEO:PerformLayout()
 
-	local QueueMode = theater.GetQueueMode()
-
 	self.Controls:SizeToContents()
 	self.Controls:CenterVertical()
 	self.Controls:AlignRight( self.Padding )
-
-
 
 	local x, y = self.Controls:GetPos()
 
@@ -238,12 +234,8 @@ function VIDEO:PerformLayout()
 	local w = self.Title:GetWide()
 
 	-- Clip video title for voting controls
-	if QueueMode == QUEUE_VOTEUPDOWN then
-		w = math.Clamp( w, 0, x - self.Padding * 2 )
-	else
-		w = math.Clamp( w, 0, x - self.Padding * 2 )
-	end
-	
+	w = math.Clamp( w, 0, x - self.Padding * 2 )
+
 	self.Title:SetSize(w, self.Title:GetTall())
 
 	self.Title:AlignTop( -2 )
