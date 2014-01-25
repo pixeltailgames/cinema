@@ -15,7 +15,7 @@ Location.Add( "theater_gcinema", {
 	[ "Public Theater 1" ] =
 	{
 		Min = Vector( -2833.1979980469, -465.02133178711, -323.7939453125 ),
-		Max = Vector( -486.01016235352, 1101.3576660156, 551.62933349609 ),
+		Max = Vector( -486.01016235352, 1101.3576660156, 500.62933349609 ),
 		Theater = {
 			Name = "Public Theater 1",
 			Flags = THEATER_REPLICATED,
@@ -78,7 +78,7 @@ Location.Add( "theater_gcinema", {
 		Max = Vector( 573.09088134766, 4140.6440429688, -2402.5239257813 ),
 		Theater = {
 			Name = "Hell Theater",
-			Flags = THEATER_REPLICATED,
+			Flags = THEATER_PRIVATE,
 			Pos = Vector( 192, 417, -3484 ),
 			Ang = Angle(0,180,0),
 			Width = 384,
@@ -126,6 +126,14 @@ Location.Add( "theater_gcinema", {
 	{
 		Min = Vector( -584.41033935547, -1405.4254150391, 479.64831542969 ),
 		Max = Vector( 587.36596679688, -320.90960693359, 711.02716064453 ),
+		Theater = {
+			Name = "Pub Theater",
+			Flags = THEATER_REPLICATED,
+			Pos = Vector( -120, -805, 680 ),
+			Ang = Angle(0,0,0),
+			Width = 240,
+			Height = 128
+		}
 	},
 
 	[ "Private Theater 1" ] =
@@ -204,23 +212,44 @@ Location.Add( "theater_gcinema", {
 
 	[ "Top Floor Theater" ] =
 	{
-		Min = Vector( -310.96578979492, 971.650390625, 553.35803222656 ),
+		Min = Vector( -310.96578979492, 971.650390625, 538.35803222656 ),
 		Max = Vector( 325.26461791992, 2160.3903808594, 892.08532714844 ),
-		-- TODO: Add theater support
+		Theater = {
+			Name = "Top Floor Theater",
+			Flags = THEATER_PRIVATE,
+			Pos = Vector( -200, 2139, 792 ),
+			Ang = Angle(0,0,0),
+			Width = 400,
+			Height = 200
+		}
 	},
 
 	[ "Disgusting Theater" ] =
 	{
 		Min = Vector( -12.533141136169, 12772.05859375, -3094.5539550781 ),
 		Max = Vector( 1038.3375244141, 14334.049804688, -2045.6434326172 ),
-		-- TODO: Add theater support
+		Theater = {
+			Name = "Disgusting Theater",
+			Flags = THEATER_PRIVATE,
+			Pos = Vector( 192, 14313, -2653 ),
+			Ang = Angle(0,0,0),
+			Width = 640,
+			Height = 320
+		}
 	},
 
 	[ "Arctic Theater" ] =
 	{
 		Min = Vector( -13322.061523438, 11119.529296875, -1135.0418701172 ),
 		Max = Vector( -11203.059570313, 13295.51953125, -237.52056884766 ),
-		-- TODO: Add theater support
+		Theater = {
+			Name = "Arctic Theater",
+			Flags = THEATER_PRIVATE,
+			Pos = Vector( -12921, 12016, -592 ),
+			Ang = Angle(0,90,0),
+			Width = 640,
+			Height = 320
+		}
 	},
 
 	[ "Slender Theater" ] =
