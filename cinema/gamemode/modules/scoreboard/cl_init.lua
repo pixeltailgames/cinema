@@ -17,7 +17,7 @@ end
 
 function SCOREBOARD:Paint( w, h )
 
-	//Render the background
+	-- Render the background
 	surface.SetDrawColor( 26, 30, 38, 255 )
 	surface.DrawRect( 0, 0, self.PlayerList:GetWide() + 1, self:GetTall() )
 
@@ -27,9 +27,6 @@ function SCOREBOARD:Think() end
 
 function SCOREBOARD:PerformLayout()
 
-	//self.Title:SizeToContents()
-	//self.Title:SetTall( 64 )
-	//self.Title:CenterHorizontal()
 	self:Center()
 
 	self.TheaterList:SetWide( 256 )
@@ -41,7 +38,7 @@ function SCOREBOARD:PerformLayout()
 	self.Settings:AlignLeft( self.PlayerList:GetWide() + 1 )
 	self.Settings:AlignTop( self.TheaterList:GetTall() )
 	
-	// Animate that bitch
+	-- Animate
 	local curTall = math.max( self.Settings.y + self.Settings:GetTall(), self.PlayerList:GetTall() )
 	curTall = math.Clamp( curTall, 256, ScrH() * .8 )
 	self.CurrentHeight = math.Approach( self.CurrentHeight, curTall, FrameTime() * 400 )
@@ -105,28 +102,11 @@ function GM:HideMouse()
 	self.MouseEnabled = false
 end
 
-hook.Add( "Think", "ScoreThink", function( ply, bind, pressed )
-
-	if IsValid( Gui ) then
-
-		if Gui:IsVisible() || ( GuiQueue && GuiQueue:IsVisible() ) then
-
-			if input.IsMouseDown( MOUSE_LEFT ) && !GAMEMODE.MouseEnabled then
-				GAMEMODE:ShowMouse()
-			end
-
-		end
-
-	end
-
-end )
-
 hook.Add( "OnVideoVote", "SortQueueList", function()
 
+	-- Resort the video queue after voting
 	if IsValid( GuiQueue ) and GuiQueue:IsVisible() then
-		
 		GuiQueue:SortList()
-
 	end
 
 end )
@@ -166,7 +146,6 @@ concommand.Add("+menu_context", GM.MenuShow )
 
 function GM:MenuHide()
 
-	-- Queue
 	if ValidPanel( GuiQueue ) then
 		GuiQueue:SetVisible( false )
 	end
@@ -184,7 +163,22 @@ concommand.Add("-menu_context", GM.MenuHide )
 -- Scroll playerlist
 hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 
-	if ValidPanel(Gui) and Gui:IsVisible() then
+	local guiVisible = ( ValidPanel(Gui) and Gui:IsVisible() )
+
+	if bind == "+attack" then
+
+		-- Show mouse if the scoreboard or queue menu are open
+		if not GAMEMODE.MouseEnabled and ( guiVisible or
+			( ValidPanel(GuiQueue) and GuiQueue:IsVisible() ) ) then
+
+			GAMEMODE:ShowMouse()
+			return true
+
+		end
+
+	end
+
+	if guiVisible then
 
 		if bind == "invnext" then
 			Gui.PlayerList.PlayerList.VBar:AddScroll(2)
@@ -199,7 +193,15 @@ hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 end )
 
 hook.Add( "GUIMousePressed", "RequestClose", function( key )
-	if ValidPanel( RequestPanel ) and key == MOUSE_LEFT then
-		RequestPanel:CheckClose()
+
+	if key == MOUSE_LEFT then
+
+		-- Check if the user clicked outside of the request panel. If so,
+		-- close the panel.
+		if ValidPanel(RequestPanel) then
+			RequestPanel:CheckClose()
+		end
+
 	end
+
 end )
