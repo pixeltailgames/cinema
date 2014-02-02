@@ -184,12 +184,16 @@ concommand.Add("-menu_context", GM.MenuHide )
 -- Scroll playerlist
 hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
 
-	if not ValidPanel(Gui) then return end
+	if ValidPanel(Gui) and Gui:IsVisible() then
 
-	if bind == "invnext" then
-		Gui.PlayerList.PlayerList.VBar:AddScroll(2)
-	elseif bind == "invprev" then
-		Gui.PlayerList.PlayerList.VBar:AddScroll(-2)
+		if bind == "invnext" then
+			Gui.PlayerList.PlayerList.VBar:AddScroll(2)
+			return true
+		elseif bind == "invprev" then
+			Gui.PlayerList.PlayerList.VBar:AddScroll(-2)
+			return true
+		end
+
 	end
 
 end )
