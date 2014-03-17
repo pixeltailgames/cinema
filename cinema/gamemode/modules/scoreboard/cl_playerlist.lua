@@ -154,10 +154,14 @@ function PLAYER:Init()
 	self.Location:SetColor( Color( 255, 255, 255, 80 ) )
 	self.Location:SetPos( 0, 8 )
 
+	self.AvatarButton = vgui.Create("DButton", self)
+	self.AvatarButton:SetSize( 32, 32 )
+	
 	self.Avatar = vgui.Create( "AvatarImage", self )
 	self.Avatar:SetSize( 32, 32 )
 	self.Avatar:SetZPos( 1 )
 	self.Avatar:SetVisible( false )
+	self.Avatar:SetMouseInputEnabled( false )
 
 	self.Ping = vgui.Create( "ScoreboardPlayerPing", self )
 
@@ -185,6 +189,8 @@ end
 function PLAYER:SetPlayer( ply )
 
 	self.Player = ply
+	
+	self.AvatarButton.DoClick = function() self.Player:ShowProfile() end
 
 	self.Avatar:SetPlayer( ply, 64 )
 	self.Avatar:SetVisible( true )
@@ -204,7 +210,11 @@ function PLAYER:PerformLayout()
 	self.Location:SizeToContents()
 	self.Location:AlignTop( self.Name:GetTall() + 5 )
 	self.Location:AlignLeft( self.Avatar:GetWide() + 16 )
-
+	
+	self.AvatarButton:AlignTop( self.Padding )
+	self.AvatarButton:AlignLeft( self.Padding )
+	self.AvatarButton:CenterVertical()
+	
 	self.Avatar:SizeToContents()
 	self.Avatar:AlignTop( self.Padding )
 	self.Avatar:AlignLeft( self.Padding )
