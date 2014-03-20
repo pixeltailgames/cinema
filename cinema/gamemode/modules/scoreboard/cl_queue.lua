@@ -208,7 +208,7 @@ end
 function VIDEO:Update()
 
 	self.Title:SetText( self.Video.Title )
-	self.Title:SetTooltip( self.Video.Title )
+	self:SetTooltip( self.Video.Title )
 	self.Duration:SetText( string.FormatSeconds(self.Video.Duration) )
 	self.Controls:Update()
 
