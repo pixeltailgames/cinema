@@ -149,7 +149,11 @@ else
 	CreateConVar( "cinema_allow_reset", 0, fcvar, "Reset the theater after all players have left." )
 	CreateConVar( "cinema_allow_voice", 0, fcvar, "Allow theater viewers to talk amongst themselves." )
 	CreateConVar( "cinema_allow_3dvoice", 1, fcvar, "Use 3D voice chat." )
-
+	
+	concommand.Add("cinema_fullscreen_freeze", function(ply,cmd,args)
+		ply:Freeze(tobool(args[1]))
+	end)
+	
 	local function TheaterCommand( name, Function )
 
 		if !Function then return end
