@@ -109,16 +109,17 @@ function ResizePanel()
 	local panel = ActivePanel()
 	if !ValidPanel(panel) then return end
 	
-	local w, h = panel:GetSize()
-	local scale = w/h
+	local Theater = LocalPlayer():GetTheater()
+	local w, h = Theater:GetSize()
+	local scale = w / h
 
 	local h2 = GetConVar("cinema_resolution"):GetInt()
 	h2 = h2 and h2 or 720
 
-	-- Adjust width based on new and old heights
-	w = w * (h2/h)
+	-- Adjust width based on the theater screen's scale
+	w = math.floor(h2 * scale)
 	h = h2
-
+	
 	panel:SetSize(w, h)
 
 end
