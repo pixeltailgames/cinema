@@ -189,7 +189,7 @@ function ToggleFullscreen()
 	end
 
 	Fullscreen = !Fullscreen
-	LocalPlayer():Freeze(Fullscreen)
+	RunConsoleCommand("cinema_fullscreen_freeze", tostring(Fullscreen))
 
 end
 
