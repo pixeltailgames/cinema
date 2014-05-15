@@ -1,6 +1,8 @@
 -- Increment Volume
 control.Add( KEY_EQUAL, function( enabled )
-
+	-- If they're typing in Chat, ignore it
+	if LocalPlayer():IsTyping() then return end
+	
 	if enabled then
 		
 		local increment = 5
@@ -14,7 +16,9 @@ end )
 
 -- Decrement Volume
 control.Add( KEY_MINUS, function( enabled )
-
+	-- If they're typing in Chat, ignore it
+	if LocalPlayer():IsTyping() then return end
+	
 	if enabled then
 		
 		local increment = 5
