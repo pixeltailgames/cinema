@@ -136,13 +136,10 @@ function LogRequest()
 	local data = net.ReadString()
 
 	-- Notify player of video added to queue
-	local announcement = {
-		ColHighlight,
-		'"' ..title.. '"',
-		ColDefault,
-		" has been added to the queue."
-	}
-	AddAnnouncement( announcement )
+	AddAnnouncement( {
+		"Theater_VideoAddedToQueue",
+		title
+	} )
 
 	-- Escape strings
 	url = sql.SQLStr(url)

@@ -1,6 +1,6 @@
 -- Basic information
 LANG.Name                = "Euskera"        -- Native name for language
-LANG.Id                        = "en"                -- Find corresponding ID in garrysmod/resource/localization
+LANG.Id                        = "eu"                -- Find corresponding ID in garrysmod/resource/localization
 LANG.Author                = "Julortizw"                -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
@@ -91,10 +91,3 @@ LANG.Settings_MuteFocusTooltip        = "Mututu zinemako audioa Garry's Mod  is 
 LANG.Service_EmbedDisabled                 = "Eskatutako bideoa ezin izan da txertaua izan."
 LANG.Service_PurchasableContent = "Eskatutako bideoa orosi egin behar da eta ezin da erreproduzitu."
 LANG.Service_StreamOffline                 = "Eskatutako bideoa ez dago."
-
--- Act command (don't bother translating this)
--- modules/taunts/sv_commands.lua
-LANG.ActCommand = C(ColHighlight,"%s",ColDefault," %ss") -- Adb. Sam dantzan hari da
-
--- Version 1.1
-LANG.TranslationsCredit = "Translations by Julortizw"
