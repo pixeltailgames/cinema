@@ -38,8 +38,6 @@ local LoadingStr = T'Loading'
 
 function DrawActiveTheater( bDrawingDepth, bDrawingSkybox )
 
-	if bDrawingSkybox then return end
-
 	if input.IsKeyDown(KEY_Q) then
 		LastInfoDraw = CurTime()
 	end
