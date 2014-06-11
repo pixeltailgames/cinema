@@ -468,6 +468,8 @@ if SERVER then
 				net.WriteString( url )
 				net.WriteString( vid:Title() )
 				net.WriteInt( vid:Duration(), 32 )
+				net.WriteString( vid:Type() )
+				net.WriteString( vid:Data() )
 			net.Send(ply)
 
 			self:CheckVoteSkip()

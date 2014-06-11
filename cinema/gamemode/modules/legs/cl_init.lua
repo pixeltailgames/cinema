@@ -166,6 +166,37 @@ function Legs:Think( maxseqgroundspeed )
 			--print( LocalPlayer():GetModel(), self:FixModelName( LocalPlayer():GetModel() ) )
 		end
 		
+		-- START of Crouch Workaround
+		-- Reset all bones
+		for boneId = 0, self.LegEnt:GetBoneCount() do
+			self.LegEnt:ManipulateBoneScale(boneId, Vector(1,1,1))
+			self.LegEnt:ManipulateBonePosition(boneId, Vector(0,0,0))
+		end
+		
+		-- Remove bones from being seen
+		Legs.BonesToRemove = {
+			"ValveBiped.Bip01_Head1"
+		}
+		if !LocalPlayer():InVehicle() then
+			Legs.BonesToRemove = Legs.BoneHoldTypes[ Legs.HoldType ] or Legs.BoneHoldTypes[ "default" ]
+
+			if LocalPlayer():KeyDown( IN_DUCK ) then
+				Legs.BonesToRemove = Legs.BoneHoldTypes[ "crouched" ]
+			end
+
+		else
+			Legs.BonesToRemove = Legs.BoneHoldTypes[ "vehicle" ]
+		end
+
+		for _, v in pairs( Legs.BonesToRemove ) do -- Loop through desired bones
+			local boneId = self.LegEnt:LookupBone(v)
+			if boneId then
+				self.LegEnt:ManipulateBoneScale(boneId, vector_origin)
+				self.LegEnt:ManipulateBonePosition(boneId, Vector(-10,-10,0))
+			end
+		end
+		-- END of Crouch Workaround
+		
 		self.LegEnt:SetMaterial( LocalPlayer():GetMaterial() )
 		self.LegEnt:SetSkin( LocalPlayer():GetSkin() )
 

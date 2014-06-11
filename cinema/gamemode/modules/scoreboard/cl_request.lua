@@ -273,7 +273,8 @@ end
 function VIDEO:SetVideo( vid )
 
 	self.Video = vid
-
+	
+	self:SetTooltip( self.Video.title )
 	self.Title:SetText( self.Video.title )
 
 	if tonumber(self.Video.duration) > 0 then

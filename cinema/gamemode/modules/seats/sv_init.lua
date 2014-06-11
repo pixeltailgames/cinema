@@ -171,7 +171,7 @@ function TryPlayerExit(ply, ent)
 	print("player", ply, "couldn't get out")
 end
 
-local function PlayerLeaveVehice( vehicle, ply )
+local function PlayerLeaveVehicle( vehicle, ply )
 	if vehicle:GetClass() != "prop_vehicle_prisoner_pod" then return end
 
 	if !IsValid(ply.SeatEnt) then
@@ -208,16 +208,19 @@ local function PlayerLeaveVehice( vehicle, ply )
 
 end
 
-hook.Add("CanExitVehicle", "Leave", PlayerLeaveVehice)
+hook.Add("CanExitVehicle", "Leave", PlayerLeaveVehicle)
 
 function PlayerExitLeft( ply )
-	local Vehicle = ply:GetVehicle()
-	
-	if IsValid( Vehicle ) then
-		PlayerLeaveVehice( Vehicle, ply )
+	if ply:IsPlayer() then
+		local Vehicle = ply:GetVehicle()
+		
+		if IsValid( Vehicle ) then
+			PlayerLeaveVehicle( Vehicle, ply )
+		end
 	end
 end
 
+hook.Add("PlayerLeaveVehicle", "VehicleLeft", PlayerExitLeft)
 hook.Add("PlayerDeath", "VehicleKilled", PlayerExitLeft)
 hook.Add("PlayerSilentDeath", "VehicleKilled", PlayerExitLeft)
-hook.Add("PlayerDisconnected","VehicleCleanup", PlayerExitLeft)
+hook.Add("EntityRemoved", "VehicleCleanup", PlayerExitLeft)
