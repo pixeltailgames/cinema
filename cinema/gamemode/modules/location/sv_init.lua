@@ -1,7 +1,10 @@
 module( "Location", package.seeall )
 
+-- Prevent sending clients a theater video too early
+local DelayThinkSeconds = 3
 
 hook.Add( "PlayerThink", "LocationThink", function( ply )
+	if not ply:IsConnected() or (ply:TimeConnected() < DelayThinkSeconds) then return end
 
 	local oldloc = ply:GetLocation()
 	local loc = Find( ply )
@@ -11,7 +14,6 @@ hook.Add( "PlayerThink", "LocationThink", function( ply )
 
 	-- Player, New Location, Old Location
 	hook.Call( "PlayerChangeLocation", GAMEMODE, ply, loc, oldloc )
-
 end )
 
 -- Lua refresh theater fix (used in development)
