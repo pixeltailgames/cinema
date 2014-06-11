@@ -36,7 +36,9 @@ h = 0
 
 local LoadingStr = T'Loading'
 
-function DrawActiveTheater()
+function DrawActiveTheater( bDrawingDepth, bDrawingSkybox )
+
+	if bDrawingSkybox then return end
 
 	if input.IsKeyDown(KEY_Q) then
 		LastInfoDraw = CurTime()
@@ -76,13 +78,11 @@ function DrawActiveTheater()
 
 	cam.End3D2D()
 
-	cam.Start3D2D( Pos, Ang, InfoScale )
-
-		if LastInfoDraw + InfoDrawDelay > CurTime() then
-			pcall( theater.DrawVideoInfo, w, h, InfoScale )
-		end
-
-	cam.End3D2D()
+	if LastInfoDraw + InfoDrawDelay > CurTime() then
+		cam.Start3D2D( Pos, Ang, InfoScale )	
+				pcall( theater.DrawVideoInfo, w, h, InfoScale )
+		cam.End3D2D()
+	end
 
 end
 hook.Add( "PostDrawOpaqueRenderables", "DrawTheaterScreen", DrawActiveTheater )

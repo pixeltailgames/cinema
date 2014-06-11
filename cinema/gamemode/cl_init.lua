@@ -4,24 +4,29 @@ ColHighlight = Color( 158, 37, 33 )
 
 include( 'shared.lua' )
 
-/*
+--[[
 	Unsupported Notifications
-*/
-
+]]
 hook.Add( "InitPostEntity", "CheckMapSupport", function()
 
-	if Location and !Location.GetLocations() then
+	if Location then
 
-		warning.Set(
-			T'Warning_Unsupported_Line1',
-			T'Warning_Unsupported_Line2'
-		)
+		hook.Run( "CinemaRegisterMap", Location )
 
-		control.Add( KEY_F1, function( enabled, held )
-			if enabled and !held then
-				steamworks.ViewFile( 119060917 )
-			end
-		end )
+		if not Location.GetLocations() then
+			
+			warning.Set(
+				T'Warning_Unsupported_Line1',
+				T'Warning_Unsupported_Line2'
+			)
+
+			control.Add( KEY_F1, function( enabled, held )
+				if enabled and !held then
+					steamworks.ViewFile( 119060917 )
+				end
+			end )
+
+		end
 
 	elseif system.IsOSX() then
 
@@ -158,9 +163,7 @@ end
 -- If return nil:	 	Will carry out default action
 --
 function GM:ShouldDrawLocalPlayer( ply )
-
 	return player_manager.RunClass( ply, "ShouldDrawLocal" )
-
 end
 
 --[[---------------------------------------------------------
