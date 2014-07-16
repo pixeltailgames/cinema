@@ -1,7 +1,7 @@
 THEATER_NONE = 0 		-- Default theater
 THEATER_PRIVATE = 1 	-- Private theater which can be rented
 THEATER_REPLICATED = 2 	-- Theater that should be networked
-THEATER_PRIVILEGED = 3 	-- Theater restricted to privileged players
+THEATER_PRIVILEGED = 4 	-- Theater restricted to privileged players
 
 QUEUE_VOTEUPDOWN = 1
 QUEUE_CHRONOLOGICAL = 2
@@ -96,7 +96,7 @@ end
 local function ServiceMatch( Theater, service, data )
 
 	-- Make sure this service can be used in the theater
-	if service.TheaterType and (!Theater or Theater:GetFlags() != service.TheaterType) then
+	if service.TheaterType and (!Theater or bit.band( Theater:GetFlags(), bit.bnot( service.TheaterType ) ) then
 		return
 	end
 

@@ -11,7 +11,7 @@
 		0 : "None - Theater isn't replicated or private."
 		1 : "Private - Theater may be owned by a player and isn't replicated."
 		2 : "Replicated - Theater is visible in the scoreboard and is publically available."
-		3 : "Privileged - Theater is only accessible by privileged players (eg. VIP players)."
+		4 : "Privileged - Theater is only accessible by privileged players (eg. VIP players)."
 	]
 
 	width(float) : "Screen Width" : 480 : "Width of the theater screen in hammer units"
