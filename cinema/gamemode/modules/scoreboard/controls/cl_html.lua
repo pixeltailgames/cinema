@@ -122,7 +122,7 @@ function PANEL:Think()
 
 			-- Delay setting up callbacks
 			timer.Simple( 0.02, function()
-				self:SetupCallbacks()
+				--self:SetupCallbacks()
 			end )
 
 			self:OnStartLoading()
