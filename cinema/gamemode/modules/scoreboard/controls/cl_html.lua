@@ -121,8 +121,8 @@ function PANEL:Think()
 			self:RunJavascript("gmod.getUrl(window.location.href, false);")
 
 			-- Delay setting up callbacks
-			timer.Simple( 0.02, function()
-				--self:SetupCallbacks()
+			timer.Simple( 0.05, function()
+				if IsValid(self) then self:SetupCallbacks() end
 			end )
 
 			self:OnStartLoading()
