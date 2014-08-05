@@ -4,9 +4,8 @@ SERVICE.Name 		= "Twitch.TV"
 SERVICE.IsTimed 	= true
 
 function SERVICE:Match( url )
-	return (string.match(url.host, "justin.tv") or
-			string.match(url.host, "twitch.tv")) and
-			string.match(url.path, "^/[%w_]+/%a/(%d+)")
+	return string.match(url.host, "twitch.tv") and
+		string.match(url.path, "^/[%w_]+/%a/(%d+)")
 end
 
 function SERVICE:GetURLInfo( url )
