@@ -10,7 +10,7 @@ local DurationPattern = "Duration: <span>(.-) min</span>"
 local ThumbnailPattern = '<img height="%d-" width="%d-" title=".-" alt=".-" src="(.-)" />'
 
 function SERVICE:Match( url )
-	return string.match( url.host, "viooz.co" ) and
+	return string.match( url.host, "viooz%.%a+" ) and
 		string.match( url.path, DataPattern )
 end
 
