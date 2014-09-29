@@ -54,7 +54,7 @@ function SERVICE:GetVideoInfo(data, onSuccess, onFailure)
 		
     end
 	
-	local url = string.format( "http://x%sx.channel-api.livestream-api.com/2.0/info.json", data:gsub("_", "-") )
+	local url = string.format( "http://x%sx.api.channel.livestream.com/2.0/info.json", data:gsub("_", "-") )
 	self:Fetch( url, onReceive, onFailure )
 	
 end
