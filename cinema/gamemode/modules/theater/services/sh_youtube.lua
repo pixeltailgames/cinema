@@ -12,7 +12,7 @@ function SERVICE:GetURLInfo( url )
 	local info = {}
 
 	-- http://www.youtube.com/watch?v=(videoId)
-	if url.query and url.query.v then
+	if url.query and url.query.v and string.len(url.query.v) > 0 then
 		info.Data = url.query.v
 
 	-- http://www.youtube.com/v/(videoId)
