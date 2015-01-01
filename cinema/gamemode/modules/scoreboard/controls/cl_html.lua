@@ -87,6 +87,10 @@ function PANEL:Init()
 		end
 
 	end )
+
+	self:AddFunction( "window", "open", function()
+		-- prevents popups from opening
+	end)
 	
 	local oldFunc = self.OpenURL
 	self.OpenURL = function( panel, url, history )
@@ -171,9 +175,7 @@ function PANEL:OnStartLoading()
 end
 
 function PANEL:OnFinishLoading()
-	self:RunJavascript([[
-window.open = function() {};
-]])
+
 end
 
 function PANEL:QueueJavascript( js )
