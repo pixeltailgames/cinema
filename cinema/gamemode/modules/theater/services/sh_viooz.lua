@@ -3,7 +3,7 @@ local SERVICE = {}
 SERVICE.Name 	= "Viooz"
 SERVICE.IsTimed = true
 
-local UrlPattern = "http://viooz.co/movies/%s.html"
+local UrlPattern = "http://viooz.ac/movies/%s.html"
 local DataPattern = "^/movies/(.-).html"
 local TitlePattern = "</span><span>(.-)</span></a>"
 local DurationPattern = "Duration: <span>(.-) min</span>"
