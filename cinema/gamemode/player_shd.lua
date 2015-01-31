@@ -56,6 +56,8 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerNoClip( pl, on )
 	
+	if GetConVar( "sv_cheats" ):GetBool() > 0 then return true end
+
 	-- For development purposes
 	if pl.IsPixelTail and pl:IsPixelTail() then return true end
 
