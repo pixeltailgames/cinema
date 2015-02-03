@@ -66,24 +66,30 @@ end
 function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	local onReceive = function( body, length, headers, code )
-
-		if string.match( body, "noembed" ) then
-			return onFailure( 'Service_EmbedDisabled' )
-		elseif string.match( body, "paidContent" ) then
-			return onFailure( 'Service_PurchasableContent' )
+		body = util.JSONToTable(body)
+		
+		if body["error"] then
+			return onFailure( "The requested video failed with error code " ..tostring(body["error"]["code"]).. ": " ..body["error"]["message"])
 		end
-
+		
+		if body["pageInfo"]["totalResults"] and body["pageInfo"]["totalResults"] == 0 then
+			return	onFailure( "The requested video could not be found." )
+		end
+		
+		if body["items"][1]["status"]["embeddable"] == false then
+			return onFailure( "The requested video is embed disabled." )
+		elseif body["items"][1]["contentDetails"]["contentRating"] then -- Assuming, since there's no Paid Content indicator in Data v3
+			return onFailure( "The requested video is purchasable content and can't be played." )
+		end
+		
 		local info = {}
-		info.title = string.match( body, "<title type='text'>([^\n]+)</title>" )
-		info.duration = string.match( body, "duration seconds='(%d+)'" )
-		info.thumbnail = string.match( body, "thumbnail url='(.+)0.jpg'" )
-
-		if info.thumbnail then
-			info.thumbnail = info.thumbnail .. "0.jpg"
-		end
-
-		if string.match( body, "<yt:state name='processing'/>" ) then
+		info.title = body["items"][1]["snippet"]["title"]
+		info.duration = (tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)H") or 0)*60*60) + (tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)M") or 0)*60) + tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)S") or 0)
+		info.thumbnail = body["items"][1]["snippet"]["thumbnails"]["medium"]["url"] -- Medium Size doesn't have a letterbox
+		
+		if body["items"][1]["snippet"]["liveBroadcastContent"] != "none" then
 			info.type = 'youtubelive'
+			info.duration = 0
 		end
 
 		if onSuccess then
@@ -92,7 +98,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	end
 
-	local url = string.format( "http://gdata.youtube.com/feeds/api/videos/%s", data )
+	local url = string.format( "https://www.googleapis.com/youtube/v3/videos?id=%s&key=AIzaSyDzdkQ4zhqhzQscCLS92GMnYAw_BiVuS-A&part=snippet,contentDetails,status", data )
 	self:Fetch( url, onReceive, onFailure )
 
 end
