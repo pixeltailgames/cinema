@@ -138,12 +138,12 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 		end
 		
 		local info = {}
-		info.title = table.Lookup( item, 'snipper.title' )
+		info.title = table.Lookup( item, 'snippet.title' )
 
 		-- Medium Size doesn't have a letterbox
 		info.thumbnail = table.Lookup( item, 'snippet.thumbnails.medium.url' )
 
-		local isLive = ( table.Lookup( item, 'snipper.liveBroadcastContent' ) ~= 'none' )
+		local isLive = ( table.Lookup( item, 'snippet.liveBroadcastContent' ) ~= 'none' )
 
 		if isLive then
 			info.type = 'youtubelive'
