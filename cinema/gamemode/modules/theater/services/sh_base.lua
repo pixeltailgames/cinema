@@ -24,7 +24,7 @@ local HttpHeaders = {
 	["Connection"] = "keep-alive",
 
 	-- Required for Google API requests; uses browser API key.
-	["Referer"] = "http://mediaplayer.pixeltailgames.com/",
+	["Referer"] = "http://cinema.pixeltailgames.com/",
 
 	-- Don't use improperly formatted GMod user agent in case anything actually
 	-- checks the user agent.
