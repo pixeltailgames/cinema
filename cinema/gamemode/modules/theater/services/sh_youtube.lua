@@ -69,17 +69,17 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 		body = util.JSONToTable(body)
 		
 		if body["error"] then
-			return onFailure( "The requested video failed with error code " ..tostring(body["error"]["code"]).. ": " ..body["error"]["message"])
+			return onFailure( 'Theater_RequestFailed' )
 		end
 		
 		if body["pageInfo"]["totalResults"] and body["pageInfo"]["totalResults"] == 0 then
-			return	onFailure( "The requested video could not be found." )
+			return	onFailure( 'Theater_RequestFailed' )
 		end
 		
 		if body["items"][1]["status"]["embeddable"] == false then
-			return onFailure( "The requested video is embed disabled." )
+			return onFailure( 'Service_EmbedDisabled' )
 		elseif body["items"][1]["contentDetails"]["contentRating"] then -- Assuming, since there's no Paid Content indicator in Data v3
-			return onFailure( "The requested video is purchasable content and can't be played." )
+			return onFailure( 'Service_PurchasableContent' )
 		end
 		
 		local info = {}
