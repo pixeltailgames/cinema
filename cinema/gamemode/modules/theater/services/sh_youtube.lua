@@ -3,8 +3,60 @@ local SERVICE = {}
 SERVICE.Name 	= "YouTube"
 SERVICE.IsTimed = true
 
+local API_KEY = "AIzaSyAjSwUHzyoxhfQZmiSqoIBQpawm2ucF11E"
+
+local METADATA_URL = "https://www.googleapis.com/youtube/v3/videos?id=%s" ..
+		"&key=" .. API_KEY ..
+		"&part=snippet,contentDetails,status" ..
+		"&videoEmbeddable=true&videoSyndicated=true"
+
 function SERVICE:Match( url )
 	return string.match( url.host, "youtu.?be[.com]?" )
+end
+
+---
+-- Helper function for converting ISO 8601 time strings; this is the formatting
+-- used for duration specified in the YouTube v3 API.
+--
+-- http://stackoverflow.com/a/22149575/1490006
+--
+local function convertISO8601Time( duration )
+	local a = {}
+
+	for part in string.gmatch(duration, "%d+") do
+	   table.insert(a, part)
+	end
+
+	if duration:find('M') and not (duration:find('H') or duration:find('S')) then
+		a = {0, a[1], 0}
+	end
+
+	if duration:find('H') and not duration:find('M') then
+		a = {a[1], 0, a[2]}
+	end
+
+	if duration:find('H') and not (duration:find('M') or duration:find('S')) then
+		a = {a[1], 0, 0}
+	end
+
+	duration = 0
+
+	if #a == 3 then
+		duration = duration + tonumber(a[1]) * 3600
+		duration = duration + tonumber(a[2]) * 60
+		duration = duration + tonumber(a[3])
+	end
+
+	if #a == 2 then
+		duration = duration + tonumber(a[1]) * 60
+		duration = duration + tonumber(a[2])
+	end
+
+	if #a == 1 then
+		duration = duration + tonumber(a[1])
+	end
+
+	return duration
 end
 
 function SERVICE:GetURLInfo( url )
@@ -66,30 +118,39 @@ end
 function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	local onReceive = function( body, length, headers, code )
-		body = util.JSONToTable(body)
-		
-		if body["error"] then
+		local resp = util.JSONToTable( body )
+		if not resp then
+			return onFailure( 'Theater_RequestFailed' )
+		end
+
+		if resp.error then
 			return onFailure( 'Theater_RequestFailed' )
 		end
 		
-		if body["pageInfo"]["totalResults"] and body["pageInfo"]["totalResults"] == 0 then
-			return	onFailure( 'Theater_RequestFailed' )
+		if table.Lookup( resp, 'pageInfo.totalResults', 0 ) <= 0 then
+			return onFailure( 'Theater_RequestFailed' )
 		end
 		
-		if body["items"][1]["status"]["embeddable"] == false then
+		local item = resp.items[1]
+
+		if not table.Lookup( item, 'status.embeddable' ) then
 			return onFailure( 'Service_EmbedDisabled' )
-		elseif body["items"][1]["contentDetails"]["contentRating"] then -- Assuming, since there's no Paid Content indicator in Data v3
-			return onFailure( 'Service_PurchasableContent' )
 		end
 		
 		local info = {}
-		info.title = body["items"][1]["snippet"]["title"]
-		info.duration = (tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)H") or 0)*60*60) + (tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)M") or 0)*60) + tonumber(string.match(body["items"][1]["contentDetails"]["duration"], "(%d+)S") or 0)
-		info.thumbnail = body["items"][1]["snippet"]["thumbnails"]["medium"]["url"] -- Medium Size doesn't have a letterbox
-		
-		if body["items"][1]["snippet"]["liveBroadcastContent"] != "none" then
+		info.title = table.Lookup( item, 'snipper.title' )
+
+		-- Medium Size doesn't have a letterbox
+		info.thumbnail = table.Lookup( item, 'snippet.thumbnails.medium.url' )
+
+		local isLive = ( table.Lookup( item, 'snipper.liveBroadcastContent' ) ~= 'none' )
+
+		if isLive then
 			info.type = 'youtubelive'
 			info.duration = 0
+		else
+			local durStr = table.Lookup( item, 'contentDetails.duration', '' )
+			info.duration = convertISO8601Time( durStr )
 		end
 
 		if onSuccess then
@@ -98,7 +159,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	end
 
-	local url = string.format( "https://www.googleapis.com/youtube/v3/videos?id=%s&key=AIzaSyDzdkQ4zhqhzQscCLS92GMnYAw_BiVuS-A&part=snippet,contentDetails,status", data )
+	local url = METADATA_URL:format( data )
 	self:Fetch( url, onReceive, onFailure )
 
 end
