@@ -83,16 +83,17 @@ hook.Add("KeyRelease", "EnterSeat", function(ply, key)
 
 	if !IsValid(trace.Entity) then return end
 
-	local model = trace.Entity:GetModel()
+	local seat = trace.Entity
+	local model = seat:GetModel()
 
 	local offsets = ChairOffsets[model]
 	if !offsets then return end
 
-	local usetable = trace.Entity.UseTable or {}
+	local usetable = seat.UseTable or {}
 	local pos = -1
 
 	if #offsets > 1 then
-		local localpos = trace.Entity:WorldToLocal(trace.HitPos)
+		local localpos = seat:WorldToLocal(trace.HitPos)
 		local bestpos, bestdist = -1
 
 		for k,v in pairs(offsets) do
@@ -111,25 +112,27 @@ hook.Add("KeyRelease", "EnterSeat", function(ply, key)
 	end
 
 	usetable[pos] = true
-	trace.Entity.UseTable = usetable
+	seat.UseTable = usetable
 
-	ply.EntryPoint = ply:GetPos()
-	ply.EntryAngles = ply:EyeAngles()
-	ply.SeatEnt = trace.Entity
-	ply.SeatPos = pos
-
-	local ang = trace.Entity:GetAngles()
+	local ang = seat:GetAngles()
 	if offsets[pos].Ang then
-		ang:RotateAroundAxis(trace.Entity:GetForward(), offsets[pos].Ang.p)
-		ang:RotateAroundAxis(trace.Entity:GetUp(), offsets[pos].Ang.y)
-		ang:RotateAroundAxis(trace.Entity:GetRight(), offsets[pos].Ang.r)
+		ang:RotateAroundAxis(seat:GetForward(), offsets[pos].Ang.p)
+		ang:RotateAroundAxis(seat:GetUp(), offsets[pos].Ang.y)
+		ang:RotateAroundAxis(seat:GetRight(), offsets[pos].Ang.r)
 	else
-		ang:RotateAroundAxis(trace.Entity:GetUp(), -90)
+		ang:RotateAroundAxis(seat:GetUp(), -90)
 	end
 
 	local s = CreateSeatAtPos(trace.Entity:LocalToWorld(offsets[pos].Pos), ang)
 	s:SetParent(trace.Entity)
 	s:SetOwner(ply)
+
+	s.SeatData = {
+		Ent = seat,
+		Pos = pos,
+		EntryPoint = ply:GetPos(),
+		EntryAngles = ply:GetAngles()
+	}
 
 	ply:EnterVehicle(s)
 
@@ -173,28 +176,36 @@ end
 
 local function PlayerLeaveVehicle( vehicle, ply )
 	if vehicle:GetClass() != "prop_vehicle_prisoner_pod" then return end
+	if vehicle.Removing == true then return end
 
-	if !IsValid(ply.SeatEnt) then
+	local seat = vehicle.SeatData
+
+	if not (istable(seat) and IsValid(seat.Ent)) then
 		return true
 	end
 
-	if ply.SeatEnt && ply.SeatEnt.UseTable then
-		ply.SeatEnt.UseTable[ply.SeatPos] = false
+	if seat.Ent && seat.Ent.UseTable then
+		seat.Ent.UseTable[seat.Pos] = false
 	end
-	ply.SeatPos = 0
-	ply.SeatEnt = nil
 
-	ply.ExitTime = CurTime()
-	ply:ExitVehicle()
+	if IsValid(ply) and ply:InVehicle() and (CurTime() - (ply.ExitTime or 0)) > 0.001 then
+		ply.ExitTime = CurTime()
+		ply:ExitVehicle()
 
-	ply:SetEyeAngles(ply.EntryAngles)
+		ply:SetEyeAngles(seat.EntryAngles)
 
-	local trace = util.TraceEntity({start=ply.EntryPoint, endpos=ply.EntryPoint}, ply)
+		local trace = util.TraceEntity({
+			start = seat.EntryPoint,
+			endpos = seat.EntryPoint
+		}, ply)
 
-	if vehicle:GetPos():Distance(ply.EntryPoint) < 128 && !trace.StartSolid && trace.Fraction > 0 then
-		ply:SetPos(ply.EntryPoint)
-	else
-		TryPlayerExit(ply, vehicle)
+		if vehicle:GetPos():Distance(seat.EntryPoint) < 128 && !trace.StartSolid && trace.Fraction > 0 then
+			ply:SetPos(seat.EntryPoint)
+		else
+			TryPlayerExit(ply, vehicle)
+		end
+
+		ply:SetCollisionGroup( COLLISION_GROUP_DEBRIS_TRIGGER )
 	end
 
 	if !vehicle.bSlots then
@@ -202,10 +213,7 @@ local function PlayerLeaveVehicle( vehicle, ply )
 		vehicle:Remove()
 	end
 
-	ply:SetCollisionGroup( COLLISION_GROUP_DEBRIS_TRIGGER )
-
 	return false
-
 end
 
 hook.Add("CanExitVehicle", "Leave", PlayerLeaveVehicle)
