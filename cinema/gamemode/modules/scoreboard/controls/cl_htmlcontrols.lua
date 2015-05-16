@@ -106,26 +106,22 @@ function PANEL:SetHTML( html )
 	self.AddressBar:SetText( self.HomeURL )
 	self:UpdateHistory( self.HomeURL )
 	
-	local OldFunc = self.HTML.OpeningURL
-	self.HTML.OpeningURL = function( panel, url, target, postdata, bredirect )
-		
-		self.NavStack = self.NavStack + 1
+	self.HTML.OnFinishLoading = function( panel )
+
+		local url = self.HTML:GetURL()
+
 		self.AddressBar:SetText( url )
-		self:StartedLoading()
-		
-		if ( OldFunc ) then
-			OldFunc( panel, url, target, postdata, bredirect )
-		end
-	
-		self:UpdateHistory( url )
+		self:FinishedLoading()
 	
 	end
-	
-	local OldFunc = self.HTML.FinishedURL
-	self.HTML.FinishedURL = function( panel, url )
-		
-		self:FinishedLoading()
-		
+
+	self.HTML.OnURLChanged = function ( panel, url )
+
+		self.AddressBar:SetText( url )
+		self.NavStack = self.NavStack + 1
+		self:StartedLoading()
+		self:UpdateHistory( url )
+
 		local Theater = LocalPlayer():GetTheater()
 
 		-- Check for valid URL
@@ -135,10 +131,6 @@ function PANEL:SetHTML( html )
 			self.RequestButton:SetDisabled( true )
 		end
 
-		if ( OldFunc ) then
-			OldFunc( panel, url )
-		end
-	
 	end
 
 end

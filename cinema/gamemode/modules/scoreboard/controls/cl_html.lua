@@ -9,6 +9,8 @@
 
 --]]
 
+local RealTime = RealTime
+
 DEFINE_BASECLASS( "Panel" )
 
 local PANEL = {}
@@ -64,15 +66,8 @@ function PANEL:Init()
 		end )
 	end
 	
-	self:AddFunction( "gmod", "getUrl", function( href, finished )
-		self.URL = href
-
-		if finished then
-			self:OpeningURL( href ) -- browser controls suck
-			self:FinishedURL( href )
-		else
-			self:OpeningURL( href )
-		end
+	self:AddFunction( "gmod", "getUrl", function( href )
+		self:SetURL( href )
 	end )
 
 	self:AddFunction( "gmod", "detectFlash", function( detected )
@@ -81,8 +76,6 @@ function PANEL:Init()
 		if FLASH_WARNING_SHOWN then return end
 
 		if not detected then
-
-			warning.Add( "Adobe Flash was not detected, press F2 for help" )
 
 			control.Add( KEY_F2, function( enabled, held )
 				if enabled and !held then
@@ -109,17 +102,24 @@ end
 
 function PANEL:Think()
 
+	-- Poll page for URL change
+	if not self._nextUrlPoll or self._nextUrlPoll < RealTime() then
+		self:FetchPageURL()
+		self._nextUrlPoll = RealTime() + 1
+	end
+
 	if self:IsLoading() then
 
 		-- Call started loading
 		if not self._loading then
 
-			-- Get the page URL
-			self:RunJavascript("gmod.getUrl(window.location.href, false);")
+			self:FetchPageURL()
 
 			-- Delay setting up callbacks
 			timer.Simple( 0.05, function()
-				if IsValid(self) then self:SetupCallbacks() end
+				if IsValid( self ) then
+					self:SetupCallbacks()
+				end
 			end )
 
 			self._loading = true
@@ -132,8 +132,7 @@ function PANEL:Think()
 		-- Call finished loading
 		if self._loading then
 
-			-- Get the page URL
-			self:RunJavascript("gmod.getUrl(window.location.href, true);")
+			self:FetchPageURL()
 
 			-- Hack to add window object callbacks
 			if self.Callbacks.window then
@@ -160,6 +159,11 @@ function PANEL:Think()
 
 	end
 
+end
+
+function PANEL:FetchPageURL()
+	local js = "gmod.getUrl(window.location.href);"
+	self:RunJavascript(js)
 end
 
 function PANEL:OpenURL( url, ignoreHistory )
