@@ -170,7 +170,7 @@ function PANEL:UpdateHistory( url )
 	if !table.HasValue(self.History, url) then -- It spams the same entry multiple times...
 		self.Cur = table.insert( self.History, url )
 	end
-	PrintTable(self.History)
+
 	self:UpdateNavButtonStatus()
 
 end
