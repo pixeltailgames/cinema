@@ -144,7 +144,7 @@ function PANEL:GetFraction( val )
 	local Value = val or self:GetValue()
 
 	local Fraction = ( Value - self.m_numMin ) / (self.m_numMax - self.m_numMin)
-	return Fraction
+	return Fraction > 0 and Fraction or 0
 
 end
 
