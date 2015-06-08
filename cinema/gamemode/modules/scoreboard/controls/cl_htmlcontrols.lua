@@ -3,7 +3,7 @@
 | |_ / _` |/ __/ _ \ '_ \| | | | '_ \ / __| '_ \ 
 |  _| (_| | (_|  __/ |_) | |_| | | | | (__| | | |
 |_|  \__,_|\___\___| .__/ \__,_|_| |_|\___|_| |_|
-                   |_| 2010 --]]
+                   |_| 2010 | Updated: 2015 --]]
 
 local PANEL = {}
 
@@ -23,8 +23,8 @@ function PANEL:Init()
 	self.BackButton:DockMargin( Spacing*3, Margins, Spacing, Margins )
 	self.BackButton.DoClick = function()
 		self.BackButton:SetDisabled( true )
-		self.HTML:HTMLBack()
 		self.Cur = self.Cur - 1
+		self.HTML:OpenURL(self.History[self.Cur])
 		self.Navigating = true
 	end
 	
@@ -35,8 +35,8 @@ function PANEL:Init()
 	self.ForwardButton:DockMargin( Spacing, Margins, Spacing, Margins )
 	self.ForwardButton.DoClick = function()
 		self.ForwardButton:SetDisabled( true )
-		self.HTML:HTMLForward()
 		self.Cur = self.Cur + 1
+		self.HTML:OpenURL(self.History[self.Cur])
 		self.Navigating = true
 	end
 	
@@ -48,7 +48,7 @@ function PANEL:Init()
 	self.RefreshButton.DoClick = function()
 		self.RefreshButton:SetDisabled( true )
 		self.Refreshing = true
-		self.HTML:Refresh()
+		self.HTML:OpenURL( self.HTML:GetURL() )
 	end
 	
 	self.HomeButton = vgui.Create( "DImageButton", self )
@@ -59,6 +59,7 @@ function PANEL:Init()
 	self.HomeButton.DoClick = function()
 		self.HTML:Stop()
 		self.HTML:OpenURL( self.HomeURL )
+		self.Cur = 1
 	end
 	
 	self.AddressBar = vgui.Create( "DTextEntry", self )
@@ -166,8 +167,10 @@ function PANEL:UpdateHistory( url )
 	
 	end
 	
-	self.Cur = table.insert( self.History, url )
-	
+	if !table.HasValue(self.History, url) then -- It spams the same entry multiple times...
+		self.Cur = table.insert( self.History, url )
+	end
+
 	self:UpdateNavButtonStatus()
 
 end

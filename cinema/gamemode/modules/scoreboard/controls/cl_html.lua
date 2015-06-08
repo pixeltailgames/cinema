@@ -329,18 +329,6 @@ function PANEL:AddFunction( obj, funcname, func )
 
 end
 
-function PANEL:HTMLBack()
-	if self.CurrentPage <= 1 then return end
-	self.CurrentPage = self.CurrentPage - 1
-	self:OpenURL( self.History[ self.CurrentPage ], true )
-end
-
-function PANEL:HTMLForward()
-	if self.CurrentPage == #self.History then return end
-	self.CurrentPage = self.CurrentPage + 1
-	self:OpenURL( self.History[ self.CurrentPage ], true )
-end
-
 function PANEL:OpeningURL( url )
 	
 end
