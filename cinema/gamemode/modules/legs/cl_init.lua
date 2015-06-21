@@ -199,6 +199,9 @@ function Legs:Think( maxseqgroundspeed )
 		
 		self.LegEnt:SetMaterial( LocalPlayer():GetMaterial() )
 		self.LegEnt:SetSkin( LocalPlayer():GetSkin() )
+		for _, group in pairs(LocalPlayer():GetBodyGroups()) do
+      self.LegEnt:SetBodygroup(group["id"], LocalPlayer():GetBodygroup(group["id"]))
+		end
 
 		self.Velocity = LocalPlayer():GetVelocity():Length2D()
 		
