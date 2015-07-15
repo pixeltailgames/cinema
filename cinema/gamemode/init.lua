@@ -78,29 +78,12 @@ function GM:PlayerCanHearPlayersVoice( listener, talker )
 
 	-- Both players in non-theater areas (Lobby)
 	else
-		
-		if !listener.TalkerPositions then
-			listener.TalkerPositions = {}
-		end
-
-		table.insert( listener.TalkerPositions, talker:GetPos() )
 
 		return true, Voice3D
 
 	end
 
 end
-
-hook.Add( "SetupPlayerVisibility", "3DVoiceFix", function( ply, viewEntity )
-
-	if ply.TalkerPositions then
-		while #ply.TalkerPositions > 0 do
-			AddOriginToPVS( table.remove(ply.TalkerPositions) )
-		end
-	end
-
-end )
-
 
 function GM:PlayerSwitchFlashlight( ply, enable )
 
