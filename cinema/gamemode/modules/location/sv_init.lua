@@ -24,7 +24,7 @@ function Initialize()
 			if !ply:IsPlayer() then return end
 			while IsValid(ply) do
 				repeat
-					if RealTime() - ply.LocationChangeTime > 0.25 then -- Make sure they didn't _just_ change location
+					if RealTime() - ply.LocationChangeTime > 2 then -- Make sure they didn't _just_ change location
 						ply:SetLocation(0) -- Set to Unknown after exiting a Brush Area in case they're not entering another one
 					end
 					
@@ -62,7 +62,9 @@ hook.Add("OnReloaded", "ReinitializeLocationBrushes", function()
 end)
 
 hook.Add("InitPostEntity", "InitializeLocationBrushes", function()
-	Initialize()
+	timer.Simple(0.5, function()
+		Initialize()
+	end)
 end)
 
 -- Lua refresh theater fix (used in development)
