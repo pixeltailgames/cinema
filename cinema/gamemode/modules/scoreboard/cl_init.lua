@@ -158,13 +158,41 @@ function GM:MenuHide()
 		GuiAdmin:SetVisible( false )
 	end
 
-	if not ( ValidPanel( Gui ) and Gui:IsVisible() ) then
+	if not ( ValidPanel( Gui ) and Gui:IsVisible() ) and not ( ValidPanel( GuiRent ) and GuiRent:IsVisible() ) then
 		GAMEMODE:HideMouse()
 	end
 
 end
 concommand.Add("-menu", GM.MenuHide ) 
 concommand.Add("-menu_context", GM.MenuHide )
+
+function GM:AddRentShow()
+
+	if ValidPanel( GuiQueue ) then
+		GuiQueue:SetVisible( false )
+	end
+
+	if ValidPanel( GuiAdmin ) then
+		GuiAdmin:SetVisible( false )
+	end
+
+	if ValidPanel( Gui ) then
+		Gui:SetVisible( false )
+
+		CloseDermaMenus()
+	end
+
+	-- Add Rent Menu
+	if !ValidPanel( GuiRent ) then
+		GuiRent = vgui.Create( "ScoreboardRent" )
+	end
+
+	GuiRent:InvalidateLayout()
+	GuiRent:SetVisible( true )
+
+	GAMEMODE:ShowMouse()
+
+end
 
 -- Scroll playerlist
 hook.Add( "PlayerBindPress", "PlayerListScroll", function( ply, bind, pressed )
