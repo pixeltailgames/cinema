@@ -91,9 +91,11 @@ if SERVER then
 		if Room and Room:IsPrivate() and !Room:IsPrivileged() then
 			if !Room:GetOwner() then
 				if ply:GetPoints() >= RentMinutes*RentCost then
-					if ply.RentedTheater then
-						Room:AnnounceToPlayer( ply, 'Theater_RentMoreThanOne' )
-						return
+					for _, th in pairs(theater.GetTheaters()) do
+						if th._OwnerSteamID == ply:SteamID() then
+							Room:AnnounceToPlayer( ply, 'Theater_RentMoreThanOne' )
+							return
+						end
 					end
 					
 					Room:SetRentInfo(CurTime(), RentSeconds, ply)
