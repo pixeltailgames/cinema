@@ -83,10 +83,10 @@ if SERVER then
 		local RentSeconds = tonumber(args[1]) or 0
 		local RentMinutes = RentSeconds/60
 
-		--[[if RentMinutes < 10 then
+		if RentMinutes < 10 then
 			Room:AnnounceToPlayer( ply, 'Theater_RentLessThan10Minutes' )
 			return
-		end]]
+		end
 
 		if Room and Room:IsPrivate() and !Room:IsPrivileged() then
 			if !Room:GetOwner() then
