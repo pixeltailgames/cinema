@@ -992,6 +992,7 @@ if SERVER then
 			self:RequestOwner(ply)
 		else
 			self:SyncThumbnail()
+			RequestTheaterInfo(ply, true)
 		end
 
 	end
