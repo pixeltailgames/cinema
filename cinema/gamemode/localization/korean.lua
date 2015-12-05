@@ -45,7 +45,7 @@ LANG.Warning_OSX_Line2          = "F1을 눌러 이 메시지를 제거하고 �
 -- Queue
 -- modules/scoreboard/cl_queue.lua
 LANG.Queue_Title                = "대기 열"
-LANG.Request_Video              = "신청된 비디오"
+LANG.Request_Video              = "비디오 신청"
 LANG.Vote_Skip                  = "투표 건너뛰기"
 LANG.Toggle_Fullscreen          = "항상 전체 화면"
 LANG.Refresh_Theater            = "극장 새로 고침"
