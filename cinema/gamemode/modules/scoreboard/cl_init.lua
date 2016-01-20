@@ -79,9 +79,13 @@ end
 function GM:ScoreboardHide()
 
 	if ValidPanel( Gui ) then
-	    Gui:SetVisible( false )
-	    GAMEMODE:HideMouse()
-	    CloseDermaMenus()
+		Gui:SetVisible( false )
+
+		if not ( ValidPanel( GuiQueue ) and GuiQueue:IsVisible() ) then
+			GAMEMODE:HideMouse()
+		end
+
+		CloseDermaMenus()
 	end
 
 end
@@ -154,7 +158,9 @@ function GM:MenuHide()
 		GuiAdmin:SetVisible( false )
 	end
 
-	GAMEMODE:HideMouse()
+	if not ( ValidPanel( Gui ) and Gui:IsVisible() ) then
+		GAMEMODE:HideMouse()
+	end
 
 end
 concommand.Add("-menu", GM.MenuHide ) 

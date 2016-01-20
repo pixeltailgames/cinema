@@ -9,6 +9,12 @@
 
 --]]
 
+local RealTime = RealTime
+
+DEFINE_BASECLASS( "Panel" )
+
+local PANEL = {}
+
 local JS_CallbackHack = [[(function(){
 	var funcname = '%s';
 	window[funcname] = function(){
@@ -29,7 +35,7 @@ local FilterCVar = CreateClientConVar( "cinema_html_filter", 0, true, false )
 local FILTER_ALL = 0
 local FILTER_NONE = 1
 
-PANEL = {}
+local FLASH_WARNING_SHOWN = false
 
 AccessorFunc( PANEL, "m_bScrollbars", 			"Scrollbars", 		FORCE_BOOL )
 AccessorFunc( PANEL, "m_bAllowLua", 			"AllowLua", 		FORCE_BOOL )
@@ -60,22 +66,16 @@ function PANEL:Init()
 		end )
 	end
 	
-	self:AddFunction( "gmod", "getUrl", function( href, finished )
-		self.URL = href
-
-		if finished then
-			self:OpeningURL( href ) -- browser controls suck
-			self:FinishedURL( href )
-		else
-			self:OpeningURL( href )
-		end
+	self:AddFunction( "gmod", "getUrl", function( href )
+		self:SetURL( href )
 	end )
 
 	self:AddFunction( "gmod", "detectFlash", function( detected )
 
-		if !detected then
+		-- Only display flash warning once
+		if FLASH_WARNING_SHOWN then return end
 
-			warning.Add( "Adobe Flash was not detected, press F2 for help" )
+		if not detected then
 
 			control.Add( KEY_F2, function( enabled, held )
 				if enabled and !held then
@@ -86,23 +86,13 @@ function PANEL:Init()
 
 		end
 
+		FLASH_WARNING_SHOWN = true
+
 	end )
-	
-	local oldFunc = self.OpenURL
-	self.OpenURL = function( panel, url, history )
 
-		if !history then
-			-- Pop URLs from the stack
-			while #panel.History != panel.CurrentPage do
-				table.remove( panel.History )
-			end
-			table.insert( panel.History, url )
-			panel.CurrentPage = panel.CurrentPage + 1
-		end
-
-		panel.URL = url
-		oldFunc( panel, url )
-	end
+	self:AddFunction( "window", "open", function()
+		-- prevents popups from opening
+	end)
 
 end
 
@@ -112,21 +102,28 @@ end
 
 function PANEL:Think()
 
+	-- Poll page for URL change
+	if not self._nextUrlPoll or self._nextUrlPoll < RealTime() then
+		self:FetchPageURL()
+		self._nextUrlPoll = RealTime() + 1
+	end
+
 	if self:IsLoading() then
 
 		-- Call started loading
 		if not self._loading then
 
-			-- Get the page URL
-			self:RunJavascript("gmod.getUrl(window.location.href, false);")
+			self:FetchPageURL()
 
 			-- Delay setting up callbacks
 			timer.Simple( 0.05, function()
-				if IsValid(self) then self:SetupCallbacks() end
+				if IsValid( self ) then
+					self:SetupCallbacks()
+				end
 			end )
 
-			self:OnStartLoading()
 			self._loading = true
+			self:OnStartLoading()
 			
 		end
 
@@ -135,22 +132,20 @@ function PANEL:Think()
 		-- Call finished loading
 		if self._loading then
 
-			-- Get the page URL
-			self:RunJavascript("gmod.getUrl(window.location.href, true);")
+			self:FetchPageURL()
 
 			-- Hack to add window object callbacks
 			if self.Callbacks.window then
 
 				for funcname, callback in pairs(self.Callbacks.window) do
-					local js = JS_CallbackHack
-					js = js:format(funcname)
+					local js = JS_CallbackHack:format(funcname)
 					self:RunJavascript(js)
 				end
 
 			end
 
-			self:OnFinishLoading()
 			self._loading = nil
+			self:OnFinishLoading()
 
 		end
 
@@ -166,14 +161,62 @@ function PANEL:Think()
 
 end
 
+function PANEL:FetchPageURL()
+	local js = "gmod.getUrl(window.location.href);"
+	self:RunJavascript(js)
+end
+
+function PANEL:OpenURL( url, ignoreHistory )
+
+	if not ignoreHistory then
+		-- Pop URLs from the stack
+		while #self.History ~= self.CurrentPage do
+			table.remove( self.History )
+		end
+		table.insert( self.History, url )
+		self.CurrentPage = self.CurrentPage + 1
+	end
+
+	self:SetURL( url )
+
+	BaseClass.OpenURL( self, url )
+
+end
+
+function PANEL:GetURL()
+	return self.URL
+end
+
+function PANEL:SetURL( url )
+	local current = self.URL
+
+	if current ~= url then
+		self:OnURLChanged( url, current )
+	end
+
+	self.URL = url
+end
+
+function PANEL:OnURLChanged( new, old )
+
+end
+
+--[[---------------------------------------------------------
+	Window loading events
+-----------------------------------------------------------]]
+
+--
+-- Called when the page begins loading
+--
 function PANEL:OnStartLoading()
 
 end
 
+--
+-- Called when the page finishes loading all assets
+--
 function PANEL:OnFinishLoading()
-	self:RunJavascript([[
-window.open = function() {};
-]])
+
 end
 
 function PANEL:QueueJavascript( js )
@@ -286,26 +329,12 @@ function PANEL:AddFunction( obj, funcname, func )
 
 end
 
-function PANEL:GetURL()
-	return self.URL
-end
-
-function PANEL:HTMLBack()
-	if self.CurrentPage <= 1 then return end
-	self.CurrentPage = self.CurrentPage - 1
-	self:OpenURL( self.History[ self.CurrentPage ], true )
-end
-
-function PANEL:HTMLForward()
-	if self.CurrentPage == #self.History then return end
-	self.CurrentPage = self.CurrentPage + 1
-	self:OpenURL( self.History[ self.CurrentPage ], true )
-end
-
 function PANEL:OpeningURL( url )
+	
 end
 
 function PANEL:FinishedURL( url )
+	
 end
 
 derma.DefineControl( "TheaterHTML", "Extended DHTML control", PANEL, "Awesomium" )

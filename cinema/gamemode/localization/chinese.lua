@@ -1,5 +1,5 @@
 -- Basic information
-LANG.Name		= "English"	-- Native name for language
+LANG.Name		= "Chinese 台灣正體"	-- Native name for language
 LANG.Id			= "zh-TW"	-- Find corresponding ID in garrysmod/resource/localization
 LANG.Author		= "Poheart"		-- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 

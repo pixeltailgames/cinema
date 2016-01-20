@@ -178,7 +178,7 @@ if SERVER then
 
 			-- Query info from local database
 			local results = GetVideoLog(self:Data(), self:Type())
-			if results != nil then
+			if results != nil and istable(results) then
 
 				results = results[1]
 
