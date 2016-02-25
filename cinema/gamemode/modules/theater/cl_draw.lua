@@ -119,16 +119,16 @@ function DrawVideoInfo( w, h, scale )
 		WasFullscreen = theater.Fullscreen
 		Title = string.reduce( LastTitle, "VideoInfoMedium", w )
 	end
-	draw.TheaterText( Title, "VideoInfoMedium", 10, 10, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.TheaterText( Title, "VideoInfoMedium", 10, 10, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
 
 	-- Volume
-	draw.TheaterText( T('Volume'):upper(), "VideoInfoSmall", w - 72, 120, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-	draw.TheaterText( GetVolume() .. "%", "VideoInfoMedium", w - 72, 136, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	draw.TheaterText( T('Volume'):upper(), "VideoInfoSmall", w - 72, 120, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
+	draw.TheaterText( GetVolume() .. "%", "VideoInfoMedium", w - 72, 136, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
 
 	-- Vote Skips
 	if NumVoteSkips > 0 then
-		draw.TheaterText( T('Voteskips'):upper(), "VideoInfoSmall", w - 72, 230, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-		draw.TheaterText( NumVoteSkips .. "/" .. ReqVoteSkips, "VideoInfoMedium", w - 72, 246, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		draw.TheaterText( T('Voteskips'):upper(), "VideoInfoSmall", w - 72, 230, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
+		draw.TheaterText( NumVoteSkips .. "/" .. ReqVoteSkips, "VideoInfoMedium", w - 72, 246, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
 	end
 
 	-- Timed video info
@@ -143,11 +143,11 @@ function DrawVideoInfo( w, h, scale )
 
 		-- Current Time
 		local strSeconds = string.FormatSeconds(math.Clamp(math.Round(current), 0, Video:Duration()))
-		draw.TheaterText( strSeconds, "VideoInfoMedium", 16, h - bh, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
+		draw.TheaterText( strSeconds, "VideoInfoMedium", 16, h - bh, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 
 		-- Duration
 		local strDuration = string.FormatSeconds(Video:Duration())
-		draw.TheaterText( strDuration, "VideoInfoMedium", w - 16, h - bh, Color(255,255,255,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP )
+		draw.TheaterText( strDuration, "VideoInfoMedium", w - 16, h - bh, Color(255,255,255,255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
 	end
 
 	-- Loading indicater
