@@ -125,7 +125,7 @@ function GM:CalcView( ply, origin, angles, fov, znear, zfar )
 	--
 	-- Let the vehicle override the view
 	--
-	if ( IsValid( Vehicle ) ) then return GAMEMODE:CalcVehicleView( Vehicle, ply, view ) end
+	if ( IsValid( Vehicle ) ) then return hook.Run( "CalcVehicleView", Vehicle, ply, view ) end
 
 	--
 	-- Let drive possibly alter the view
