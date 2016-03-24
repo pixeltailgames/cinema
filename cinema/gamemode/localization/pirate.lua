@@ -1,7 +1,7 @@
 -- Basic information
 LANG.Name       = "Pirate Speak" -- Native name for language
 LANG.Id         = "en-PT"      -- Find corresponding ID in garrysmod/resource/localization
-LANG.Author     = "[JSG] HawkBlock"        -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
+LANG.Author     = "HawkBlock"        -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
 LANG.Cinema                     = "CINEMA"
