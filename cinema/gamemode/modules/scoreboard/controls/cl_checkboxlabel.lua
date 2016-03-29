@@ -21,7 +21,7 @@ end
 -----------------------------------------------------------]]
 function PANEL:SizeToContents()
 
-	self:PerformLayout( true )
+	self:InvalidateLayout( true )
 	self:SetWide( self.Label.x + self.Label:GetWide() )
 	self:SetTall( self.Label.y + self.Label:GetTall() )
 	
