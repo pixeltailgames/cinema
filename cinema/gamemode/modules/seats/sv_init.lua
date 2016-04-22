@@ -178,7 +178,7 @@ function TryPlayerExit(ply, ent)
 end
 
 local function PlayerLeaveVehicle( vehicle, ply )
-	if vehicle.IsCinemaSeat then return end
+	if not vehicle.IsCinemaSeat then return end
 	if vehicle:GetClass() != "prop_vehicle_prisoner_pod" then return end
 	if vehicle.Removing == true then return end
 
