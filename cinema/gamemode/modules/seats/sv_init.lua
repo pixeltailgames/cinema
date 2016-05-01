@@ -71,6 +71,8 @@ function CreateSeatAtPos(pos, angle)
 	end
 
 	ent:SetCollisionGroup( COLLISION_GROUP_DEBRIS_TRIGGER )
+	
+	ent.IsCinemaSeat = true
 
 	return ent
 end
@@ -140,6 +142,7 @@ hook.Add("KeyRelease", "EnterSeat", function(ply, key)
 end)
 
 hook.Add("CanPlayerEnterVehicle", "EnterSeat", function(ply, vehicle)
+	if not vehicle.IsCinemaSeat then return end
 	if vehicle:GetClass() != "prop_vehicle_prisoner_pod" then return end
 
 	if vehicle.Removing then return false end
@@ -175,6 +178,7 @@ function TryPlayerExit(ply, ent)
 end
 
 local function PlayerLeaveVehicle( vehicle, ply )
+	if not vehicle.IsCinemaSeat then return end
 	if vehicle:GetClass() != "prop_vehicle_prisoner_pod" then return end
 	if vehicle.Removing == true then return end
 
@@ -222,7 +226,7 @@ function PlayerExitLeft( ply )
 	if ply:IsPlayer() then
 		local Vehicle = ply:GetVehicle()
 		
-		if IsValid( Vehicle ) then
+		if IsValid( Vehicle ) and Vehicle.IsCinemaSeat then
 			PlayerLeaveVehicle( Vehicle, ply )
 		end
 	end
