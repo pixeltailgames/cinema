@@ -6,6 +6,7 @@ if CLIENT then
 	CreateClientConVar( "cinema_drawnames", 1, true, false )
 	CreateClientConVar( "cinema_volume", 25, true, false )
 	CreateClientConVar( "cinema_hd", 0, true, false )
+	CreateClientConVar( "cinema_cc", 0, true, false )
 	CreateClientConVar( "cinema_resolution", 720, true, false )
 	local MuteNoFocus = CreateClientConVar( "cinema_mute_nofocus", 1, true, false )
 	local ScrollAmount = CreateClientConVar( "cinema_scrollamount", 60, true, false )
