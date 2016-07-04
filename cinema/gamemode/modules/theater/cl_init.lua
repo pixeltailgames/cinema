@@ -71,6 +71,10 @@ function RegisterPanel( Theater )
 			if GetConVar("cinema_hd"):GetBool() then
 				panel:QueueJavascript( "if(window.theater) theater.enableHD();" )
 			end
+			
+			if GetConVar("cinema_cc"):GetBool() then
+				panel:QueueJavascript( "if(window.theater) theater.enableCC();" )
+			end
 		end
 	end)
 
