@@ -1,7 +1,7 @@
 -- Basic information
 LANG.Name       = "한국어" -- Native name for language
 LANG.Id         = "ko"      -- Find corresponding ID in garrysmod/resource/localization
-LANG.Author     = "Q2X"        -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
+LANG.Author     = "ChiNo"        -- Chain authors if necessary (e.g. "Sam, MacDGuy, Foohy")
 
 -- Common
 LANG.Cinema                     = "시네마"
@@ -20,7 +20,7 @@ LANG.Set                        = "확인"
 LANG.Theater_VideoRequestedBy       = C("현재 비디오를 신청한 플레이어는 ",ColHighlight,"%s",ColDefault," 입니다.")
 LANG.Theater_InvalidRequest         = "인식 불가능한 비디오 정보."
 LANG.Theater_AlreadyQueued          = "선택하신 비디오는 이미 대기 열에 있습니다."
-LANG.Theater_ProcessingRequest      = C("스트리밍 서비스 ",ColHighlight,"%s",ColDefault," 불러오는 중...")
+LANG.Theater_ProcessingRequest      = C("스트리밍 서비스 ",ColHighlight,"%s",ColDefault,"를 불러오는 중...")
 LANG.Theater_RequestFailed          = "선택하신 비디오를 불러오는 중 문제가 생겼습니다."
 LANG.Theater_Voteskipped            = "현재 재생 중이었던 비디오는 투표로 인해 건너뛰어졌습니다."
 LANG.Theater_ForceSkipped           = C(ColHighlight,"%s",ColDefault," 님이 강제로 건너뛰기 하였습니다.")
@@ -33,7 +33,7 @@ LANG.Theater_UnlockedQueue          = C(ColHighlight,"%s",ColDefault," 님이 �
 LANG.Theater_OwnerUseOnly           = "오로지 주인만이 이것을 사용할 수 있습니다."
 LANG.Theater_PublicVideoLength      = "공용 극장은 %s 초의 길이 제한이 있습니다."
 LANG.Theater_PlayerVoteSkipped      = C(ColHighlight,"%s",ColDefault," 님이 건너뛰기 투표를 하였습니다. ",ColHighlight,"(%s/%s)",ColDefault,".")
-LANG.Theater_VideoAddedToQueue      = C(ColHighlight,"%s",ColDefault," 님이 비디오를 대기 열에 추가했습니다.")
+LANG.Theater_VideoAddedToQueue      = C(ColHighlight,"%s",ColDefault," 비디오가 대기열에 추가되었습니다.")
 
 -- Warnings
 -- cl_init.lua
