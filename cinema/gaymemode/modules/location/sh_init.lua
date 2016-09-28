@@ -74,9 +74,7 @@ end
 function GetLocationByName( strName, strMap )
 	local locations = GetLocations( strMap )
 	if !locations then return end
-	for k, v in pairs( locations ) do
-		if ( k == strName ) then return v end
-	end
+	return locations[strName]
 end
 
 local function GetTeleportBy( func, nameOrIndex, strMap )
