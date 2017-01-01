@@ -41,6 +41,7 @@ function PlayerJoin( ply, locId )
 end
 
 function PlayerLeave( ply, locId )
+	if !ply:IsPlayer() then return end
 
 	if !locId then
 		locId = ply:GetLocation()
@@ -52,7 +53,7 @@ function PlayerLeave( ply, locId )
 	Theater:RemovePlayer(ply)
 
 end
-hook.Add( "PlayerDisconnected", "TheaterDisconnected", PlayerLeave )
+hook.Add( "EntityRemoved", "TheaterDisconnected", PlayerLeave )
 
 function RequestTheaterInfo( ply, force )
 

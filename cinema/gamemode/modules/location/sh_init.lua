@@ -2,6 +2,7 @@ module( "Location", package.seeall )
 
 Debug = false
 Maps = {}
+LocBrushes = LocBrushes or {}
 
 // register a set of locations for a map
 function Add( strName, tblMap )
@@ -113,23 +114,6 @@ end
 
 function GetTeleportByIndex( iIndex, strMap )
 	return GetTeleportBy( GetLocationByIndex, iIndex, strMap )
-end
-
-// returns the index of the player's current location, or 0 if unknown
-function Find( ply )
-	
-	local tblLoc = GetLocations()
-	
-	if ( !tblLoc ) then return 0 end
-	
-	for k, v in pairs( tblLoc ) do
-		if ( ply:GetPos():InBox( v.Min, v.Max ) ) then
-			return v.Index
-		end
-	end
-	
-	return 0
-	
 end
 
 function GetPlayersInLocation( iIndex )
