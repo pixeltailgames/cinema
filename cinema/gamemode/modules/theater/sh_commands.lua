@@ -89,17 +89,21 @@ if CLIENT then
 	hook.Add( "PrePlayerDraw", "TheaterHidePlayers", function( ply )
 
 		-- Local player in a theater and hide players enabled
-		if HidePlayers:GetBool() and LocalPlayer():InTheater() then
+		if LocalPlayer():InTheater() then
+			if theater.Fullscreen then 
+				return true
+			end
+				
+			if HidePlayers:GetBool() then
+				amount = HideAmount:GetFloat()
 
-			amount = HideAmount:GetFloat()
+				-- Hide model
+				render.SetBlend( amount )
+				render.ModelMaterialOverride(matWhite)
+				render.SetColorModulation(0.2, 0.2, 0.2)
 
-			-- Hide model
-			render.SetBlend( amount )
-			render.ModelMaterialOverride(matWhite)
-			render.SetColorModulation(0.2, 0.2, 0.2)
-
-			undomodelblend = true
-
+				undomodelblend = true
+			end
 		end
 
 	end )
