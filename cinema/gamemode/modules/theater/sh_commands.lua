@@ -247,8 +247,7 @@ else
 			if Theater then
 
 				if ply:IsAdmin() or
-					( Theater:IsPrivate() and Theater:GetOwner() == ply ) or
-					( ply.IsPixelTail && ply:IsPixelTail() ) then
+					( Theater:IsPrivate() and Theater:GetOwner() == ply ) then
 
 					local status, err = pcall(Function, Theater, ply, ...)
 

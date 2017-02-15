@@ -58,9 +58,6 @@ function GM:PlayerNoClip( pl, on )
 	
 	if GetConVar( "sv_cheats" ):GetInt() > 0 then return true end
 
-	-- For development purposes
-	if pl.IsPixelTail and pl:IsPixelTail() then return true end
-
 	-- Allow noclip if we're in single player
 	if ( game.SinglePlayer() ) then return true end
 	
