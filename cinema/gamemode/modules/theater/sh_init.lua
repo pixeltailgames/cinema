@@ -37,11 +37,12 @@ function GetByLocation( locId, setup )
 		if !info then
 
 			local screen = nil
-			local entities = ents.FindInBox( loc.Min, loc.Max )
+			local entities = ents.FindByClass("theater_screen")
 
 			-- Search for theater_screen entity
 			for _, ent in pairs( entities ) do
-				if ent:GetClass() == "theater_screen" then
+				local pos = ent:GetPos()
+				if pos.x>=loc.Min.x and pos.y>=loc.Min.y and pos.z>=loc.Min.z and pos.x<=loc.Max.x and pos.y<=loc.Max.y and pos.z<=loc.Max.z then
 					screen = ent
 					break
 				end
