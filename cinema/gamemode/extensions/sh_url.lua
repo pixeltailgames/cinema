@@ -300,6 +300,7 @@ end
 -----------------------------------------------------------------------------
 function parse2(url, default)
 	local parsed = parse(url, default)
+	if not parsed then return end
 
 	if parsed.query then
 		local prmstr = parsed.query

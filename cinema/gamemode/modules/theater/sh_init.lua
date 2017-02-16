@@ -136,7 +136,11 @@ local function GetURLInfo( url, Theater )
 	local status, data = pcall( url2.parse2, url )
 	if !status then
 		print( "ERROR:\n" .. tostring(data) )
-		return
+		return false
+	end
+
+	if !data then
+		return false
 	end
 
 	-- Keep reference to original url
