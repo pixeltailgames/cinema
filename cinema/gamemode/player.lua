@@ -178,6 +178,11 @@ end
 -----------------------------------------------------------]]
 function GM:PlayerCanSeePlayersChat( strText, bTeamOnly, pListener, pSpeaker )
 	
+	-- Console 'say' command
+	if not IsValid(pSpeaker) then
+		return true
+	end
+
 	-- Local chat functions as global chat in Cinema
 	if bTeamOnly then
 		return true
