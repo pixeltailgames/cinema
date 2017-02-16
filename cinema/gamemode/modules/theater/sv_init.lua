@@ -8,11 +8,15 @@ util.AddNetworkString( "TheaterSeek" )
 util.AddNetworkString( "TheaterVoteSkips" )
 util.AddNetworkString( "TheaterAnnouncement" )
 
+local developer_cvar = GetConVar("developer")
+
 module( "theater", package.seeall )
 
 function Initialize()
 
-	game.CleanUpMap()
+	if game.SinglePlayer() or developer_cvar:GetInt() > 0 then
+		game.CleanUpMap()
+	end
 
 	-- Make sure we can depends on the Location module
 	if !Location then
