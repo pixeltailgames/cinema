@@ -14,6 +14,20 @@ end)
 
 local url2 = url -- keep reference for extracting url data
 
+-- Heuristic to fix old privileged theater flags prior to
+-- THEATER_PRIVILEGED flag being changed from 3 to 4.
+local function fixOldFlags(theaterInfo)
+	local name = theaterInfo.Name
+	local flags = theaterInfo.Flags
+
+	if flags == 3 and name:lower():find("vip") then
+		print("Fixed '"..name.."' privileged flag [https://goo.gl/hLOUu7]")
+		return THEATER_PRIVILEGED
+	else
+		return flags
+	end
+end
+
 module( "theater", package.seeall )
 
 Theaters = {}
@@ -55,7 +69,7 @@ function GetByLocation( locId, setup )
 
 				info = {}
 				info.Name = kv.Name or kv.name or "[Missing Name]"
-				info.Flags = kv.flags or THEATER_NONE
+				info.Flags = tonumber(kv.flags) or THEATER_NONE
 				info.Pos = screen:GetPos()
 				info.Ang = screen:GetAngles()
 				info.Width = tonumber(kv.width)
@@ -68,6 +82,8 @@ function GetByLocation( locId, setup )
 						info.ThumbEnt = target[1]
 					end
 				end
+
+				info.Flags = fixOldFlags(info)
 
 			end
 
