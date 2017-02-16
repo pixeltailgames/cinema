@@ -112,7 +112,7 @@ end
 local function ServiceMatch( Theater, service, data )
 
 	-- Make sure this service can be used in the theater
-	if service.TheaterType and (!Theater or bit.band( Theater:GetFlags(), bit.bnot( service.TheaterType ) ) then
+	if service.TheaterType and (!Theater or bit.band( Theater:GetFlags(), bit.bnot( service.TheaterType ) )) then
 		return
 	end
 
