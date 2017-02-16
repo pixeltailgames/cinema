@@ -425,7 +425,7 @@ if SERVER then
 			-- Revalidate video in the case its type changes
 			if success and VideoType != vid:Type() then
 				service = GetServiceByClass( vid:Type() )
-				if service and service.TheaterType and (self:GetFlags() != service.TheaterType) then
+				if service and service.TheaterType and (bit.band( self:GetFlags(), bit.bnot( service.TheaterType ) ) then
 					self:AnnounceToPlayer( ply, 'Theater_InvalidRequest' )
 					return
 				end
