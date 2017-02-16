@@ -45,6 +45,7 @@ hook.Add( "PostDrawTranslucentRenderables", "DrawPlayerNames", function()
 	-- Don't render names while we're sitting down
 	if GetConVar("cinema_drawnames") and !GetConVar("cinema_drawnames"):GetBool() then return end
 	if !LocalPlayer().InTheater then return end
+	if theater.Fullscreen then return end
 	if IsValid( LocalPlayer():GetVehicle() ) then return end
 
 	-- Draw lower opacity and recently targetted players in theater
