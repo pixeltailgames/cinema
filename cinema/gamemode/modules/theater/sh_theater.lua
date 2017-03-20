@@ -434,7 +434,7 @@ if SERVER then
 			-- Check for duplicate requests again in the case it was requested again while processing
 			for _, video in pairs(self:GetQueue()) do
 
-				if video:Type() == VideoType and
+				if video:Type() == vid:Type() and
 					video:Data() == vid:Data() then
 
 					-- Place vote for player
