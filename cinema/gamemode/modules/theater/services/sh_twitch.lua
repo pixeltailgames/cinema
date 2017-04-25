@@ -1,3 +1,54 @@
+local API_KEY = "575dwbjbxjgwiumt1km8ws4txl9xqf"
+
+local THEATER_JS = [[(function() {
+'use strict';
+		
+class CinemaTwitchPlayer {
+	constructor() {
+		this.intervalId = setInterval(this.forcePlay.bind(this), 5000);
+	}
+	
+	get player() {
+		return window.player;
+	}
+
+	get matureBtn() {
+		return this._matureBtn ||
+			(this._matureBtn = document.querySelector('#mature-link'));
+	}
+
+	// Fix for Twitch stream not starting
+	forcePlay() {
+		if (!this.player) {
+			return;
+		} else if (this.player.isPlaying()) {
+			clearInterval(this.intervalId);
+			this.intervalId = undefined;
+		} else {
+			if (!this.clickedMatureBtn && this.matureBtn) {
+				this.matureBtn.click();
+				this.clickedMatureBtn = true;
+				this._matureBtn = undefined;
+			} else {
+				this.player.pause();
+				this.player.play();
+			}
+		}
+	}
+	
+	setVolume(volume) {
+		if (this.player) {
+			this.player.setVolume(volume / 100);
+		}
+	}
+
+	enableHD(on) {}
+	sync(seconds) {}
+};
+
+window.theater = new CinemaTwitchPlayer();
+}());]]
+
 local SERVICE = {}
 
 SERVICE.Name 		= "Twitch.TV"
@@ -5,21 +56,13 @@ SERVICE.IsTimed 	= true
 
 function SERVICE:Match( url )
 	return string.match(url.host, "twitch.tv") and
-		string.match(url.path, "^/[%w_]+/%a/(%d+)")
+		string.match(url.path, "^/videos/(%d+)")
 end
 
 function SERVICE:GetURLInfo( url )
 
 	local info = {}
-	info.Data = string.match(url.path, "^/[%w_]+/%a/(%d+)")
-
-	-- Chapter videos use /c/ while archived videos use /b/
-	local letter = string.match(url.path, "^/[%w_]+/(%a)/%d+")
-	if letter == "c" then
-		info.Data = "c" .. info.Data
-	else
-		info.Data = "b" .. info.Data
-	end
+	info.Data = string.match(url.path, "^/videos/(%d+)")
 
 	-- Start time
 	if url.query and url.query.t then
@@ -65,7 +108,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 			return pcall(onFailure, 404)
 		end
 
-		info.data = channel .. "," .. data
+		info.data = data
 
 		if onSuccess then
 			pcall(onSuccess, info)
@@ -73,14 +116,29 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	end
 
-	-- API call fix
-	local id = data
-	if string.StartWith( id, 'b' ) then
-		id = 'a' .. string.sub( id, 2, string.len(id) )
-	end
-
-	local url = string.format( "https://api.twitch.tv/kraken/videos/%s", id )
+	local url = string.format( "https://api.twitch.tv/kraken/videos/%s?client_id=%s", data, API_KEY )
 	self:Fetch( url, onReceive, onFailure )
+
+end
+
+if CLIENT then
+
+	local TWITCH_URL = "https://player.twitch.tv/?video=v%s&time=%ss"
+
+	function SERVICE:LoadVideo( Video, panel )
+
+		local startTime = math.ceil(math.max(CurTime() - Video:StartTime(), 0))
+		local url = TWITCH_URL:format( Video:Data(), startTime )
+
+		local panel = theater.ActivePanel()
+		panel:Stop()
+		panel:OpenURL( url )
+
+		panel.OnFinishLoading = function(self)
+			panel:RunJavascript(THEATER_JS)
+		end
+
+	end
 
 end
 
@@ -146,8 +204,28 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 
 	end
 
-	local url = string.format( "https://api.twitch.tv/kraken/streams/%s", data )
+	local url = string.format( "https://api.twitch.tv/kraken/streams/%s?client_id=%s", data, API_KEY )
 	self:Fetch( url, onReceive, onFailure )
+
+end
+
+if CLIENT then
+
+	local TWITCH_URL = "https://player.twitch.tv/?channel=%s"
+
+	function SERVICE:LoadVideo( Video, panel )
+
+		local url = TWITCH_URL:format( Video:Data() )
+
+		local panel = theater.ActivePanel()
+		panel:Stop()
+		panel:OpenURL( url )
+
+		panel.OnFinishLoading = function(self)
+			panel:RunJavascript(THEATER_JS)
+		end
+
+	end
 
 end
 
