@@ -7,6 +7,10 @@ function ENT:SetupDataTables()
 	self:NetworkVar( "String", 0, "TheaterName" )
 	self:NetworkVar( "String", 1, "Title" )
 	self:NetworkVar( "String", 2, "Thumbnail" )
+	self:NetworkVar( "String", 3, "TheaterOwnerName" )
+	self:NetworkVar( "Int", 0, "TheaterType" )
+	self:NetworkVar( "Float", 0, "RentTime" )
+	self:NetworkVar( "Float", 1, "RentStart" )
 
 	if SERVER then
 		self:SetTitle('NoVideoPlaying')

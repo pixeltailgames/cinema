@@ -102,6 +102,12 @@ end
 ---------------------------------------------------------------------------*/
 function GM:PostPlayerEnterTheater( ply, Theater )
 
+	if !GetConVar("cinema_rentables"):GetBool() then return end
+
+	if Theater:IsPrivate() and !Theater:IsPrivileged() and !Theater:GetOwner() then
+		ply:SendLua("hook.Call('AddRentShow', GAMEMODE)")
+	end
+
 end
 
 

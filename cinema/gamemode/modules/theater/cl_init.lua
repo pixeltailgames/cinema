@@ -329,6 +329,9 @@ function ReceiveTheaters()
 
 		if Theater:IsPrivate() and v.Owner then
 			Theater._Owner = v.Owner
+			Theater._OwnerSteamID = v.OwnerSteamID
+			Theater._RentStart = v.RentStart
+			Theater._RentTime = v.RentTime
 		end
 
 		Theaters[v.Location] = Theater

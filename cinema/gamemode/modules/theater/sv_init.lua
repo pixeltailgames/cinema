@@ -94,6 +94,9 @@ function RequestTheaterInfo( ply, force )
 
 		if Theater:IsPrivate() then
 			th.Owner = Theater:GetOwner()
+			th.OwnerSteamID = Theater:GetOwnerSteamID()
+			th.RentStart = Theater:GetRentStart()
+			th.RentTime = Theater:GetRentTime()
 		end
 
 		table.insert(info, th)

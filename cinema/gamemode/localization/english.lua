@@ -50,6 +50,30 @@ LANG.Vote_Skip                  = "Vote Skip"
 LANG.Toggle_Fullscreen          = "Toggle Fullscreen"
 LANG.Refresh_Theater            = "Refresh Theater"
 
+-- Rentable Theater System
+-- modules/scoreboard/cl_rent.lua
+-- modules/theater/sh_rent.lua
+LANG.Theater_RentTimeRemaining  = "Time Remaining: %s"
+LANG.Theater_RentOwner          = "Owner: %s"
+LANG.Theater_RentOwnerNone      = "Owner: NONE"
+LANG.Theater_AddRent            = "Add Rent Time"
+LANG.Theater_RentTime           = "Rent Time (Minutes)"
+LANG.Theater_RentCost           = "Cost: %s Points"
+LANG.Theater_NoOwner            = "This theater has no owner. Rent it if you want to queue a video."
+LANG.Theater_NotifyRentExpiring = C("Your Rent is expiring in ", ColHighlight, "%s", ColDefault, " in 5 minutes.")
+LANG.Theater_NotifyRentExpired  = C("Your Rent has expired in ", ColHighlight, "%s", ColDefault, ".")
+LANG.Theater_RentExpired        = C(ColHighlight, "Rent has expired.", ColDefault, " This theater no longer has an owner.")
+LANG.Theater_QueueClearWarning  = "The queue will be cleared if there is no new owner within 5 minutes."
+LANG.Theater_QueueClearExecuted = "The queue was cleared as there was no new owner within 5 minutes."
+LANG.Theater_RentablesNotEnabled = "The Rentables System is not enabled. To enable it, the server owner must run cinema_rentables 1 in server console or add it to server config."
+LANG.Theater_RentLessThan10Minutes = "You can't rent a theater for less than 10 minutes."
+LANG.Theater_RentMoreThanOne     = "You can't rent more than one theater."
+LANG.Theater_RentNotEnoughPoints = "You don't have enough Points to do that."
+LANG.Theater_RentedFor           = C("Theater rented for ", ColHighlight, "%s", ColDefault, ".")
+LANG.Theater_AddedRentTime       = C("Added ", ColHighlight, "%s", ColDefault, " of Rent Time to the theater.")
+LANG.Theater_InvalidRentOwner    = "You can't rent right now, the theater owner data is invalid (most likely left the server). Please wait for rent to expire or for the owner to rejoin."
+LANG.Theater_ReacquiredOwnership = C("Ownership of ", ColHighlight, "%s", ColDefault, " reacquired! You have ", ColHighlight, "%s", ColDefault, " of Rent Time remaining.")
+
 -- Theater controls
 -- modules/scoreboard/cl_admin.lua
 LANG.Theater_Admin              = "ADMIN"

@@ -81,11 +81,11 @@ function ENT:DrawSubtitle( str, height )
 	
 	-- Calculate height offset for bar
 	by = height * scale
-	by = math.min( by, (ThumbHeight * scale) - bh )
+	by = math.min( by, (ThumbHeight + 240 * scale) - bh ) -- +240 in order to allow text above and below normal render bounds
 
 	-- Calculate height offset for text
 	ty = (height * scale) + (bh / 2)
-	ty = math.min( ty, (ThumbHeight * scale) - bh/2 )
+	ty = math.min( ty, (ThumbHeight + 240 * scale) - bh/2 )
 
 	cam.Start3D2D( self.Attach.Pos, self.Attach.Ang, ( 1 / scale ) * RenderScale )
 		surface.SetDrawColor( 0, 0, 0, 200 )
@@ -98,6 +98,7 @@ end
 local name, title
 local CurrentName, CurrentTitle
 local TranslatedName, TranslatedTitle
+local OwnerName, RentRemaining
 
 function ENT:DrawText()
 
@@ -126,7 +127,24 @@ function ENT:DrawText()
 	self:DrawSubtitle( TranslatedName, 0 )
 
 	-- Draw title
-	self:DrawSubtitle( TranslatedTitle, 303 )
+	self:DrawSubtitle( TranslatedTitle, 268 )
+	
+	if self:GetTheaterType() == THEATER_PRIVATE and GetConVar("cinema_rentables"):GetBool() then
+		OwnerName = self:GetTheaterOwnerName()
+		
+		if OwnerName == 'NONE' then
+			OwnerName = T'Theater_RentOwnerNone'
+		else
+			OwnerName = T('Theater_RentOwner', OwnerName)
+		end
+	
+		-- Draw Owner Name
+		self:DrawSubtitle( OwnerName, -80 )
+		
+		-- Draw Time Remaining
+		RentRemaining = T('Theater_RentTimeRemaining', theater.RentTimeToString((self:GetRentStart() + self:GetRentTime()) - CurTime()))
+		self:DrawSubtitle( RentRemaining, 360 )
+	end
 
 end
 

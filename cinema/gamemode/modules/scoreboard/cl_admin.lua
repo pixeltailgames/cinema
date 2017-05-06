@@ -66,6 +66,19 @@ function ADMIN:Init()
 	-- Private theater options
 	if Theater and Theater:IsPrivate() then
 
+		if GetConVar("cinema_rentables"):GetBool() then
+			local RentButton = vgui.Create( "TheaterButton" )
+			RentButton:SetText( T'Theater_AddRent' )
+			RentButton.DoClick = function()
+				hook.Call( "AddRentShow", GAMEMODE )
+			end
+			self.Options:AddItem(RentButton)
+			
+			self.RentTimeRemaining = Label( "", self )
+			self.RentTimeRemaining:SetFont( "ScoreboardVidTitle" )
+			self.RentTimeRemaining:SetColor( Color( 255, 255, 255 ) )
+		end
+
 		local NameButton = vgui.Create( "TheaterButton" )
 		NameButton:SetText( T'Theater_ChangeName' )
 		NameButton.DoClick = function(self)
@@ -102,6 +115,9 @@ function ADMIN:Update()
 		self.Title:SetText( T'Theater_Admin' )
 	end
 
+	if self.RentTimeRemaining then
+		self.RentTimeRemaining:SetText( T('Theater_RentTimeRemaining', theater.RentTimeToString((Theater:GetRentStart() + Theater:GetRentTime()) - CurTime())) )
+	end
 end
 
 function ADMIN:Think()
@@ -109,7 +125,7 @@ function ADMIN:Think()
 	if RealTime() > self.NextUpdate then
 		self:Update()
 		self:InvalidateLayout()
-		self.NextUpdate = RealTime() + 3.0
+		self.NextUpdate = RealTime() + 0.5
 	end
 
 end
@@ -146,6 +162,11 @@ function ADMIN:PerformLayout()
 	self.Options:Dock( FILL )
 	self.Options:SizeToContents()
 
+	if self.RentTimeRemaining then
+		self.RentTimeRemaining:SizeToContents()
+		self.RentTimeRemaining:SetPos(0, self:GetTall() - 24)
+		self.RentTimeRemaining:CenterHorizontal()
+	end
 end
 
 vgui.Register( "ScoreboardAdmin", ADMIN )

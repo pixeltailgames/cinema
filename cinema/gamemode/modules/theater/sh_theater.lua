@@ -49,6 +49,10 @@ function THEATER:Init( locId, info )
 		if o:IsPrivate() then
 			o._QueueLocked = false
 			o._Owner = nil
+			o._OwnerSteamID = nil
+			o._OwnerName = nil
+			o._RentTime = nil
+			o._RentStart = nil
 		end
 
 		o:PlayDefault()
@@ -195,6 +199,25 @@ function THEATER:GetOwner()
 	return self._Owner
 end
 
+function THEATER:GetOwnerSteamID()
+	return self._OwnerSteamID or 'STEAM_0:0:0'
+end
+
+function THEATER:GetOwnerName()
+	return self._OwnerName or 'Invalid'
+end
+
+/*
+	Rentable Theater System
+*/
+function THEATER:GetRentTime()
+	return self._RentTime or 0
+end
+
+function THEATER:GetRentStart()
+	return self._RentStart or 0
+end
+
 function THEATER:Think()
 
 	if self.NextThink and self.NextThink > CurTime() then
@@ -205,6 +228,53 @@ function THEATER:Think()
 
 		if !self:IsPlaying() and !self._Finished then
 			self:OnFinishedPlaying()
+		end
+
+		if GetConVar("cinema_rentables"):GetBool() then
+			if self:IsPrivate() and !self:IsPrivileged() then
+				if self:GetOwner() != nil then
+					if !self.RentWarn and (self:GetRentStart() + self:GetRentTime()) - CurTime() <= 300 then
+						if IsValid(self:GetOwner()) then
+							self.RentWarn = true
+							self:AnnounceToPlayer(self:GetOwner(), {
+								'Theater_NotifyRentExpiring',
+								self:Name()
+							})
+						end
+					end
+					if (self:GetRentStart() + self:GetRentTime()) - CurTime() <= 0 then
+						if IsValid(self:GetOwner()) then
+							if self:GetOwner():GetTheater() != self then
+								self:AnnounceToPlayer(self:GetOwner(), {
+									'Theater_NotifyRentExpired',
+									self:Name()
+								})
+							end
+						end
+						self:ResetOwner()
+						self.RentWarn = nil
+						self:AnnounceToPlayers( 'Theater_RentExpired' )
+						self:AnnounceToPlayers( 'Theater_QueueClearWarning' )
+						self._OwnerResetTime = CurTime()
+						for _, ply in pairs(self.Players) do
+							RequestTheaterInfo(ply, true)
+						end
+					end
+				end
+				if self._OwnerResetTime and CurTime() - self._OwnerResetTime >= 300 then
+					self._OwnerResetTime = nil
+
+					if self:GetOwner() != nil then return end -- A new Owner rented but then disconnected
+
+					self:ClearQueue()
+					self:NextVideo()
+					local thea = self
+					timer.Simple(1.5, function()
+						thea:Reset()
+						thea:AnnounceToPlayers( 'Theater_QueueClearExecuted' )
+					end)
+				end
+			end
 		end
 
 	else
@@ -248,6 +318,13 @@ if SERVER then
 		if self:IsPrivate() then
 			self._QueueLocked = false
 			self._Owner = nil
+			self._OwnerSteamID = nil
+			self._OwnerName = nil
+			self._RentTime = nil
+			self._RentStart = nil
+
+			self._ThumbEnt:SetRentStart(0)
+			self._ThumbEnt:SetRentTime(0)
 		end
 
 		self:PlayDefault()
@@ -284,6 +361,19 @@ if SERVER then
 
 		self._ThumbEnt:SetTheaterName( self:Name() )
 		self._ThumbEnt:SetTitle( self:VideoTitle() )
+		self._ThumbEnt:SetTheaterType( self:GetFlags() )
+
+		if GetConVar("cinema_rentables"):GetBool() then
+			if self:IsPrivate() and !self:IsPrivileged() then
+				if self:GetOwner() != nil then
+					self._ThumbEnt:SetTheaterOwnerName( self:GetOwnerName() )
+				else
+					self._ThumbEnt:SetTheaterOwnerName( "NONE" )
+				end
+				self._ThumbEnt:SetRentStart( self:GetRentStart() )
+				self._ThumbEnt:SetRentTime( self:GetRentTime() )
+			end
+		end
 
 	end
 
@@ -373,8 +463,13 @@ if SERVER then
 		if self:IsPrivate() then
 
 			-- Set new theater owner
-			if !IsValid( self:GetOwner() ) then
-				self:RequestOwner( ply )
+			if !self:GetOwner() then -- Ignore NULL Owners, as they may just be disconnected temporarily
+				if GetConVar("cinema_rentables"):GetBool() then
+					ply:SendLua("hook.Call('AddRentShow', GAMEMODE)")
+					return self:AnnounceToPlayer( ply, 'Theater_NoOwner' )
+				else
+					self:RequestOwner( ply )
+				end
 			end
 
 			-- Prevent requests from non-theater-owner if queue is locked
@@ -769,7 +864,7 @@ if SERVER then
 		net.Send(ply)
 
 		-- Owner leaving private theater
-		if self:IsPrivate() and ply == self:GetOwner() then
+		if !GetConVar("cinema_rentables"):GetBool() and self:IsPrivate() and ply == self:GetOwner() then
 			self:ResetOwner()
 			self:AnnounceToPlayer( ply, 'Theater_LostOwnership' )
 		end
@@ -783,7 +878,9 @@ if SERVER then
 		else
 			-- Reset private theaters (and public if allowed)
 			if self:IsPrivate() or GetConVar("cinema_allow_reset"):GetBool() then
-				self:Reset()
+				if !GetConVar("cinema_rentables"):GetBool() then
+					self:Reset()
+				end
 			end
 		end
 
@@ -814,7 +911,17 @@ if SERVER then
 	*/
 	function THEATER:ResetOwner()
 		self._Owner = nil
+		self._OwnerName = nil
+		self._OwnerSteamID = nil
 		self._QueueLocked = false
+		self._RentStart = nil
+		self._RentTime = nil
+
+		self:SyncThumbnail()
+
+		for _, ply in pairs(self.Players) do -- Force data refresh for the Rentable Theater System
+			RequestTheaterInfo(ply, true)
+		end
 	end
 
 	function THEATER:RequestOwner( ply )
@@ -823,9 +930,12 @@ if SERVER then
 		if IsValid( self:GetOwner() ) then return end
 
 		self._Owner = ply
+		self._OwnerName = ply:Nick()
+		self._OwnerSteamID = ply:SteamID()
 		self:AnnounceToPlayer( ply, 'Theater_NotifyOwnership' )
+		self:SyncThumbnail()
 
-		RequestTheaterInfo(ply)
+		RequestTheaterInfo(ply, true)
 
 	end
 
@@ -858,6 +968,32 @@ if SERVER then
 		-- Clamp new name to 32 chars
 		self._Name = string.sub(name,0,32)
 		self:SyncThumbnail()
+
+	end
+
+	/*
+		Rentable Theater System
+	*/
+	function THEATER:SetRentInfo( RentStart, RentSeconds, ply )
+
+		if !IsValid(ply) then return end
+
+		-- Theater must be private, but not privileged
+		if !self:IsPrivate() or self:IsPrivileged() then return end
+
+		self._RentStart = RentStart
+		self._RentTime = RentSeconds
+
+		if self.RentWarn and (self._RentStart + self._RentTime - CurTime()) > 300 then -- Reset if Rent Remaining is now above 5 minutes again
+			self.RentWarn = nil
+		end
+
+		if !self:GetOwner() then
+			self:RequestOwner(ply)
+		else
+			self:SyncThumbnail()
+			RequestTheaterInfo(ply, true)
+		end
 
 	end
 
