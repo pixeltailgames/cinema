@@ -13,13 +13,17 @@ local Admins = {
 }
 
 hook.Add( "PlayerInitialSpawn", "AuthAdmin", function( ply )
-
-	if table.HasValue( SuperAdmins, ply:SteamID() ) then
-		ply:SetUserGroup( "superadmin" )
-	end
-
-	if table.HasValue( Admins, ply:SteamID() ) then
-		ply:SetUserGroup( "admin" )
+	
+	if not ASS_VERSION then // ASSMod is not installed
+		
+		if table.HasValue( SuperAdmins, ply:SteamID() ) then
+			ply:SetUserGroup( "superadmin" )
+		end
+	
+		if table.HasValue( Admins, ply:SteamID() ) then
+			ply:SetUserGroup( "admin" )
+		end
+		
 	end
 	
 end )
