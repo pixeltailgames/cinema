@@ -6,7 +6,7 @@ LANG.Author     = "トム"        -- Chain authors if necessary (e.g. "Sam, MacD
 -- Common
 LANG.Cinema                     = "映画館"
 LANG.Volume                     = "音量"
-LANG.Voteskips                  = "スキップの投票数"　--I'm not sure what voteskips means, this says number of votes to skip
+LANG.Voteskips                  = "スキップの投票数" -- I'm not sure what voteskips means, this says number of votes to skip
 LANG.Loading                    = "読み込み"
 LANG.Invalid                    = "【不有効】"
 LANG.NoVideoPlaying             = "ビデオを演じてではない"
@@ -23,7 +23,7 @@ LANG.Theater_AlreadyQueued          = "もうこのビデオはキューにで�
 LANG.Theater_ProcessingRequest      = C("",ColHighlight,"%s",ColDefault,"の依頼を処理します。")
 LANG.Theater_RequestFailed          = "それはビデオの依頼を処理していての問題でした。"
 LANG.Theater_Voteskipped            = "当面のビデオがスキップをしました。"
-LANG.Theater_ForceSkipped           = C(ColHighlight,"%s",ColDefault,"は当面のビデオをスキップして強制しました。)
+LANG.Theater_ForceSkipped           = C(ColHighlight,"%s",ColDefault,"は当面のビデオをスキップして強制しました。")
 LANG.Theater_PlayerReset            = C(ColHighlight,"%s",ColDefault,"は映画館をリセットしました。")
 LANG.Theater_LostOwnership          = "あなたは映画館所有権が無くなってので映画館が出ました。"
 LANG.Theater_NotifyOwnership        = "今あなたは個人の映画館の持ち主です。"
