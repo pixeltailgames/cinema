@@ -163,6 +163,7 @@ function DrawFullscreen()
 
 	if Fullscreen then
 
+		surface.SetDrawColor( 0, 0, 0, 255 )
 		draw.HTMLTexture( ActivePanel(), ScrW(), ScrH() )
 
 		if LastInfoDraw + InfoDrawDelay > CurTime() then
