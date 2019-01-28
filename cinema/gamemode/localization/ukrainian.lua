@@ -49,7 +49,7 @@ LANG.Request_Video                              = "Встановити Віде
 LANG.Vote_Skip                                  = "Голосувати За Пропуск"
 LANG.Toggle_Fullscreen                  = "Повноекранний Режим"
 LANG.Refresh_Theater                    = "Перезавантажити Театр"
- 
+
 -- Theater controls
 -- modules/scoreboard/cl_admin.lua
 LANG.Theater_Admin                              = "Адмін"

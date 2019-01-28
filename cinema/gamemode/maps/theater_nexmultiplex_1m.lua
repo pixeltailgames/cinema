@@ -217,7 +217,7 @@ hook.Add( "PlayerChangeLocation", "GivePlayerCrowbar", function( ply, loc, old )
 	if !IsValid(ply) then return end
 
 	local bHasCrowbar = ply:HasWeapon( "weapon_crowbar" )
-	
+
 	if ply:GetLocationName() == "Parking Lot" and !bHasCrowbar then
 		ply:Give( "weapon_crowbar" )
 	elseif bHasCrowbar then

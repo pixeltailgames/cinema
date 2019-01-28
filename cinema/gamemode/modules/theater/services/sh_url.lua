@@ -39,7 +39,7 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 	local status, url = pcall( url.parse2, data )
 
 	if status and url and url.path then
-		
+
 		local ext = string.GetExtensionFromFilename( url.path )
 
 		if ext == nil or table.HasValue( self.ValidExtensions, ext ) then

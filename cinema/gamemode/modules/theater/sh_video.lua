@@ -5,10 +5,10 @@ VIDEO = {}
 function VIDEO:Init( info, ply )
 
 	local o = {}
-	
+
 	setmetatable( o, self )
 	self.__index = self
-	
+
 	if SERVER then
 		o.id = -1 			-- set by theater
 		o.theaterId = -1 	-- set by theater
@@ -91,7 +91,7 @@ if SERVER then
 	function VIDEO:RequestTime()
 		return self._RequestTime
 	end
-	
+
 	/*
 		Votes
 	*/
@@ -149,7 +149,7 @@ if SERVER then
 		local vote = self:GetVoteByPlayer(ply)
 
 		if vote then
-			
+
 			if (vote.value > 0 and positive) or (vote.value < 0 and !positive) then
 				self:RemoveVoteByPlayer(ply)
 			else
@@ -168,7 +168,7 @@ if SERVER then
 	end
 
 	/*
-		
+
 	*/
 	function VIDEO:RequestInfo( callback )
 
@@ -214,7 +214,7 @@ if SERVER then
 
 					-- Problem grabbing duration data
 					if IsVideoTimed(self:Type()) and self._VideoDuration <= 0 then
-						return callback(false)		
+						return callback(false)
 					end
 
 					callback(true)

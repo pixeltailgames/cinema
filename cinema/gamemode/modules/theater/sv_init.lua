@@ -7,6 +7,7 @@ util.AddNetworkString( "TheaterQueue" )
 util.AddNetworkString( "TheaterSeek" )
 util.AddNetworkString( "TheaterVoteSkips" )
 util.AddNetworkString( "TheaterAnnouncement" )
+util.AddNetworkString( "TheaterDoorLoad" )
 
 local developer_cvar = GetConVar("developer")
 
@@ -39,7 +40,7 @@ function PlayerJoin( ply, locId )
 
 	local Theater = GetByLocation(locId, true)
 	if !Theater then return end
-	
+
 	Theater:AddPlayer(ply)
 
 end
@@ -71,7 +72,7 @@ function RequestTheaterInfo( ply, force )
 	local info = {}
 	local th = nil
 	for _, Theater in pairs( GetTheaters() ) do
-		
+
 		-- Theater is set to not broadcast
 		if !Theater:IsReplicated() and Theater != ply:GetTheater() then
 			continue
@@ -149,7 +150,7 @@ net.Receive("TheaterInfo", function(len, ply)
 end)
 
 function GetVideoInfo( data, Type, onSuccess, onFailure )
-	
+
 	if !data or !Type then return end
 
 	local service = Services[ Type ]

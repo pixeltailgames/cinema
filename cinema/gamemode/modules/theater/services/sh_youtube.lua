@@ -72,7 +72,7 @@ function SERVICE:GetURLInfo( url )
 		info.Data = string.match(url.path, "^/v/([%a%d-_]+)")
 
 	-- http://youtu.be/(videoId)
-	elseif string.match(url.host, "youtu.be") and 
+	elseif string.match(url.host, "youtu.be") and
 		url.path and string.match(url.path, "^/([%a%d-_]+)$") and
 		( !info.query or #info.query == 0 ) then -- short url
 		info.Data = string.match(url.path, "^/([%a%d-_]+)$")
@@ -95,7 +95,7 @@ function SERVICE:GetURLInfo( url )
 			time = tonumber(time) and time or 0
 			time = time + (minutes * 60)
 		end
-		
+
 		if hours then
 			time = tonumber(time) and time or 0
 			time = time + (hours * 60 * 60)
@@ -126,17 +126,17 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 		if resp.error then
 			return onFailure( 'Theater_RequestFailed' )
 		end
-		
+
 		if table.Lookup( resp, 'pageInfo.totalResults', 0 ) <= 0 then
 			return onFailure( 'Theater_RequestFailed' )
 		end
-		
+
 		local item = resp.items[1]
 
 		if not table.Lookup( item, 'status.embeddable' ) then
 			return onFailure( 'Service_EmbedDisabled' )
 		end
-		
+
 		local info = {}
 		info.title = table.Lookup( item, 'snippet.title' )
 

@@ -8,7 +8,7 @@ function ENT:Initialize()
 
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_NONE )
-	
+
 	local phys = self:GetPhysicsObject()
 	if IsValid( phys ) then
 		phys:EnableMotion( false )

@@ -127,7 +127,7 @@ local entities = {
 	["'"] = '&#39;',
 	['<'] = '&lt;',
 	['>'] = '&gt;',
-	['&'] = '&amp;' 
+	['&'] = '&amp;'
 }
 
 function htmlentities(s)
@@ -397,7 +397,7 @@ function absolute(base_url, relative_url)
 						relative_parsed.query = base_parsed.query
 					end
 				end
-			else    
+			else
 				relative_parsed.path = absolute_path(base_parsed.path or "",
 					relative_parsed.path)
 			end
@@ -418,7 +418,7 @@ function parse_path(path)
 	path = path or ""
 	--path = string.gsub(path, "%s", "")
 	string.gsub(path, "([^/]*)", function (s) table.insert(parsed, s) end)
-	for i = 1, table.getn(parsed) do
+	for i = 1, #parsed do
 		parsed[i] = unescape(parsed[i])
 	end
 	if string.sub(path, 1, 1) == "/" then parsed.is_absolute = 1 end
@@ -436,18 +436,20 @@ end
 -----------------------------------------------------------------------------
 function build_path(parsed, unsafe)
 	local path = ""
-  local escape = unsafe and function(x) return x end or protect_segment
-	local n = table.getn(parsed)
-  for i = 1, n-1 do
-	if parsed[i]~= "" or parsed[i+1] == "" then
-	  path = path .. escape(parsed[i])
-	  if i < n - 1 or parsed[i+1] ~= "" then path = path .. "/" end
+	local escape = unsafe and function(x) return x end or protect_segment
+	local n = #parsed
+	for i = 1, n-1 do
+		if parsed[i] ~= "" or parsed[i + 1] == "" then
+			path = path .. escape(parsed[i])
+			if i < n - 1 or parsed[i + 1] ~= "" then
+				path = path .. "/"
+			end
+		end
 	end
-  end
-  if n > 0 then
+	if n > 0 then
 	path = path .. escape(parsed[n])
 	if parsed.is_directory then path = path .. "/" end
-  end
+	end
 	if parsed.is_absolute then path = "/" .. path end
 	return path
 end

@@ -1,9 +1,9 @@
---[[   _                                
-    ( )                               
-   _| |   __   _ __   ___ ___     _ _ 
+--[[   _
+    ( )
+   _| |   __   _ __   ___ ___     _ _
  /'_` | /'__`\( '__)/' _ ` _ `\ /'_` )
 ( (_| |(  ___/| |   | ( ) ( ) |( (_| |
-`\__,_)`\____)(_)   (_) (_) (_)`\__,_) 
+`\__,_)`\____)(_)   (_) (_) (_)`\__,_)
 
 	DComboBox
 
@@ -24,10 +24,10 @@ function PANEL:Init()
 	self.DropButton.Paint = function( panel, w, h ) derma.SkinHook( "Paint", "ComboDownArrow", panel, w, h ) end
 	self.DropButton:SetMouseInputEnabled( false )
 	self.DropButton.ComboBox = self
-		
+
 	self:SetTall( 22 )
 	self:Clear()
-	
+
 	self:SetContentAlignment( 4 )
 	self:SetTextInset( 8, 0 )
 	self:SetIsMenu( true )
@@ -47,7 +47,7 @@ function PANEL:Clear()
 		self.Menu:Remove()
 		self.Menu = nil
 	end
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -82,7 +82,7 @@ function PANEL:ChooseOption( value, index )
 
 	self:SetText( value.Name )
 	self:OnSelect( index, value, self.Data[index] )
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -99,7 +99,7 @@ function PANEL:ChooseOptionID( index )
 	self:SetText( value )
 
 	self:OnSelect( index, value, self.Data[index] )
-	
+
 end
 
 
@@ -111,7 +111,7 @@ function PANEL:OnSelect( index, value, data )
 
 	RunConsoleCommand( "gmod_language", data )
 
-	if ValidPanel( Gui ) then 
+	if IsValid( Gui ) then
 		Gui:Remove()
 		Gui = nil
 		timer.Simple( 0.1, function()
@@ -119,12 +119,12 @@ function PANEL:OnSelect( index, value, data )
 		end )
 	end
 
-	if ValidPanel( GuiQueue ) then
+	if IsValid( GuiQueue ) then
 		GuiQueue:Remove()
 		GuiQueue = nil
 	end
 
-	if ValidPanel( GuiAdmin ) then
+	if IsValid( GuiAdmin ) then
 		GuiAdmin:Remove()
 		GuiAdmin = nil
 	end
@@ -137,7 +137,7 @@ end
 function PANEL:AddLanguage( lang, select )
 
 	local i = table.insert( self.Choices, lang )
-	
+
 	if ( lang.Id ) then
 		self.Data[ i ] = lang.Id
 	end
@@ -147,7 +147,7 @@ function PANEL:AddLanguage( lang, select )
 		self:ChooseOption( lang, i )
 
 	end
-	
+
 	return i
 
 end
@@ -171,7 +171,7 @@ function PANEL:OpenMenu( pControlOpener )
 
 	-- Don't do anything if there aren't any options..
 	if ( #self.Choices == 0 ) then return end
-	
+
 	-- If the menu still exists and hasn't been deleted
 	-- then just close it and don't open a new one.
 	if ( IsValid( self.Menu ) ) then
@@ -198,21 +198,21 @@ function PANEL:OpenMenu( pControlOpener )
 			self.Menu:AddOption( v.Name, v.Id, v.Author,
 				function() self:ChooseOption( v, k ) end )
 		end
-		
+
 		local x, y = self:LocalToScreen( 0, self:GetTall() )
-		
+
 		self.Menu:SetMinimumWidth( self:GetWide() )
-		self.Menu:Open( x, y, false, self )		
-		
+		self.Menu:Open( x, y, false, self )
+
 
 end
 
 function PANEL:CloseMenu()
-	
+
 	if ( IsValid( self.Menu ) ) then
 		self.Menu:Remove()
-	end	
-	
+	end
+
 end
 
 function PANEL:Think()
@@ -232,7 +232,7 @@ function PANEL:DoClick()
 	if ( self:IsMenuOpen() ) then
 		return self:CloseMenu()
 	end
-	
+
 	self:OpenMenu()
 
 end
@@ -246,7 +246,7 @@ function PANEL:GenerateExample( ClassName, PropertySheet, Width, Height )
 		ctrl:AddChoice( "Some Choice" )
 		ctrl:AddChoice( "Another Choice" )
 		ctrl:SetWide( 150 )
-	
+
 	PropertySheet:AddSheet( ClassName, ctrl, nil, true, true )
 
 end

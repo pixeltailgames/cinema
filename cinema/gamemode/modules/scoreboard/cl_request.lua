@@ -1,6 +1,6 @@
 function RequestVideoURL( url )
 
-	if ValidPanel( RequestPanel ) then
+	if IsValid( RequestPanel ) then
 		RequestPanel:OnClose()
 		RequestPanel:Remove()
 	end
@@ -23,9 +23,9 @@ function PANEL:Init()
 	local w = math.Clamp( ScrW() - 100, 800, 1152 + self.HistoryWidth )
 	local h = ScrH()
 	if h > 800 then
-		h = h * 3/4
+		h = h * 3 / 4
 	elseif h > 600 then
-		h = h * 7/8
+		h = h * 7 / 8
 	end
 	self:SetSize( w, h )
 
@@ -68,7 +68,7 @@ function PANEL:Init()
 end
 
 function PANEL:OnClose()
-	if ValidPanel(self.Browser) then
+	if IsValid(self.Browser) then
 		Msg("AWESOMIUM: Destroyed instance for video request window\n")
 		self.Browser:Remove()
 	end
@@ -128,7 +128,7 @@ function HISTORY:Init()
 	self.VideoList:DockMargin(0, self.TitleHeight + 2, 0, 0)
 
 	self.Options = vgui.Create( "DPanelList", self )
-	self.Options:SetDrawBackground(false)
+	self.Options:SetPaintBackground(false)
 	self.Options:SetPadding( 4 )
 	self.Options:SetSpacing( 4 )
 
@@ -144,7 +144,7 @@ function HISTORY:Init()
 		self:AddVideo( request )
 	end
 
-	self.VideoList:SortVideos( function( a, b ) 
+	self.VideoList:SortVideos( function( a, b )
 		return a.lastRequest > b.lastRequest
 	end )
 
@@ -161,12 +161,12 @@ function HISTORY:AddVideo( vid )
 		self.Videos[ vid.id ] = panel
 		self.VideoList:AddItem( panel )
 	end
-	
+
 end
 
 function HISTORY:RemoveVideo( vid )
 
-	if ValidPanel( self.Videos[ vid.id ] ) then
+	if IsValid( self.Videos[ vid.id ] ) then
 		self.VideoList:RemoveItem( self.Videos[ vid.Id ] )
 		self.Videos[ vid.id ]:Remove()
 		self.Videos[ vid.id ] = nil
@@ -258,7 +258,7 @@ function VIDEO:Init()
 		pcall( function(v)
 			self:GetParent():GetParent():GetParent():RemoveVideo( v )
 		end, self.Video )
-		
+
 	end
 	self.DeleteVideo.Think = function()
 		if IsMouseOver( self.DeleteVideo ) then
@@ -273,7 +273,7 @@ end
 function VIDEO:SetVideo( vid )
 
 	self.Video = vid
-	
+
 	self:SetTooltip( self.Video.title )
 	self.Title:SetText( self.Video.title )
 
@@ -310,7 +310,7 @@ function VIDEO:PerformLayout()
 
 	self.DeleteVideo:Center()
 	self.DeleteVideo:AlignRight( 10 )
-	
+
 end
 
 function VIDEO:Paint( w, h )

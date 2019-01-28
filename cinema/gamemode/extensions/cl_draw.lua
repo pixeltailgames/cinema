@@ -2,7 +2,7 @@ local draw = draw
 local surface = surface
 local math = math
 local Color = Color
-local ValidPanel = ValidPanel
+local IsValid = IsValid
 local color_white = color_white
 
 function draw.TheaterText(text, font, x, y, colour, xalign, yalign)
@@ -14,9 +14,9 @@ end
 
 function draw.HTMLTexture( panel, w, h )
 
-	if !panel or !ValidPanel(panel) then return end
+	if !panel or !IsValid(panel) then return end
 	if !w or !h then return end
-	
+
 	panel:UpdateHTMLTexture()
 
 	local pw, ph = panel:GetSize()

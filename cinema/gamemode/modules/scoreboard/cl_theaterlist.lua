@@ -33,20 +33,20 @@ function THEATERLIST:Paint( w, h )
 end
 
 function THEATERLIST:AddTheater( th )
-	
+
 	if self.Theaters[ th ] then return end
 
 	local panel = vgui.Create( "ScoreboardTheater", self )
 	panel:SetTheater( th )
 	panel:SetVisible( true )
-	
+
 	self.Theaters[ th ] = panel
-	
+
 end
 
 function THEATERLIST:RemoveTheater( th )
 
-	if ValidPanel( self.Theaters[ th ] ) then
+	if IsValid( self.Theaters[ th ] ) then
 		self.Theaters[ th ]:Remove()
 		self.Theaters[ th ] = nil
 	end
@@ -60,8 +60,8 @@ end
 function THEATERLIST:UpdateList()
 
 	local ids = {}
-	
-	for _, th in pairs( theater.GetTheaters() ) do 
+
+	for _, th in pairs( theater.GetTheaters() ) do
 		self:AddTheater( th:GetLocation() )
 		table.insert(ids, th:GetLocation() )
 	end
@@ -93,7 +93,7 @@ end
 function THEATERLIST:PerformLayout()
 
 	local TheatersSorted = {}
-		
+
 	for _, panel in pairs( self.Theaters ) do
 		local th = {}
 		th.Panel = panel

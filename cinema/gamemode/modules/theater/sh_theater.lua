@@ -16,7 +16,7 @@ function THEATER:Init( locId, info )
 	o._Ang = info.Ang or Angle(0,0,0)
 
 	o._Width = info.Width or 128
-	o._Height = info.Height or math.Round(o._Width * (9/16))
+	o._Height = info.Height or math.Round(o._Width * (9 / 16))
 
 	if SERVER then
 
@@ -217,7 +217,7 @@ function THEATER:Think()
 
 			local time = self:VideoCurrentTime()
 			local panel = ActivePanel()
-			if time > 5 and ValidPanel(panel) then
+			if time > 5 and IsValid(panel) then
 
 				local str = string.format(
 					"if(window.theater) theater.sync(%s);", time )
@@ -430,7 +430,7 @@ if SERVER then
 					return
 				end
 			end
-		
+
 			-- Check for duplicate requests again in the case it was requested again while processing
 			for _, video in pairs(self:GetQueue()) do
 
@@ -446,7 +446,7 @@ if SERVER then
 				end
 
 			end
-		
+
 			-- Failed to grab video info, etc.
 			if !success then
 				self:AnnounceToPlayer( ply, 'Theater_RequestFailed' )
@@ -505,7 +505,7 @@ if SERVER then
 			    hr = 0
 			end
 
-			seconds = tonumber(hr) * 3600 + 
+			seconds = tonumber(hr) * 3600 +
 				tonumber(min) * 60 +
 				tonumber(sec)
 		end
@@ -637,7 +637,7 @@ if SERVER then
 
 	function THEATER:NumRequiredVoteSkips()
 
-		local ratio = math.Clamp( GetConVar("cinema_skip_ratio"):GetFloat() or 2/3, 0, 1 )
+		local ratio = math.Clamp( GetConVar("cinema_skip_ratio"):GetFloat() or 2 / 3, 0, 1 )
 
 		local numply = self:NumPlayers()
 		if numply == 1 then
@@ -668,7 +668,7 @@ if SERVER then
 	end
 
 	function THEATER:VoteSkip( ply )
-	
+
 		-- Can't vote skip if the queue is locked
 		if self:IsQueueLocked() then return end
 
@@ -680,13 +680,13 @@ if SERVER then
 
 		-- Ensure the player hasn't already voted
 		if self:HasPlayerVotedToSkip(ply) then return end
-		
+
 		-- Give hooks a chance to deny the voteskip
 		if hook.Run("PreVoteSkipAccept", ply, self) == false then return end
 
 		-- Insert player into list of vote skips
 		table.insert(self._SkipVotes, ply)
-		
+
 		-- Run post accept hook
 		hook.Run("PostVoteSkipAccept", ply, self)
 
@@ -758,12 +758,12 @@ if SERVER then
 
 		-- Remove player from list
 		table.RemoveByValue(self.Players, ply)
-		
+
 		-- Remove player from vote skip table if they have voted
 		if self:HasPlayerVotedToSkip( ply ) then
 			table.RemoveByValue(self._SkipVotes, ply)
 		end
-		
+
 		-- Notify player of leaving the theater
 		net.Start("PlayerLeaveTheater")
 		net.Send(ply)

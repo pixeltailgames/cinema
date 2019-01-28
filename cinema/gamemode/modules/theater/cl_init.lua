@@ -2,9 +2,9 @@
 control.Add( KEY_EQUAL, function( enabled )
 	-- If they're typing in Chat, ignore it
 	if LocalPlayer():IsTyping() then return end
-	
+
 	if enabled then
-		
+
 		local increment = 5
 		local volume = math.Round( theater.GetVolume() / increment ) * increment
 
@@ -18,9 +18,9 @@ end )
 control.Add( KEY_MINUS, function( enabled )
 	-- If they're typing in Chat, ignore it
 	if LocalPlayer():IsTyping() then return end
-	
+
 	if enabled then
-		
+
 		local increment = 5
 		local volume = math.Round( theater.GetVolume() / increment ) * increment
 
@@ -63,7 +63,7 @@ function RegisterPanel( Theater )
 	Msg("AWESOMIUM: Initialized instance for theater screen\n")
 
 	timer.Simple(0.5, function()
-		if ValidPanel(panel) then
+		if IsValid(panel) then
 			local js = string.format(
 				"if(window.theater) theater.setVolume(%s);", GetVolume() )
 			panel:QueueJavascript(js)
@@ -71,7 +71,7 @@ function RegisterPanel( Theater )
 			if GetConVar("cinema_hd"):GetBool() then
 				panel:QueueJavascript( "if(window.theater) theater.enableHD();" )
 			end
-			
+
 			if GetConVar("cinema_cc"):GetBool() then
 				panel:QueueJavascript( "if(window.theater) theater.enableCC();" )
 			end
@@ -95,11 +95,11 @@ function RefreshPanel( reload )
 
 	local panel = ActivePanel()
 
-	if ValidPanel(panel) then
+	if IsValid(panel) then
 		panel:SetPaintedManually(true)
 		panel:SetScrollbars(false)
 		panel:SetAllowLua(true)
-		panel:SetKeyBoardInputEnabled(false)
+		panel:SetKeyboardInputEnabled(false)
 		panel:SetMouseInputEnabled(false)
 	end
 
@@ -107,16 +107,16 @@ function RefreshPanel( reload )
 		RemovePanels()
 		LoadVideo( LastVideo )
 	end
-	
+
 	ResizePanel()
 
 end
 
 function ResizePanel()
-	
+
 	local panel = ActivePanel()
-	if !ValidPanel(panel) then return end
-	
+	if !IsValid(panel) then return end
+
 	local Theater = LocalPlayer():GetTheater()
 	local w, h = Theater:GetSize()
 	local scale = w / h
@@ -127,7 +127,7 @@ function ResizePanel()
 	-- Adjust width based on the theater screen's scale
 	w = math.floor(h2 * scale)
 	h = h2
-	
+
 	panel:SetSize(w, h)
 
 end
@@ -140,16 +140,16 @@ end
 function RemovePanels()
 
 	local panel = ActivePanel()
-	if ValidPanel(panel) then
+	if IsValid(panel) then
 		RemovePanel(panel)
 	end
 
 	-- Remove panels from table
 	for loc, p in pairs(Panels) do
-		if ValidPanel(p) and loc != LocalPlayer():GetLocation() then
+		if IsValid(p) and loc != LocalPlayer():GetLocation() then
 			RemovePanel(p)
 			Panels[loc] = nil
-		end	
+		end
 	end
 
 	-- Remove any remaining panels that might exist
@@ -158,13 +158,13 @@ function RemovePanels()
 	table.Add( panels, GetHUDPanel():GetChildren() )
 
 	for _, p in pairs(panels) do
-		if ValidPanel(p) and p.ClassName == "TheaterHTML" then
+		if IsValid(p) and p.ClassName == "TheaterHTML" then
 			RemovePanel(p)
 		end
 	end
 
 	-- Remove admin panel between theater transitions
-	if ValidPanel( GuiAdmin ) then
+	if IsValid( GuiAdmin ) then
 		GuiAdmin:Remove()
 	end
 
@@ -181,9 +181,9 @@ function CurrentVideo()
 end
 
 function ToggleFullscreen()
-	
+
 	local panel = ActivePanel()
-	if !ValidPanel(panel) then return end
+	if !IsValid(panel) then return end
 
 	-- Toggle fullscreen
 	if Fullscreen then
@@ -224,7 +224,7 @@ function SetVolume( fVolume )
 
 	local js = string.format('if(window.theater) theater.setVolume(%s);', fVolume)
 	for _, p in pairs(Panels) do
-		if ValidPanel(p) then
+		if IsValid(p) then
 			p:QueueJavascript(js)
 		end
 	end
@@ -279,9 +279,9 @@ function ReceiveVideo()
 				Theater._Owner = owner
 			end
 		end
-		
+
 	end
-	
+
 	NumVoteSkips = 0
 	LastInfoDraw = CurTime()
 
@@ -296,7 +296,7 @@ function ReceiveSeek()
 	local Video = CurrentVideo()
 	local Theater = LocalPlayer():GetTheater()
 
-	if !ValidPanel(panel) or !Video or !Theater then return end
+	if !IsValid(panel) or !Video or !Theater then return end
 
 	Video._VideoStart = seconds
 	Theater._VideoStart = seconds
@@ -335,7 +335,7 @@ function ReceiveTheaters()
 
 	end
 
-	if ValidPanel( Gui ) and ValidPanel( Gui.TheaterList ) then
+	if IsValid( Gui ) and IsValid( Gui.TheaterList ) then
 		Gui.TheaterList:UpdateList()
 	end
 
@@ -351,7 +351,7 @@ function ReceiveQueue()
 		table.insert(Queue, v)
 	end
 
-	if ValidPanel( GuiQueue ) then
+	if IsValid( GuiQueue ) then
 		GuiQueue:UpdateList()
 	end
 
@@ -381,15 +381,15 @@ function LoadVideo( Video )
 
 	if !Video then return end
 
-	local theaterUrl = GetConVarString( "cinema_url" )
+	local theaterUrl = GetConVar( "cinema_url" ):GetString()
 
 	local panel = ActivePanel()
-	if !ValidPanel( panel ) then
+	if !IsValid( panel ) then
 
 		-- Initialize HTML panel
 		local Theater = LocalPlayer():GetTheater()
 		if !Theater then return end
-		
+
 		-- Initialize panel and load the webpage
 		panel = RegisterPanel( Theater )
 		panel:OpenURL( theaterUrl )

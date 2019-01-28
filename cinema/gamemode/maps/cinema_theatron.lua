@@ -86,7 +86,7 @@ Location.Add( "cinema_theatron",
 } )
 
 if SERVER then
-	
+
 	local UseCooldown = 0.3 -- seconds
 	hook.Add( "PlayerUse", "PrivateTheaterLightSwitch", function( ply, ent )
 
@@ -104,7 +104,7 @@ if SERVER then
 			ply.LastUse = CurTime()
 
 			if Theater:GetOwner() != ply then
-				Theater:AnnounceToPlayer( ply, 'Theater_OwnerUseOnly' )
+				Theater:AnnounceToPlayer( ply, "Theater_OwnerUseOnly" )
 				return false
 			end
 

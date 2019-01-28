@@ -28,20 +28,20 @@ function PLAYERLIST:Init()
 end
 
 function PLAYERLIST:AddPlayer( ply )
-	
+
 	local panel = vgui.Create( "ScoreboardPlayer" )
 	panel:SetParent( self )
 	panel:SetPlayer( ply )
 	panel:SetVisible( true )
-	
+
 	self.Players[ ply ] = panel
 	self.PlayerList:AddItem( panel )
-	
+
 end
 
 function PLAYERLIST:RemovePlayer( ply )
 
-	if ValidPanel( self.Players[ ply ] ) then
+	if IsValid( self.Players[ ply ] ) then
 		self.PlayerList:RemoveItem( self.Players[ ply ] )
 		self.Players[ ply ]:Remove()
 		self.Players[ ply ] = nil
@@ -72,13 +72,13 @@ function PLAYERLIST:Think()
 
 	if RealTime() > self.NextUpdate then
 
-		for ply in pairs( self.Players ) do 
+		for ply in pairs( self.Players ) do
 			if !IsValid( ply ) then
 				self:RemovePlayer( ply )
 			end
 		end
-		
-		for _, ply in pairs( player.GetAll() ) do 
+
+		for _, ply in pairs( player.GetAll() ) do
 			if self.Players[ ply ] == nil then
 				self:AddPlayer( ply )
 			end
@@ -95,11 +95,11 @@ end
 
 function PLAYERLIST:PerformLayout()
 
-	table.sort( self.PlayerList.Items, function( a, b ) 
+	table.sort( self.PlayerList.Items, function( a, b )
 
 		if !a or !a.Player or !IsValid(a.Player) then return false end
 		if !b or !b.Player or !IsValid(b.Player) then return true end
-		
+
 		return string.lower( a.Player:Nick() ) < string.lower( b.Player:Nick() )
 
 	end )
@@ -156,7 +156,7 @@ function PLAYER:Init()
 
 	self.AvatarButton = vgui.Create("DButton", self)
 	self.AvatarButton:SetSize( 32, 32 )
-	
+
 	self.Avatar = vgui.Create( "AvatarImage", self )
 	self.Avatar:SetSize( 32, 32 )
 	self.Avatar:SetZPos( 1 )
@@ -172,7 +172,7 @@ function PLAYER:UpdatePlayer()
 	if !IsValid(self.Player) then
 
 		local parent = self:GetParent()
-		if ValidPanel(parent) and parent.RemovePlayer then
+		if IsValid(parent) and parent.RemovePlayer then
 			parent:RemovePlayer(self.Player)
 		end
 
@@ -189,7 +189,7 @@ end
 function PLAYER:SetPlayer( ply )
 
 	self.Player = ply
-	
+
 	self.AvatarButton.DoClick = function() self.Player:ShowProfile() end
 
 	self.Avatar:SetPlayer( ply, 64 )
@@ -210,11 +210,11 @@ function PLAYER:PerformLayout()
 	self.Location:SizeToContents()
 	self.Location:AlignTop( self.Name:GetTall() + 5 )
 	self.Location:AlignLeft( self.Avatar:GetWide() + 16 )
-	
+
 	self.AvatarButton:AlignTop( self.Padding )
 	self.AvatarButton:AlignLeft( self.Padding )
 	self.AvatarButton:CenterVertical()
-	
+
 	self.Avatar:SizeToContents()
 	self.Avatar:AlignTop( self.Padding )
 	self.Avatar:AlignLeft( self.Padding )
@@ -224,7 +224,7 @@ function PLAYER:PerformLayout()
 	self.Ping:SizeToContents()
 	self.Ping:AlignRight( self.Padding )
 	self.Ping:CenterVertical()
-	
+
 end
 
 local PixeltailIcon = Material( "theater/pixeltailicon.png" )
@@ -241,14 +241,14 @@ function PLAYER:Paint( w, h )
 
 		surface.SetMaterial( PixeltailIcon )
 		surface.DrawTexturedRect( self.Name.x + self.Name:GetWide() + 5, self.Name.y + 3, 40, 16 )
-	
+
 	elseif self.Player:IsAdmin() then
-		
+
 		surface.SetMaterial( AdminIcon )
 		surface.DrawTexturedRect( self.Name.x + self.Name:GetWide() + 5, self.Name.y + 3, 40, 16 )
 
 	end
-	
+
 end
 
 vgui.Register( "ScoreboardPlayer", PLAYER )
@@ -263,7 +263,7 @@ function PLAYERPING:Init()
 	self.Ping = Label( "99", self )
 	self.Ping:SetFont( "ScoreboardPing" )
 	self.Ping:SetColor( Color( 255, 255, 255 ) )
-	
+
 	self.Heights = { 3, 6, 9 }
 	self.PingAmounts = { 300, 200, 100 }
 	self.BaseSpacing = 5
@@ -312,7 +312,7 @@ function PLAYERPING:Paint( w, h )
 	x = xpos
 	surface.SetDrawColor( 255, 255, 255, 255 )
 
-	for i=1, #self.Heights do
+	for i = 1, #self.Heights do
 
 		local h = self.Heights[i]
 
@@ -377,7 +377,7 @@ function SERVERNAME:PerformLayout()
 	self.MapName:SizeToContents()
 	self.MapName:AlignRight( self.Padding )
 	self.MapName:AlignTop( 4 )
-	
+
 end
 
 vgui.Register( "ScoreboardServerName", SERVERNAME )

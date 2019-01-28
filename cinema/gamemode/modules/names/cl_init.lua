@@ -3,24 +3,24 @@ surface.CreateFont( "3D2DName", { font = "Bebas Neue", size = 135, weight = 600 
 local function DrawName( ply, opacityScale )
 
 	if !IsValid(ply) or !ply:Alive() then return end
-	
+
 	local pos = ply:GetPos()
 	local ang = LocalPlayer():EyeAngles()
-	
+
 	ang:RotateAroundAxis( ang:Forward(), 90 )
 	ang:RotateAroundAxis( ang:Right(), 90 )
-	
+
 	if ply:InVehicle() then
 		pos = pos + Vector( 0, 0, 30 )
 	else
 		pos = pos + Vector( 0, 0, 60 )
 	end
-	
+
 	local dist = LocalPlayer():GetPos():Distance( ply:GetPos() )
 	if ( dist >= 800 ) then return end // no need to draw anything if the player is far away
-	
+
 	local opacity = math.Clamp( 310.526 - ( 0.394737 * dist ), 0, 150 ) // woot mathematica
-	
+
 	opacityScale = opacityScale and opacityScale or 1
 	opacity = opacity * opacityScale
 
@@ -31,7 +31,7 @@ local function DrawName( ply, opacityScale )
 		-- render.OverrideDepthEnable(false, true)
 
 		draw.TheaterText( name, "3D2DName", 50, 0, Color( 255, 255, 255, opacity ) )
-		
+
 		-- render.OverrideDepthEnable(false, false)
 
 	cam.End3D2D()
@@ -67,7 +67,7 @@ hook.Add( "PostDrawTranslucentRenderables", "DrawPlayerNames", function()
 		local trace = util.TraceLine( tr )
 		if (!trace.Hit) then return end
 		if (!trace.HitNonWorld) then return end
-		
+
 		-- Keep track of recently targetted players
 		if trace.Entity:IsPlayer() then
 			HUDTargets[trace.Entity] = RealTime() + fadeTime
@@ -93,5 +93,5 @@ hook.Add( "PostDrawTranslucentRenderables", "DrawPlayerNames", function()
 		end
 
 	end
-	
+
 end )

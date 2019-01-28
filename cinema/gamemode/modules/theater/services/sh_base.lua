@@ -42,7 +42,7 @@ function SERVICE:Fetch( url, onReceive, onFailure )
 			code = tonumber( code ) or 0
 
 			if code == 200 or code == 0 then
-				onReceive( body, body:len(), headers, code )			
+				onReceive( body, body:len(), headers, code )
 			else
 				print( "FAILURE: " .. code )
 				pcall( onFailure, code )
@@ -65,10 +65,10 @@ function SERVICE:GetVideoInfo( data, onSuccess, onFailure )
 end
 
 if CLIENT then
-	
+
 	function SERVICE:LoadVideo( Video, panel )
 
-		local theaterUrl = GetConVarString( "cinema_url" )
+		local theaterUrl = GetConVar( "cinema_url" ):GetString()
 
 		if Video:Type() == "url" then
 			panel:OpenURL( Video:Data() )

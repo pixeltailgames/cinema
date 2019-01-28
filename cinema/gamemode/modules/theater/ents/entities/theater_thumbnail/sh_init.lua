@@ -17,12 +17,12 @@ end
 
 function ENT:OnRemove()
 
-	if CLIENT and ValidPanel(self.HTML) then
+	if CLIENT and IsValid(self.HTML) then
 		self.HTML:Remove()
 	end
 
 end
 
 function ENT:UpdateTransmitState()
-    return TRANSMIT_PVS
+	return TRANSMIT_PVS
 end

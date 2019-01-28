@@ -43,11 +43,11 @@ function GM:PlayerDeathThink( pl )
 	if (  pl.NextSpawnTime && pl.NextSpawnTime > CurTime() ) then return end
 
 	if ( pl:KeyPressed( IN_ATTACK ) || pl:KeyPressed( IN_ATTACK2 ) || pl:KeyPressed( IN_JUMP ) ) then
-	
+
 		pl:Spawn()
-		
+
 	end
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -66,7 +66,7 @@ end
 function GM:PlayerInitialSpawn( pl )
 
 	pl:SetTeam( TEAM_UNASSIGNED )
-	
+
 	if ( GAMEMODE.TeamBased ) then
 		pl:ConCommand( "gm_showteam" )
 	end
@@ -87,7 +87,7 @@ function GM:PlayerSpawn( pl )
 
 		GAMEMODE:PlayerSpawnAsSpectator( pl )
 		return
-	
+
 	end
 
 	-- Stop observer mode
@@ -99,10 +99,10 @@ function GM:PlayerSpawn( pl )
 
 	-- Call item loadout function
 	hook.Call( "PlayerLoadout", GAMEMODE, pl )
-	
+
 	-- Set player model
 	hook.Call( "PlayerSetModel", GAMEMODE, pl )
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -115,7 +115,7 @@ function GM:PlayerSetModel( pl )
 	local modelname = player_manager.TranslatePlayerModel( cl_playermodel )
 	util.PrecacheModel( modelname )
 	pl:SetModel( modelname )
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -125,7 +125,7 @@ end
 function GM:PlayerLoadout( pl )
 
 	player_manager.RunClass( pl, "Loadout" )
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -157,9 +157,9 @@ end
 		Return true to prevent player spraying
 -----------------------------------------------------------]]
 function GM:PlayerSpray( ply )
-	
+
 	return false
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -169,7 +169,7 @@ end
 function GM:GetFallDamage( ply, flFallSpeed )
 
 	return 0
-	
+
 end
 
 --[[---------------------------------------------------------
@@ -177,7 +177,7 @@ end
 		Can this player see the other player's chat?
 -----------------------------------------------------------]]
 function GM:PlayerCanSeePlayersChat( strText, bTeamOnly, pListener, pSpeaker )
-	
+
 	-- Console 'say' command
 	if not IsValid(pSpeaker) then
 		return true
@@ -187,11 +187,11 @@ function GM:PlayerCanSeePlayersChat( strText, bTeamOnly, pListener, pSpeaker )
 	if bTeamOnly then
 		return true
 	end
-	
-	-- Players should only receive chat messages from users in the same 
+
+	-- Players should only receive chat messages from users in the same
 	-- theater if it wasn't global.
 	return pSpeaker:GetTheater() == pListener:GetTheater()
-	
+
 end
 
 local sv_alltalk = GetConVar( "sv_alltalk" )
@@ -199,35 +199,35 @@ local sv_alltalk = GetConVar( "sv_alltalk" )
 --[[---------------------------------------------------------
    Name: gamemode:PlayerCanHearPlayersVoice()
 		Can this player see the other player's voice?
-		Returns 2 bools. 
+		Returns 2 bools.
 		1. Can the player hear the other player
 		2. Can they hear them spacially
 -----------------------------------------------------------]]
 function GM:PlayerCanHearPlayersVoice( pListener, pTalker )
-	
+
 	local alltalk = sv_alltalk:GetInt()
 	if ( alltalk > 1 ) then return true, alltalk == 2 end
 
 	return pListener:Team() == pTalker:Team(), false
-	
+
 end
 
 --[[---------------------------------------------------------
    Name: gamemode:PlayerShouldTaunt( ply, actid )
 -----------------------------------------------------------]]
 function GM:PlayerShouldTaunt( ply, actid )
-	
+
 	-- The default behaviour is to always let them act
 	-- Some gamemodes will obviously want to stop this for certain players by returning false
 	return true
-		
+
 end
 
 --[[---------------------------------------------------------
    Name: gamemode:PlayerStartTaunt( ply, actid, length )
 -----------------------------------------------------------]]
 function GM:PlayerStartTaunt( ply, actid, length )
-		
+
 end
 
 
@@ -235,10 +235,10 @@ end
    Name: gamemode:AllowPlayerPickup( ply, object )
 -----------------------------------------------------------]]
 function GM:AllowPlayerPickup( ply, object )
-	
+
 	-- Should the player be allowed to pick this object up (using ENTER)?
 	-- If no then return false. Default is HELL YEAH
 
 	return true
-		
+
 end

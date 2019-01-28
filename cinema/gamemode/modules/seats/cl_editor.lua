@@ -12,7 +12,7 @@
 
 	Run 'cinema_chaireditor' to open
 
-	If you do end up using this for finding offsets, or for 
+	If you do end up using this for finding offsets, or for
 	fixing it, consider submitting a pull request to the Cinema
 	gamemode with the additions.
 
@@ -72,7 +72,7 @@ function Open()
 			ModelPanel:SetSeat(node)
 		end
 	end
-	
+
 	ModelNodes.DoRightClick = function( self, node )
 		if node.Type == NODE_CHAIR then
 			ModelNodes:AddSeat(node)
@@ -81,54 +81,54 @@ function Open()
 			node:Remove()
 		end
 	end
-	
-	local FirstNode = nil	
+
+	local FirstNode = nil
 	for k, v in pairs( ChairModels ) do
 		local node = ModelNodes:AddNode( k )
 		node.Type = NODE_CHAIR
 		node.ModelName = k
 		node.ModelPath = v
-		
+
 		if !FirstNode then
 			FirstNode = node
 		end
 	end
 	ModelNodes:SetSelectedItem( FirstNode )
-	
+
 	function ModelNodes:AddSeat(node)
 		local node = node:AddNode( "Seat" )
 		node.Type = NODE_SEAT
 		node.ModelName = "Seat"
 		node.Icon:SetImage( "gui/silkicons/emoticon_smile" )
-		
+
 		ModelPanel:AddSeat(node)
 	end
-	
+
 	//=======================================
 	// == MODEL PANEL
 	//=======================================
-	
+
 	ModelPanel = vgui.Create("DChairEditor", MainPanel )
 	ModelPanel:Dock( FILL )
-	
+
 	//=======================================
 	// == SLIDERS
 	//=======================================
-	
+
 	local TextValues = {"XPos", "YPos", "ZPos", "PAng", "YAng", "RAng", "Scale" }
-	
+
 	SliderPanel = vgui.Create( "DPanel", MainPanel )
 	SliderPanel:Dock( RIGHT )
 	SliderPanel:SetWide( 140 )
-	
-	for i=1, 7 do
-	
+
+	for i = 1, 7 do
+
 		local panel = vgui.Create("DNumSlider", SliderPanel )
 		panel:SetWide( 130 )
 		panel:SetPos( 5, 50 * i )
 		panel:SetText( TextValues[ i ] )
 		//panel.OnValueChanged = RequestUpdate
-		
+
 		if i <= 3 then
 			panel:SetMinMax( -100, 100 )
 			panel:SetDecimals( 1 )
@@ -139,15 +139,15 @@ function Open()
 			panel:SetMinMax( -180, 180 )
 			panel:SetDecimals( 0 )
 		end
-		
+
 		ValuesList[i] = panel
-		
+
 	end
-	
+
 	//=======================================
 	// == COPY PASTE
 	//=======================================
-	
+
 	local Copy = vgui.Create("DButton", MainPanel )
 	Copy:SetText("COPY")
 	Copy:SetSize( 100, 50 )
@@ -155,29 +155,29 @@ function Open()
 	Copy.DoClick = function()
 		-- CopyData = table.Copy( GetTranslation() )
 	end
-	
+
 	local Paste = vgui.Create("DButton", MainPanel )
 	Paste:SetText("PASTE")
 	Paste:SetSize( 100, 50 )
 	Paste:SetPos( 310, 600 - 60 )
 	Paste.DoClick = function()
 	end
-	
+
 	//=======================================
 	// == SORT ITEMS BY NAME
 	//=======================================
-	
+
 	/*local Items = ModelNodes.Items
 	table.sort( Items, function( a, b )
-		return a.ModelName < b.ModelName	
+		return a.ModelName < b.ModelName
 	end )*/
-	
+
 	MainPanel:MakePopup()
-	
+
 end
 
 function Close()
-	
+
 	ValuesList = {}
 	MainPanel = nil
 	HatsNodes = nil
@@ -202,16 +202,16 @@ end
 /*function RequestUpdate()
 
 	for _, seat in ipairs(ModelPanel.Seats) do
-	
+
 		if IsValid(seat) && seat.Id == SeatNodes:GetSelectedItem().Id then
 			seat.Offset = {
 		end
-	
+
 	end
 
 end*/
 
-concommand.Add("cinema_chaireditor", Open )	
+concommand.Add("cinema_chaireditor", Open )
 
 local PANEL = {}
 
@@ -232,25 +232,25 @@ function PANEL:Init()
 
 	self.Entity = nil
 	self.Seats = {}
-	
+
 	self.LastPaint = 0
 	self.DirectionalLight = {}
-	
+
 	self:SetCamPos( Vector( 50, 50, 50 ) )
 	self:SetLookAt( Vector( 0, 0, 40 ) )
 	self:SetFOV( 70 )
-	
+
 	self:SetText( "" )
 	self:SetAnimSpeed( 0.5 )
 	self:SetAnimated( false )
-	
+
 	self:SetAmbientLight( Color( 50, 50, 50 ) )
-	
+
 	self:SetDirectionalLight( BOX_TOP, Color( 255, 255, 255 ) )
 	self:SetDirectionalLight( BOX_FRONT, Color( 255, 255, 255 ) )
-	
+
 	self:SetColor( Color( 255, 255, 255, 255 ) )
-	
+
 	self.ViewAngles = Angle(0, 0, 0)
 	self.HeadPos = Vector()
 	self.ViewDistance = 20
@@ -265,9 +265,9 @@ function PANEL:SetDirectionalLight( iDirection, color )
 end
 
 function PANEL:ResetCamera()
-	
+
 	self:SetCamPos( self.ViewAngles:Forward() * self.ViewDistance )
-	
+
 end
 
 /*---------------------------------------------------------
@@ -277,19 +277,19 @@ function PANEL:SetModel( strModelName )
 
 	Msg("SETTING MODEL: " .. strModelName .. "\n")
 
-	// Note - there's no real need to delete the old 
+	// Note - there's no real need to delete the old
 	// entity, it will get garbage collected, but this is nicer.
 	if ( IsValid( self.Entity ) ) then
 		self.Entity:Remove()
-		self.Entity = nil		
+		self.Entity = nil
 	end
-	
+
 	// Note: Not in menu dll
 	if ( !ClientsideModel ) then return end
-	
+
 	self.Entity = ClientsideModel( strModelName, RENDER_GROUP_OPAQUE_ENTITY )
 	if ( !IsValid(self.Entity) ) then return end
-	
+
 	//self.Entity:SetNoDraw( true )
 end
 
@@ -300,15 +300,15 @@ function PANEL:SetSeat(node)
 
 	// Note: Not in menu dll
 	if ( !ClientsideModel ) then return end
-	
+
 	for _, seat in ipairs(self.Seats) do
 		if seat.Node == node then
 			self.SelectedSeat = seat
 		end
 	end
-	
+
 	table.insert( self.Seats, seat )
-	
+
 end
 
 /*---------------------------------------------------------
@@ -318,15 +318,15 @@ function PANEL:AddSeat(node)
 
 	// Note: Not in menu dll
 	if ( !ClientsideModel ) then return end
-	
+
 	local seat = ClientsideModel( "models/player/kleiner.mdl", RENDER_GROUP_OPAQUE_ENTITY )
 	seat:ResetSequence(seat:LookupSequence( "sit" ))
 	seat.Offset = seat:GetBonePosition(seat:LookupBone("ValveBiped.Bip01_Pelvis")) + Vector(0,0,4)
 	seat.Node = node
 	node.Seat = seat
-	
+
 	table.insert( self.Seats, seat )
-	
+
 end
 
 
@@ -337,32 +337,32 @@ function PANEL:Paint()
 
 	if ( !IsValid( self.Entity ) ) then return end
 	//if ( !IsValid( self.Seats ) ) then return end
-	
+
 	local x, y = self:LocalToScreen( 0, 0 )
 
 	self:LayoutEntity( self.Entity )
-	
+
 	cam.Start3D( self.vCamPos, (self.vLookatPos-self.vCamPos):Angle(), self.fFOV, x, y, self:GetWide(), self:GetTall() )
 		cam.IgnoreZ( true )
-		
+
 		render.SuppressEngineLighting( true )
 		render.SetLightingOrigin( self.Entity:GetPos() )
-		render.ResetModelLighting( self.colAmbientLight.r/255, self.colAmbientLight.g/255, self.colAmbientLight.b/255 )
-		render.SetColorModulation( self.colColor.r/255, self.colColor.g/255, self.colColor.b/255 )
-		render.SetBlend( self.colColor.a/255 )
-		
-		for i=0, 6 do
+		render.ResetModelLighting( self.colAmbientLight.r / 255, self.colAmbientLight.g / 255, self.colAmbientLight.b / 255 )
+		render.SetColorModulation( self.colColor.r / 255, self.colColor.g / 255, self.colColor.b / 255 )
+		render.SetBlend( self.colColor.a / 255 )
+
+		for i = 0, 6 do
 			local col = self.DirectionalLight[ i ]
 			if ( col ) then
-				render.SetModelLighting( i, col.r/255, col.g/255, col.b/255 )
+				render.SetModelLighting( i, col.r / 255, col.g / 255, col.b / 255 )
 			end
 		end
-		
+
 		self.Entity:DrawModel()
-		
+
 		local Trans = GetCurrentTranslations()
 		local pos, ang = Vector(Trans[1],Trans[2],Trans[3]), Angle(Trans[4],Trans[5],Trans[6])
-		
+
 		local seat = self.SelectedSeat
 		if IsValid(seat) then
 			seat.Pos = pos
@@ -371,7 +371,7 @@ function PANEL:Paint()
 			seat:SetAngles( seat.Ang )
 			seat:DrawModel()
 		end
-		
+
 		for _, ent in ipairs(self.Seats) do
 			if IsValid(ent) && ent != seat then
 				if ent.Pos then
@@ -379,20 +379,20 @@ function PANEL:Paint()
 				else
 					ent:SetPos( pos - ent.Offset )
 				end
-				
+
 				ent:SetAngles( ang )
 				ent:SetPos( pos )
-				
+
 				ent:DrawModel()
 			end
 		end
-		
+
 		render.SuppressEngineLighting( false )
 		cam.IgnoreZ( false )
 	cam.End3D()
-	
+
 	self.LastPaint = RealTime()
-	
+
 end
 
 /*---------------------------------------------------------
@@ -401,7 +401,7 @@ end
 function PANEL:RunAnimation()
 	for _, seat in ipairs(self.Seats) do
 		if IsValid(seat) then
-			seat:FrameAdvance( (RealTime()-self.LastPaint) * self.m_fAnimSpeed )
+			seat:FrameAdvance( (RealTime() - self.LastPaint) * self.m_fAnimSpeed )
 		end
 	end
 end
@@ -418,7 +418,7 @@ function PANEL:LayoutEntity( Entity )
 	//if ( self.bAnimated ) then
 	//	self:RunAnimation()
 	//end
-	
+
 	//Entity:SetAngles( Angle( 0, RealTime()*10,  0) )
 
 end
@@ -443,9 +443,9 @@ function PANEL:Think()
 		else
 			self.ViewDistance = self.ViewDistance + (self.Dragging[1] - gui.MouseX()) * 0.1
 		end
-		
+
 		self.Dragging = { gui.MouseX(), gui.MouseY() }
-		
+
 		self:ResetCamera()
 	end
 

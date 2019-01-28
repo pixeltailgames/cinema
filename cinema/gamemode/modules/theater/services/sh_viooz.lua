@@ -72,7 +72,7 @@ function onTheaterReady() {
 	function SERVICE:LoadVideo( Video, panel )
 
 		local theaterJsUrl = string.format( "%s/js/theater.min.js",
-			GetConVarString("cinema_url") or
+			GetConVar( "cinema_url" ):GetString() or
 			"http://pixeltailgames.github.io/cinema/" )
 
 		local VioozUrl = string.format( UrlPattern, Video:Data() )
@@ -91,8 +91,8 @@ function onTheaterReady() {
 			self:RunJavascript(str)
 
 			-- Inject theater.js
-			str = string.format( JS_AddTheaterScript, 
-				string.JavascriptSafe(theaterJsUrl) ) 
+			str = string.format( JS_AddTheaterScript,
+				string.JavascriptSafe(theaterJsUrl) )
 			self:RunJavascript(str)
 		end
 

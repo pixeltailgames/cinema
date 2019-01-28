@@ -6,7 +6,7 @@ LANG.Author     = "Skorpion"        -- Chain authors if necessary (e.g. "Sam, Ma
 -- Common
 LANG.Cinema                     = "CINEMA"
 LANG.Volume                     = "Volume"
-LANG.Voteskips                  = "Vote para pular" 
+LANG.Voteskips                  = "Vote para pular"
 LANG.Loading                    = "Carregando..."
 LANG.Invalid                    = "[INVÁLIDO]"
 LANG.NoVideoPlaying             = "Nenhum vídeo sendo reproduzido"
@@ -47,12 +47,12 @@ LANG.Warning_OSX_Line2          = "Pressione F1 para ver dicas de soluções de 
 LANG.Queue_Title                = "Fila de Espera"
 LANG.Request_Video              = "Solicitar Vídeo"
 LANG.Vote_Skip                  = "Vote para pular"
-LANG.Toggle_Fullscreen          = "Habilita/Desabilita Tela cheia" 
+LANG.Toggle_Fullscreen          = "Habilita/Desabilita Tela cheia"
 LANG.Refresh_Theater            = "Atualizar Cinema"
 
 -- Theater controls
 -- modules/scoreboard/cl_admin.lua
-LANG.Theater_Admin              = "ADMIN" 
+LANG.Theater_Admin              = "ADMIN"
 LANG.Theater_Owner              = "DONO"
 LANG.Theater_Skip               = "Pular"
 LANG.Theater_Seek               = "Buscar"

@@ -9,7 +9,7 @@ hook.Add( "PlayerThink", "LocationThink", function( ply )
 	local oldloc = ply:GetLocation()
 	local loc = Find( ply )
 	if oldloc == loc then return end
-	
+
 	ply:SetLocation(loc)
 
 	-- Player, New Location, Old Location

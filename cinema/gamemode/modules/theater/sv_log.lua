@@ -4,7 +4,7 @@ function Query( command )
 
 	-- Ensure the log table exists
 	if !sql.TableExists("cinema_history") then
-		
+
 		Msg("Creating 'cinema_history' table...\n")
 
 		-- Initialize the database table
@@ -29,7 +29,7 @@ end
 
 function GetVideoLog( data, type )
 
-	local str = "SELECT * FROM cinema_history WHERE " .. 
+	local str = "SELECT * FROM cinema_history WHERE " ..
 		string.format("type='%s' AND ", type) ..
 		string.format("data='%s'", data)
 
@@ -39,7 +39,7 @@ end
 
 function RemoveVideoLog( data, type )
 
-	local str = "DELETE FROM cinema_history WHERE " .. 
+	local str = "DELETE FROM cinema_history WHERE " ..
 		string.format("type='%s' AND ", type) ..
 		string.format("data='%s'", data)
 

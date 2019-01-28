@@ -18,7 +18,7 @@ function GM:PreVideoQueued( Video, Theater )
 	if Theater:IsReplicated() then
 
 		-- Limit videos to a specified maximum duration
-		local MaxDuration = GetConVarNumber("cinema_video_duration_max")
+		local MaxDuration = GetConVar( "cinema_video_duration_max" ):GetInt()
 		if Video:Duration() > MaxDuration then
 
 			Theater:AnnounceToPlayer( ply, {
@@ -169,7 +169,7 @@ hook.Add( "PlayerChangeLocation", "TheaterInit", PlayerChangeTheater )
 
 /*---------------------------------------------------------------------------
 	Name: PreVoteSkipAccept
-	Desc: Called before a voteskip is added. 
+	Desc: Called before a voteskip is added.
 		Return false to stop the skip from being added.
 ---------------------------------------------------------------------------*/
 function GM:PreVoteSkipAccept (ply, Theater)
@@ -178,7 +178,7 @@ end
 
 /*---------------------------------------------------------------------------
 	Name: PostVoteSkipAccept
-	Desc: Called after a voteskip is added. 
+	Desc: Called after a voteskip is added.
 ---------------------------------------------------------------------------*/
 function GM:PostVoteSkipAccept (ply, Theater)
 

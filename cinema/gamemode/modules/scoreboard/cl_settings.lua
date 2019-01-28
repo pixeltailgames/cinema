@@ -34,9 +34,9 @@ function SETTINGS:NewSetting( control, text, convar )
 	if !table.HasValue( self.Settings, Control ) then
 		table.insert( self.Settings, Control )
 	end
-	
+
 	return Control
-	
+
 end
 
 local Background = Material( "theater/settingsbright.png" )
@@ -56,7 +56,7 @@ end
 
 function SETTINGS:Think()
 
-	if ValidPanel( Gui ) then
+	if IsValid( Gui ) then
 		self.Help:SetVisible( !Gui.MouseEnabled )
 	end
 
@@ -72,8 +72,8 @@ function SETTINGS:PerformLayout()
 		curY = curY + 28
 
 		-- Resize label if needed for localization
-		if ValidPanel( panel.Label ) and panel.Label:GetFont() != "ScoreboardHelpSmall" then
-			
+		if IsValid( panel.Label ) and panel.Label:GetFont() != "ScoreboardHelpSmall" then
+
 			local px, py = panel:GetPos()
 
 			local x, y = panel.Label:GetPos()

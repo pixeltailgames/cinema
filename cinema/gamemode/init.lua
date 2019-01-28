@@ -13,31 +13,31 @@ resource.AddWorkshop( "119060917" ) -- cinema_theatron
 timer.Create( "TheaterPlayerThink", 1, 0, function()
 	for _, v in pairs( player.GetAll() ) do
 		if ( !IsValid( v ) ) then continue end
-		
+
 		hook.Call( "PlayerThink", GAMEMODE, v )
 	end
 end )
 
 --[[---------------------------------------------------------
    Name: gamemode:DoPlayerDeath( )
-   Desc: Carries out actions when the player dies 		 
+   Desc: Carries out actions when the player dies
 -----------------------------------------------------------]]
 function GM:DoPlayerDeath( ply, attacker, dmginfo )
 
 	ply:CreateRagdoll()
-	
+
 	ply:AddDeaths( 1 )
-	
+
 	if ( attacker:IsValid() && attacker:IsPlayer() ) then
-	
+
 		if ( attacker == ply ) then
 			attacker:AddFrags( -1 )
 		else
 			attacker:AddFrags( 1 )
 		end
-		
+
 	end
-	
+
 end
 
 
@@ -53,7 +53,7 @@ timer.Create( "HostnameThink", 30, 0, HostnameThink )
 
 --[[---------------------------------------------------------
    Name: gamemode:PlayerCanHearPlayersVoice( )
-   Desc: Decides whether the 	 
+   Desc: Decides whether the
 -----------------------------------------------------------]]
 function GM:PlayerCanHearPlayersVoice( listener, talker )
 
@@ -68,7 +68,7 @@ function GM:PlayerCanHearPlayersVoice( listener, talker )
 
 	-- Both players in theater
 	if ListenerInTheater and TalkerInTheater then
-		return listener:GetLocation() == talker:GetLocation() and 
+		return listener:GetLocation() == talker:GetLocation() and
 			GetConVar("cinema_allow_voice"):GetBool(), Voice3D
 
 	-- One player in theater

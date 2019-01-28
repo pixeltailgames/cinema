@@ -22,7 +22,7 @@ local commands = {
 hook.Add( "PlayerSay", "TheaterActCommands", function( ply, chat )
 
 	if string.StartWith( chat, '/' ) then
-		
+
 		if ply:IsPlayingTaunt() then
 			return ""
 		end

@@ -1,9 +1,9 @@
-/*   _                                
-    ( )                               
-   _| |   __   _ __   ___ ___     _ _ 
+/*   _
+    ( )
+   _| |   __   _ __   ___ ___     _ _
  /'_` | /'__`\( '__)/' _ ` _ `\ /'_` )
 ( (_| |(  ___/| |   | ( ) ( ) |( (_| |
-`\__,_)`\____)(_)   (_) (_) (_)`\__,_) 
+`\__,_)`\____)(_)   (_) (_) (_)`\__,_)
 
 	DNumberWang2: GMT Edition
 
@@ -12,16 +12,16 @@
 local PANEL = {}
 
 /*---------------------------------------------------------
-	
+
 ---------------------------------------------------------*/
 function PANEL:Init()
-	
+
 	self.Slider = vgui.Create( "DSlider", self )
 	self.Slider:SetLockY( 0.5 )
 	self.Slider.TranslateValues = function( slider, x, y ) return self:TranslateSliderValues( x, y ) end
 	self.Slider:SetTrapInside( true )
 	self.Slider:SetImage( "vgui/slider" )
-	
+
 	self:SetTall( 35 )
 
 end
@@ -67,25 +67,25 @@ end
 function PANEL:SetValue( val )
 
 	if ( val == nil ) then return end
-	
+
 	local OldValue = val
 	val = tonumber( val )
 	val = val or 0
-	
+
 	if ( self.m_iDecimals == 0 ) then
-	
+
 		val = Format( "%i", val )
-	
+
 	elseif ( val != 0 ) then
-	
-		val = Format( "%."..self.m_iDecimals.."f", val )
-			
+
+		val = Format( "%." .. self.m_iDecimals .. "f", val )
+
 		// Trim trailing 0's and .'s 0 this gets rid of .00 etc
-		val = string.TrimRight( val, "0" )		
+		val = string.TrimRight( val, "0" )
 		val = string.TrimRight( val, "." )
-		
+
 	end
-	
+
 	self.Value = val
 	self:UpdateConVar()
 
@@ -159,13 +159,13 @@ function PANEL:SetFraction( val )
 end
 
 /*---------------------------------------------------------
-   Name: 
+   Name:
 ---------------------------------------------------------*/
 function PANEL:PerformLayout()
-	
+
 	self.Slider:SetPos( 0, ( self:GetTall() / 2 ) )
 	self.Slider:SetSize( self:GetWide(), 13 )
-	
+
 	self.Slider:SetSlideX( self:GetFraction() )
 
 end
@@ -189,7 +189,7 @@ function PANEL:Paint( w, h )
 	local title = string.upper( self:GetText() )
 
 	if self.Descriptions then
-		val = self.Descriptions[val+1]
+		val = self.Descriptions[val + 1]
 	end
 
 	surface.SetFont( "LabelFont" )
@@ -235,7 +235,7 @@ end
 function PANEL:TranslateSliderValues( x, y )
 
 	self:SetFraction( x )
-	
+
 	return self:GetFraction(), y
 
 end

@@ -1,9 +1,9 @@
---[[   _                                
-	( )                               
-   _| |   __   _ __   ___ ___     _ _ 
+--[[   _
+	( )
+   _| |   __   _ __   ___ ___     _ _
  /'_` | /'__`\( '__)/' _ ` _ `\ /'_` )
 ( (_| |(  ___/| |   | ( ) ( ) |( (_| |
-`\__,_)`\____)(_)   (_) (_) (_)`\__,_) 
+`\__,_)`\____)(_)   (_) (_) (_)`\__,_)
 
 
 --]]
@@ -45,17 +45,17 @@ function PANEL:Init()
 			draw.RoundedBox( 4, 2, 1, w, h, self.Scrollbar.DisabledColor )
 			return
 		end
-		
+
 		if ( panel.Depressed ) then
 			draw.RoundedBox( 4, 2, 1, w, h, self.Scrollbar.DepressedColor )
 			return
 		end
-		
+
 		if ( panel.Hovered ) then
 			draw.RoundedBox( 4, 2, 1, w, h, self.Scrollbar.HoverColor )
 			return
 		end
-		
+
 		draw.RoundedBox( 4, 2, 1, w, h, self.Scrollbar.BackgroundColor )
 
 	end
@@ -68,16 +68,16 @@ function PANEL:Init()
 		local x = 0
 		local y = gui.MouseY()
 		local x, y = self:ScreenToLocal( x, y )
-		
+
 		-- Uck.
 		y = y - self.HoldPos
-		
+
 		local TrackSize = self:GetTall() - self:GetWide() * 2 - self.btnGrip:GetTall()
-		
+
 		y = y / TrackSize
-		
-		self:SetScroll( y * self.CanvasSize )	
-		
+
+		self:SetScroll( y * self.CanvasSize )
+
 	end
 
 	self.VBar.PerformLayout = function( self )
@@ -87,9 +87,9 @@ function PANEL:Init()
 		local BarSize = math.max( self:BarScale() * (self:GetTall()), 10 )
 		local Track = self:GetTall() - BarSize
 		Track = Track + 1
-		
+
 		Scroll = Scroll * Track
-		
+
 		self.btnGrip:SetPos( 0, Scroll )
 		self.btnGrip:SetSize( Wide, BarSize )
 
@@ -109,12 +109,12 @@ end
 function PANEL:SortVideos( f )
 
 	if !f then return end
-	
-	table.sort( self.Items, function( a, b ) 
+
+	table.sort( self.Items, function( a, b )
 
 		if !a or !a.Video then return false end
 		if !b or !b.Video then return true end
-		
+
 		return f( a.Video, b.Video )
 
 	end )

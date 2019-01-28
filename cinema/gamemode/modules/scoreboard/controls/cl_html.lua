@@ -1,9 +1,9 @@
---[[   _                                
-	( )                               
-   _| |   __   _ __   ___ ___     _ _ 
+--[[   _
+	( )
+   _| |   __   _ __   ___ ___     _ _
  /'_` | /'__`\( '__)/' _ ` _ `\ /'_` )
 ( (_| |(  ___/| |   | ( ) ( ) |( (_| |
-`\__,_)`\____)(_)   (_) (_) (_)`\__,_) 
+`\__,_)`\____)(_)   (_) (_) (_)`\__,_)
 
 	DHTML
 
@@ -65,7 +65,7 @@ function PANEL:Init()
 			self:ConsoleMessage( param, func )
 		end )
 	end
-	
+
 	self:AddFunction( "gmod", "getUrl", function( href )
 		self:SetURL( href )
 	end )
@@ -124,7 +124,7 @@ function PANEL:Think()
 
 			self._loading = true
 			self:OnStartLoading()
-			
+
 		end
 
 	else
@@ -243,13 +243,13 @@ function PANEL:ConsoleMessage( msg, func )
 	if ( !isstring( msg ) ) then msg = "*js variable*" end
 
 	if ( self.m_bAllowLua && msg:StartWith( "RUNLUA:" ) ) then
-	
+
 		local strLua = msg:sub( 8 )
 
 		SELF = self
 		RunString( strLua )
 		SELF = nil
-		return; 
+		return;
 
 	end
 
@@ -269,7 +269,7 @@ function PANEL:ConsoleMessage( msg, func )
 	prefix = prefix .. "] "
 
 	MsgC( prefixColor, prefix )
-	MsgC( ConsoleColors.text, msg, "\n" )	
+	MsgC( ConsoleColors.text, msg, "\n" )
 
 end
 
@@ -330,11 +330,11 @@ function PANEL:AddFunction( obj, funcname, func )
 end
 
 function PANEL:OpeningURL( url )
-	
+
 end
 
 function PANEL:FinishedURL( url )
-	
+
 end
 
 derma.DefineControl( "TheaterHTML", "Extended DHTML control", PANEL, "Awesomium" )

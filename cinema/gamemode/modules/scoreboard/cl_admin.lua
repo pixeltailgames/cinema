@@ -22,7 +22,7 @@ function ADMIN:Init()
 
 	self.Options = vgui.Create( "DPanelList", self )
 	self.Options:DockMargin(0, self.TitleHeight + 2, 0, 0)
-	self.Options:SetDrawBackground(false)
+	self.Options:SetPaintBackground(false)
 	self.Options:SetPadding( 4 )
 	self.Options:SetSpacing( 4 )
 
@@ -39,12 +39,12 @@ function ADMIN:Init()
 	SeekButton:SetText( T'Theater_Seek' )
 	SeekButton.DoClick = function(self)
 
-		Derma_StringRequest( T'Theater_Seek', 
-			T'Theater_SeekQuery', 
+		Derma_StringRequest( T'Theater_Seek',
+			T'Theater_SeekQuery',
 			"0",
 			function( strTextOut ) RunConsoleCommand( "cinema_seek", strTextOut ) end,
 			function( strTextOut ) end,
-			T'Theater_Seek', 
+			T'Theater_Seek',
 			T'Cancel' )
 
 	end
@@ -52,7 +52,7 @@ function ADMIN:Init()
 
 	-- Admin-only options
 	if LocalPlayer():IsAdmin() then
-		
+
 		-- Reset the theater
 		local ResetButton = vgui.Create( "TheaterButton" )
 		ResetButton:SetText( T'Theater_Reset' )
@@ -69,7 +69,7 @@ function ADMIN:Init()
 		local NameButton = vgui.Create( "TheaterButton" )
 		NameButton:SetText( T'Theater_ChangeName' )
 		NameButton.DoClick = function(self)
-			Derma_StringRequest( T'Theater_ChangeName', 
+			Derma_StringRequest( T'Theater_ChangeName',
 				"",
 				Theater:Name(),
 				function( strTextOut ) RunConsoleCommand( "cinema_name", strTextOut ) end,

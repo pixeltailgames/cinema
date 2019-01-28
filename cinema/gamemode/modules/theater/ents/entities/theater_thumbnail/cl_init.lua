@@ -34,7 +34,7 @@ local RenderScale = 0.2
 local AngleOffset = Angle(0,90,90)
 
 function ENT:DrawTranslucent()
-	
+
 	-- Find attachment
 	if !self.Attach then
 
@@ -54,7 +54,7 @@ function ENT:DrawTranslucent()
 	cam.End3D2D()
 
 	pcall( self.DrawText, self )
-	
+
 end
 
 local hangs = { "p", "g", "y", "q", "j" }
@@ -78,14 +78,14 @@ function ENT:DrawSubtitle( str, height )
 	-- Calculate subtitle bar dimensions
 	bw, bh = (ThumbWidth * scale), (ThumbHeight * scale) * 0.16
 	bh = math.max( bh, th )
-	
+
 	-- Calculate height offset for bar
 	by = height * scale
 	by = math.min( by, (ThumbHeight * scale) - bh )
 
 	-- Calculate height offset for text
 	ty = (height * scale) + (bh / 2)
-	ty = math.min( ty, (ThumbHeight * scale) - bh/2 )
+	ty = math.min( ty, (ThumbHeight * scale) - bh / 2 )
 
 	cam.Start3D2D( self.Attach.Pos, self.Attach.Ang, ( 1 / scale ) * RenderScale )
 		surface.SetDrawColor( 0, 0, 0, 200 )
@@ -142,7 +142,7 @@ function ENT:DrawThumbnail()
 
 	-- Thumbnail isn't set yet
 	if self:GetThumbnail() == "" then
-		
+
 		surface.SetDrawColor( 80, 80, 80 )
 		surface.SetMaterial( DefaultThumbnail )
 		surface.DrawTexturedRect( 0, 0, ThumbWidth - 1, ThumbHeight - 1 )
@@ -150,11 +150,11 @@ function ENT:DrawThumbnail()
 		return
 
 	else -- Thumbnail is valid
-		
+
 		-- URL has changed
 		if (!self.LastURL or self.LastURL != self:GetThumbnail()) then
 
-			if ValidPanel( self.HTML ) then
+			if IsValid( self.HTML ) then
 				self:OnRemoveHTML()
 				self.HTML:Remove()
 			end
@@ -163,17 +163,17 @@ function ENT:DrawThumbnail()
 			self.ThumbMat = nil
 
 		elseif self.LastURL and !self.ThumbMat then
-			
-			if !ValidPanel( self.HTML ) then
+
+			if !IsValid( self.HTML ) then
 
 				-- Create HTML panel to load thumbnail
 				self.HTML = vgui.Create( "Awesomium" )
 				self.HTML:SetSize( ThumbWidth, ThumbHeight )
 				self.HTML:SetPaintedManually(true)
-				self.HTML:SetKeyBoardInputEnabled(false)
+				self.HTML:SetKeyboardInputEnabled(false)
 				self.HTML:SetMouseInputEnabled(false)
 				self.HTML:OpenURL( self:GetThumbnail() )
-			
+
 				Msg("AWESOMIUM: Initialized instance for video thumbnail: ")
 				Msg(self:GetThumbnail())
 				Msg("\n")
@@ -195,7 +195,7 @@ function ENT:DrawThumbnail()
 				timer.Simple(0.1, function()
 
 					if !IsValid(self) then return end
-					if !ValidPanel(self.HTML) then return end
+					if !IsValid(self.HTML) then return end
 
 					-- Grab HTML material
 					self.HTML:UpdateHTMLTexture()

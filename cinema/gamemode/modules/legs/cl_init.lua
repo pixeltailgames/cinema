@@ -108,7 +108,7 @@ Legs.BoneHoldTypes = { ["none"] = {
 							"ValveBiped.Bip01_R_Finger0", "ValveBiped.Bip01_R_Finger01", "ValveBiped.Bip01_R_Finger02"
 						}
 					}
-				
+
 Legs.BonesToRemove = {}
 Legs.BoneMatrix = nil
 
@@ -160,19 +160,19 @@ function Legs:Think( maxseqgroundspeed )
 			self.OldWeapon = LocalPlayer():GetActiveWeapon()
 			self:WeaponChanged( self.OldWeapon )
 		end
-		
+
 		if self.LegEnt:GetModel() != LocalPlayer():GetTranslatedModel() then --Player changed model without spawning?
 			self.LegEnt:SetModel( LocalPlayer():GetTranslatedModel() )
 			--print( LocalPlayer():GetModel(), self:FixModelName( LocalPlayer():GetModel() ) )
 		end
-		
+
 		-- START of Crouch Workaround
 		-- Reset all bones
 		for boneId = 0, self.LegEnt:GetBoneCount() do
 			self.LegEnt:ManipulateBoneScale(boneId, Vector(1,1,1))
 			self.LegEnt:ManipulateBonePosition(boneId, Vector(0,0,0))
 		end
-		
+
 		-- Remove bones from being seen
 		Legs.BonesToRemove = {
 			"ValveBiped.Bip01_Head1"
@@ -196,7 +196,7 @@ function Legs:Think( maxseqgroundspeed )
 			end
 		end
 		-- END of Crouch Workaround
-		
+
 		self.LegEnt:SetMaterial( LocalPlayer():GetMaterial() )
 		self.LegEnt:SetSkin( LocalPlayer():GetSkin() )
 		for _, group in pairs(LocalPlayer():GetBodyGroups()) do
@@ -204,7 +204,7 @@ function Legs:Think( maxseqgroundspeed )
 		end
 
 		self.Velocity = LocalPlayer():GetVelocity():Length2D()
-		
+
 		self.PlaybackRate = 1
 
 		if self.Velocity > 0.5 then -- Taken from the SDK, gets the proper play back rate
@@ -215,32 +215,32 @@ function Legs:Think( maxseqgroundspeed )
 				self.PlaybackRate = math.Clamp( self.PlaybackRate, 0.01, 10 )
 			end
 		end
-		
+
 		self.LegEnt:SetPlaybackRate( self.PlaybackRate ) -- Change the rate of playback. This is for when you walk faster/slower
-		
+
 		self.Sequence = LocalPlayer():GetSequence()
-		
+
 		if ( self.LegEnt.Anim != self.Sequence ) then -- If the player changes sequences, change the legs too
 			self.LegEnt.Anim = self.Sequence
 			self.LegEnt:ResetSequence( self.Sequence )
 		end
-		
+
 		self.LegEnt:FrameAdvance( CurTime() - self.LegEnt.LastTick ) -- Advance the amount of frames we need
 		self.LegEnt.LastTick = CurTime()
-		
+
 		Legs.BreathScale = sharpeye and sharpeye.GetStamina and math.Clamp( math.floor( sharpeye.GetStamina() * 5 * 10 ) / 10, 0.5, 5 ) or 0.5 -- More compatability for sharpeye. This changes the models breathing paramaters to go off of sharpeyes stamina system
-		
+
 		if Legs.NextBreath <= CurTime() then -- Only update every cycle, should stop MOST of the jittering
 			Legs.NextBreath = CurTime() + 1.95 / Legs.BreathScale
 			self.LegEnt:SetPoseParameter( "breathing", Legs.BreathScale )
 		end
-		
+
 		self.LegEnt:SetPoseParameter( "move_x", ( LocalPlayer():GetPoseParameter( "move_x" ) * 2 ) - 1 ) -- Translate the walk x direction
 		self.LegEnt:SetPoseParameter( "move_y", ( LocalPlayer():GetPoseParameter( "move_y" ) * 2 ) - 1 ) -- Translate the walk y direction
 		self.LegEnt:SetPoseParameter( "move_yaw", ( LocalPlayer():GetPoseParameter( "move_yaw" ) * 360 ) - 180 ) -- Translate the walk direction
 		self.LegEnt:SetPoseParameter( "body_yaw", ( LocalPlayer():GetPoseParameter( "body_yaw" ) * 180 ) - 90 ) -- Translate the body yaw
 		self.LegEnt:SetPoseParameter( "spine_yaw",( LocalPlayer():GetPoseParameter( "spine_yaw" ) * 180 ) - 90 ) -- Translate the spine yaw
-		
+
 		if ( LocalPlayer():InVehicle() ) then
 			self.LegEnt:SetColor( color_transparent )
 			self.LegEnt:SetRenderMode( RENDERMODE_TRANSALPHA )
@@ -275,7 +275,7 @@ end
 hook.Add( "RenderScreenspaceEffects", "Legs:Render", function() -- Need to find a better place to render. Legs half-way in water = looks like they are clipped
 	cam.Start3D( EyePos(), EyeAngles() )
 		if ShouldDrawLegs() then -- Render check
-		
+
 			Legs.RenderPos = LocalPlayer():GetPos()
 			if LocalPlayer():InVehicle() then -- The player is in a vehicle, so we use the vehicles angles, not the LocalPlayer
 				Legs.RenderAngle = LocalPlayer():GetVehicle():GetAngles()
@@ -287,7 +287,7 @@ hook.Add( "RenderScreenspaceEffects", "Legs:Render", function() -- Need to find 
 				Legs.ForwardOffset = -22
 				Legs.RenderPos.x = Legs.RenderPos.x + math.cos( Legs.RadAngle ) * Legs.ForwardOffset
 				Legs.RenderPos.y = Legs.RenderPos.y + math.sin( Legs.RadAngle ) * Legs.ForwardOffset
-				
+
 				if LocalPlayer():GetGroundEntity() == NULL then -- Crappy duck fix
 					Legs.RenderPos.z = Legs.RenderPos.z + 8
 					if LocalPlayer():KeyDown( IN_DUCK ) then
@@ -295,9 +295,9 @@ hook.Add( "RenderScreenspaceEffects", "Legs:Render", function() -- Need to find 
 					end
 				end
 			end
-			
+
 			Legs.RenderColor = LocalPlayer():GetColor()
-			
+
 			local bEnabled = render.EnableClipping( true )
 				render.PushCustomClipPlane( Legs.ClipVector, Legs.ClipVector:Dot( EyePos() ) ) -- Clip the model so if we look up we should never see any part of the legs model
 					render.SetColorModulation( Legs.RenderColor.r / 255, Legs.RenderColor.g / 255, Legs.RenderColor.b / 255 ) -- Render the color correctly
