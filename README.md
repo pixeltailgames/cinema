@@ -1,5 +1,7 @@
 Cinema
 ======
+[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/118824086)](https://steamcommunity.com/sharedfiles/filedetails/?id=118824086) 
+[![Steam Downloads](https://img.shields.io/steam/downloads/118824086)](https://steamcommunity.com/sharedfiles/filedetails/?id=118824086) 
 
 Cinema is a gamemode for Garry's Mod 13 which features synchronized video playback.
 
@@ -15,6 +17,5 @@ Cinema is a gamemode for Garry's Mod 13 which features synchronized video playba
 
 
 #### Links ####
-* [Facepunch Thread](http://www.facepunch.com/showthread.php?t=1237719)
-* [Steam Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=118824086)
-* [Official Website] (http://www.pixeltailgames.com/cinema)
+* [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=118824086)
+* [Official Website](https://www.pixeltailgames.com/cinema)
