@@ -116,7 +116,7 @@ function SERVICE:GetURLInfo( url )
 	end
 
 	-- Start time, #t=123s or ?t=123s
-	if (url.fragment and url.fragment.t) or (url.query and url.query.t) then
+	if (url.fragment and url.fragment.t and url.fragment.t ~= "") or (url.query and url.query.t and url.query.t ~= "") then
 
 		local time = (url.fragment and url.fragment.t) and url.fragment.t or url.query.t
 
