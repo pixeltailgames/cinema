@@ -3,7 +3,7 @@ local SERVICE = {}
 SERVICE.Name 	= "YouTube"
 SERVICE.IsTimed = true
 
-local API_KEY = "AIzaSyAjSwUHzyoxhfQZmiSqoIBQpawm2ucF11E"
+local API_KEY = "AIzaSyC3Md08Sr1YaO9mUpx45ZcIRnT60dRcfDk"
 
 local METADATA_URL = "https://www.googleapis.com/youtube/v3/videos?id=%s" ..
 		"&key=" .. API_KEY ..
