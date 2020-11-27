@@ -1,4 +1,4 @@
-local API_KEY = "575dwbjbxjgwiumt1km8ws4txl9xqf"
+local API_KEY = "aij4xm67u1f3fxtrr8b5nqr78enrwv"
 
 local THEATER_JS = [[(function() {
 'use strict';
